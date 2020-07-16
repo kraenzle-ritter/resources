@@ -1,0 +1,56 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateResourcesTable extends Migration
+{
+    protected $table;
+
+    public function __construct()
+    {
+        $this->table = config('resources.table', 'resources');
+    }
+
+    /**
+     * Run the migrations.
+     *
+     * id
+     * model_class
+     * model_id
+     * provider
+     * provider_id
+     * url
+     * name/title
+     * description
+     * full_json
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create($this->table, function (Blueprint $table) {
+            $table->increments('id');
+            $table->morphs('resourceable');
+            $table->string('model_class')->nullable();
+            $table->string('model_id')->nullable();
+            $table->string('provider');
+            $table->string('provider_id');
+            $table->string('url');
+            $table->string('name')->nullable();
+            $table->text('description')->nullable();
+            $table->json('full_json')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists($this->table);
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "name": "kraenzle-ritter/resources",
+    "description": ":package_description",
+    "license": "license",
+    "authors": [
+        {
+            "name": "Kraenzle, Andreas",
+            "email": "kraenzle@k-r.ch",
+            "homepage": "https://k-r.ch"
+        }
+    ],
+    "homepage": "https://github.com/kraenzle-ritter/resources",
+    "keywords": ["Laravel", "resources"],
+    "require": {
+        "illuminate/support": "~5|~6|~7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "mockery/mockery": "^1.1",
+        "orchestra/testbench": "~3|~4",
+        "sempro/phpunit-pretty-print": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "KraenzleRitter\\Resources\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "autoload": {},
+        "psr-4": {
+            "KraenzleRitter\\Resources\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "KraenzleRitter\\Resources\\ResourcesServiceProvider"
+            ],
+            "aliases": {
+                "Resources": "KraenzleRitter\\Resources\\Facades\\Resources"
+            }
+        }
+    }
+}

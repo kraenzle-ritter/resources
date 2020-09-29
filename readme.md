@@ -46,7 +46,7 @@ $resource = [
 $model = MyModel::find(1);
 $this->model->updateOrCreateResource($resource);
 $model->resources;
-
+...
 ```
 
 
@@ -54,15 +54,12 @@ $model->resources;
 
 If you discover any security related issues, please email author email instead of using the issue tracker.
 
-## Credits
-
-- [author name][link-author]
-- [All Contributors][link-contributors]
 
 ## License
 
-license. Please see the [license file](license.md) for more information.
+License. Please see the [license file](LICENSE.md) for more information.
 
+<!--
 [ico-version]: https://img.shields.io/packagist/v/kraenzle-ritter/resources.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/kraenzle-ritter/resources.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/kraenzle-ritter/resources/master.svg?style=flat-square
@@ -73,4 +70,4 @@ license. Please see the [license file](license.md) for more information.
 [link-travis]: https://travis-ci.org/kraenzle-ritter/resources
 [link-styleci]: https://styleci.io/repos/12345678
 [link-author]: https://github.com/kraenzle-ritter
-[link-contributors]: ../../contributors
+[link-contributors]: ../../contributors-->

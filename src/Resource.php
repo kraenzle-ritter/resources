@@ -31,10 +31,18 @@ class Resource extends Model
         parent::__construct($attributes);
     }
 
-    public function addResource(Model $resourceable, array $data)
+    public function updateOrCreateResource(Model $resourceable, array $data)
     {
-        return $resourceable->resources()->firstOrCreate(
-            $data
+        $provider = $data['provider'];
+        $provider_id = $data['provider_id'];
+
+        unset($data['provider']);
+        unset($data['provider_id']);
+
+        return $resourceable->resources()->updateOrCreate(
+            ['provider' => $provider,
+             'provider_id' => $provider_id],
+             $data
         );
     }
 
@@ -43,10 +51,9 @@ class Resource extends Model
         return (bool) static::find($id)->update($data);
     }
 
-    public function deleteResource(int $id)
+    public function removeResource(int $id)
     {
         return (bool) static::find($id)->delete();
     }
-
 
 }

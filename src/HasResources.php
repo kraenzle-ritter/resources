@@ -10,7 +10,15 @@ trait HasResources
 {
     public function resources(): MorphMany
     {
+        $query =  $this->morphMany(Resource::class, 'resourceable');
+        \Log::debug($query->toSql());
+        \Log::debug($query->getBindings());
         return $this->morphMany(Resource::class, 'resourceable');
+    }
+
+    public function hasResources() : bool
+    {
+        return (bool) $this->resources->count();
     }
 
     /**
@@ -20,9 +28,9 @@ trait HasResources
      *
      * @return static
      */
-    public function addResource(array $data)
+    public function updateOrCreateResource(array $data)
     {
-        return (new Resource())->addResource($this, $data);
+        return (new Resource())->updateOrCreateResource($this, $data);
     }
 
     /**
@@ -45,9 +53,8 @@ trait HasResources
      *
      * @return mixed
      */
-    public function deleteResource(int $id): bool
+    public function removeResource(string $id): bool
     {
-        return (bool) (new Resource())->deleteResource($id);
+        return (bool) (new Resource())->removeResource($id);
     }
-
 }

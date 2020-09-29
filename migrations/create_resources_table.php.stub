@@ -17,8 +17,8 @@ class CreateResourcesTable extends Migration
      * Run the migrations.
      *
      * id
-     * model_class
-     * model_id
+     * resourceable_type
+     * resourceable_id
      * provider
      * provider_id
      * url
@@ -32,13 +32,9 @@ class CreateResourcesTable extends Migration
         Schema::create($this->table, function (Blueprint $table) {
             $table->increments('id');
             $table->morphs('resourceable');
-            $table->string('model_class')->nullable();
-            $table->string('model_id')->nullable();
             $table->string('provider');
             $table->string('provider_id');
             $table->string('url');
-            $table->string('name')->nullable();
-            $table->text('description')->nullable();
             $table->json('full_json')->nullable();
             $table->timestamps();
         });

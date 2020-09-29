@@ -15,7 +15,7 @@ class ResourcesServiceProvider extends ServiceProvider
     {
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'kraenzle-ritter');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'kraenzle-ritter');
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         // Publishing is only necessary when using the CLI.
@@ -80,8 +80,8 @@ class ResourcesServiceProvider extends ServiceProvider
         // $this->commands([]);
 
         // publishing migrations
-        /*$this->publishes([
-            __DIR__.'/../database/migrations/create_resources_table.php' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_resources_table.php'),
-        ], 'migrations');*/
+        $this->publishes([
+            __DIR__.'/../migrations/create_resources_table.php.stub' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_resources_table.php'),
+        ], 'migrations');
     }
 }

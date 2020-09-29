@@ -1,11 +1,6 @@
 # resources
 
-[![Latest Version on Packagist][ico-version]][link-packagist]
-[![Total Downloads][ico-downloads]][link-downloads]
-[![Build Status][ico-travis]][link-travis]
-[![StyleCI][ico-styleci]][link-styleci]
-
-This is where your description should go. Take a look at [contributing.md](contributing.md) to see a to do list.
+[![Software License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE.md)
 
 ## Installation
 
@@ -15,21 +10,45 @@ Via Composer
 $ composer require kraenzle-ritter/resources
 ```
 
+Then either run `php artisan vendor:publish` and publish the migration or copy the file to your migrations directory. Then run `php artisan migrate`.
+
+
 ## Usage
 
-## Change log
+```php 
+<?php
 
-Please see the [changelog](changelog.md) for more information on what has changed recently.
+namespace App\Models;
 
-## Testing
+use Illuminate\Database\Eloquent\Model
+use KraenzleRitter\Resources\hasResources;
 
-``` bash
-$ composer test
+class MyModel extends Model
+{
+    use hasResources;
+
+    ...
+
+}
 ```
 
-## Contributing
+Then you are ready to go:
 
-Please see [contributing.md](contributing.md) for details and a todolist.
+```php
+
+$resource = [
+    'provider' => 'Wikipedia',
+    'provider_id' => 4013996,
+    'url' => 'https://fr.wikipedia.org/wiki/Érik_Desmazières'
+    // optional 'full_json' => [...]
+];
+
+$model = MyModel::find(1);
+$this->model->updateOrCreateResource($resource);
+$model->resources;
+
+```
+
 
 ## Security
 

@@ -2,6 +2,8 @@
 
 [![Software License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE.md)
 
+Resource Model and a hasResource trait where resources are basically links to a resources (eg. Wikipedia-Article or GND-Entry).
+
 ## Installation
 
 Via Composer
@@ -48,12 +50,6 @@ $this->model->updateOrCreateResource($resource);
 $model->resources;
 ...
 ```
-
-
-## Security
-
-If you discover any security related issues, please email author email instead of using the issue tracker.
-
 
 ## License
 

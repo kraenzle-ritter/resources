@@ -31,6 +31,11 @@ class Resource extends Model
         parent::__construct($attributes);
     }
 
+    public function setProviderAttribute($value)
+    {
+        $this->attributes['provider'] = strtolower($value);
+    }
+
     public function updateOrCreateResource(Model $resourceable, array $data)
     {
         $provider = $data['provider'];

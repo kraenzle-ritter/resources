@@ -11,8 +11,6 @@ trait HasResources
     public function resources(): MorphMany
     {
         $query =  $this->morphMany(Resource::class, 'resourceable');
-        \Log::debug($query->toSql());
-        \Log::debug($query->getBindings());
         return $this->morphMany(Resource::class, 'resourceable');
     }
 

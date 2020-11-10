@@ -43,14 +43,14 @@ class HasResourcesTest extends TestCase
     }
 
     /** @test */
-    public function test_it_deletes_resources()
+    public function test_it_removes_resources()
     {
         $model = TestModel::create(['name' => 'this is a test']);
         $model->updateOrCreateResource(['provider' => 'gnd', 'provider_id' => 123, 'url' => 'https://www.gnd.de/123']);
         $model->updateOrCreateResource(['provider' => 'genoames', 'provider_id' => 123, 'url' => 'https://www.geonames.de/123']);
 
         $resource = Resource::where('provider', 'gnd')->where('provider_id',123)->first();
-        $model->deleteResource($resource->id);
+        $model->removeResource($resource->id);
 
         $this->assertEquals(1, count($model->resources));
     }

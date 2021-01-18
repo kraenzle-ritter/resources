@@ -1,6 +1,8 @@
 <?php
 
 return [
-    // database table name
-    'table' => 'resources'
+    /**
+     * Database table name for the resources
+     */
+    'table' => 'resources',
 ];

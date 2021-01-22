@@ -5,9 +5,10 @@ namespace KraenzleRitter\Resources\Tests;
  * cf. https://github.com/spatie/laravel-sluggable/blob/master/tests/TestCase.php
  */
 use File;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Application;
+use Illuminate\Database\Schema\Blueprint;
 use Orchestra\Testbench\TestCase as Orchestra;
+use KraenzleRitter\Resources\ResourcesServiceProvider;
 
 abstract class TestCase extends Orchestra
 {
@@ -16,6 +17,14 @@ abstract class TestCase extends Orchestra
         parent::setUp();
 
         $this->setUpDatabase($this->app);
+        $this->withoutMockingConsoleOutput();
+    }
+
+    protected function getPackageProviders($app)
+    {
+      return [
+        ResourcesServiceProvider::class,
+      ];
     }
 
     /**

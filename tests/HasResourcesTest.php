@@ -2,19 +2,17 @@
 
 namespace KraenzleRitter\Resources\Tests;
 
-use Illuminate\Support\Str;
 use KraenzleRitter\Resources\Resource;
 
 class HasResourcesTest extends TestCase
 {
-
     /** @test */
     public function test_it_adds_resources()
     {
         $model = TestModel::create(['name' => 'this is a test']);
 
         $model->updateOrCreateResource(['provider' => 'gnd', 'provider_id' => 123, 'url' => 'https://www.gnd.de/123']);
-        $model->updateOrCreateResource(['provider' => 'genoames', 'provider_id' => 123, 'url' => 'https://www.geonames.de/123']);
+        $model->updateOrCreateResource(['provider' => 'geonames', 'provider_id' => 123, 'url' => 'https://www.geonames.de/123']);
 
         $this->assertEquals(2, count($model->resources));
     }
@@ -47,7 +45,7 @@ class HasResourcesTest extends TestCase
     {
         $model = TestModel::create(['name' => 'this is a test']);
         $model->updateOrCreateResource(['provider' => 'gnd', 'provider_id' => 123, 'url' => 'https://www.gnd.de/123']);
-        $model->updateOrCreateResource(['provider' => 'genoames', 'provider_id' => 123, 'url' => 'https://www.geonames.de/123']);
+        $model->updateOrCreateResource(['provider' => 'geonames', 'provider_id' => 123, 'url' => 'https://www.geonames.de/123']);
 
         $resource = Resource::where('provider', 'gnd')->where('provider_id',123)->first();
         $model->removeResource($resource->id);

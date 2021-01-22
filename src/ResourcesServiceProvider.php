@@ -3,6 +3,7 @@
 namespace KraenzleRitter\Resources;
 
 use Illuminate\Support\ServiceProvider;
+use KraenzleRitter\Resources\Console\Commands\ResourcesFetch;
 
 class ResourcesServiceProvider extends ServiceProvider
 {
@@ -20,6 +21,9 @@ class ResourcesServiceProvider extends ServiceProvider
 
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
+            $this->commands([
+                ResourcesFetch::class,
+            ]);
             $this->bootForConsole();
         }
     }
@@ -75,9 +79,6 @@ class ResourcesServiceProvider extends ServiceProvider
         /*$this->publishes([
             __DIR__.'/../resources/lang' => resource_path('lang/vendor/kraenzle-ritter'),
         ], 'resources.views');*/
-
-        // Registering package commands.
-        // $this->commands([]);
 
         // publishing migrations
         $this->publishes([

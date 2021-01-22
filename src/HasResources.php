@@ -55,4 +55,6 @@ trait HasResources
     {
         return (bool) (new Resource())->removeResource($id);
     }
+
+
 }

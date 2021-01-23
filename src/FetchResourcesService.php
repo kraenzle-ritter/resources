@@ -15,13 +15,17 @@ class FetchResourcesService
         'gnd' => 'P227',
         'LCNAF' => 'P244' ,
         'Perlentaucher' => 'P866',
-        'Munzinger person ID' => 'P1284',
-        'Encyclopaedia Britannica Online ID' => 'P1417',
+        'HLS' => 'P902',
+        'Munzinger person' => 'P1284',
+        'Encyclopaedia Britannica Online' => 'P1417',
         'Geonames' => 'P1566',
-        'Stanford Encyclopedia of Philosophy ID' => 'P3123',
+        'Stanford Encyclopedia of Philosophy' => 'P3123',
+        'Catholic Encyclopedia' => 'P3241',
         'europeana' => 'P7704',
+        'worldCat' => 'P7859',
         'Deutsch Biographie' => 'P7902',
-        'Ökumenisches Heiligenlexikon ID' => 'P8080',
+        'Ökumenisches Heiligenlexikon' => 'P8080',
+        'McClintock and Strong Biblical Cyclopedia' => 'P8636'
     ];
 
     public function __construct($provider)

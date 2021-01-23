@@ -17,7 +17,7 @@ Then either run `php artisan vendor:publish` and publish the migration or copy t
 
 ## Usage
 
-```php 
+```php
 <?php
 
 namespace App\Models;
@@ -50,6 +50,14 @@ $this->model->updateOrCreateResource($resource);
 $model->resources;
 ...
 ```
+
+With the artisan-command
+
+```bash
+php artisan resources:fetch --provider=gnd // or wikidata or wikipedia
+```
+
+You can add more resources to a model which already has a gnd link. You can configure the list of resources in the config file.
 
 ## License
 

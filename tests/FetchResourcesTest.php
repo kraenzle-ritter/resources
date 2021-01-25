@@ -42,5 +42,6 @@ class ResourcesFetchTest extends TestCase
         $model = TestModel::find(1);
         $this->assertTrue($model->resources->contains('provider', 'gnd'));
         $this->assertTrue($model->resources->contains('provider', 'viaf'));
+        $this->assertTrue($model->resources->contains('provider', 'wikidata'));
     }
 }

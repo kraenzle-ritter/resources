@@ -44,10 +44,20 @@ class FetchResourcesService
         if ($this->provider == 'gnd') {
             $id = $this->getWikidataIdForGndId($id);
         }
-        $client = new Wiki();
-        $result = $client->get($id, 'de');
+
+        if ($id === 0) {
+            return false;
+        }
 
         $resources = [];
+
+        $data = [
+            'provider' => 'wikidata',
+            'provider_id' => $id,
+            'url' => 'https://www.wikidata.orig/wiki/' . $id,
+            'full_json' => json_encode($result)
+        ];
+        $resources[] = $data;
 
         foreach ($this->providers as $provider) {
             // get the property key from the url (like P227 for gnd)
@@ -105,9 +115,10 @@ class FetchResourcesService
         if (isset($result) && count($result) == 1) {
             $first = $result->toArray();
             return array_shift($first)->id;
+        } else {
+            return 0;
         }
     }
-
 
     public static function unique_multidim_array($array, $key) {
         $temp_array = array();
@@ -124,7 +135,6 @@ class FetchResourcesService
         return $temp_array;
     }
 
-
     // Get the url pattern for the providers
     protected function setUpProviders()
     {
@@ -140,7 +150,8 @@ class FetchResourcesService
         $providers = $client->execute($query);
 
         $providers = array_unique($providers, 3);
+        // we only want one link for a provider
+        // eg Deutsch Biographie offers two links
         $this->providers = static::unique_multidim_array($providers, 'provider');
     }
-
 }

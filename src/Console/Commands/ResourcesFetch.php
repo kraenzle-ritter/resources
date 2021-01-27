@@ -35,12 +35,11 @@ class ResourcesFetch extends Command
         }
 
         $resources = Resource::where('provider', $provider)->get();
-        $service = new FetchResourcesService($provider);
 
         foreach ($resources as $resource) {
             sleep(1);
 
-            $this->info('Fetch resources for resourceable_id ' . $resource->resourceable_id);
+            $this->info('Fetch resources for ' . $resourceable_type  . ' with resourceable_id ' . $resource->resourceable_id);
             $model = $resource->resourceable_type::find($resource->resourceable_id);
             $model->saveMoreResources($provider);
 
@@ -143,11 +142,11 @@ class ResourcesFetch extends Command
             $model = $resource->resourceable_type::find($resource->resourceable_id);
             $gnd_id = $model->resources->where('provider', 'gnd')->first()->provider_id ?? 0;
             if ($gnd_id) {
-                $resource->provider_id = '';
+                $resource->provider_id = $gnd_id;
                 $resource->url = 'https://www.bsg.nb.admin.ch/discovery/search?query=lds50,contains,'.$gnd_id.'&vid=41SNL_54_INST:bsg';
                 $resource->save();
             } else {
-                $this->warn('Could not find a gnd for resource  $resource->resourceable_type ' . $model->id);
+                $this->warn('Could not find a gnd for resource '. $resource->resourceable_type .': ' . $model->id);
             }
         }
 
@@ -157,11 +156,11 @@ class ResourcesFetch extends Command
             $model = $resource->resourceable_type::find($resource->resourceable_id);
             $gnd_id = $model->resources->where('provider', 'gnd')->first()->provider_id ?? 0;
             if ($gnd_id) {
-                $resource->provider_id = '';
+                $resource->provider_id = $gnd_id;
                 $resource->url = 'https://www.helveticat.ch/discovery/search?query=lds50,contains,'.$gnd_id.'&vid=41SNL_51_INST:helveticat';
                 $resource->save();
             } else {
-                $this->warn('Could not find a gnd for resource  $resource->resourceable_type ' . $model->id);
+                $this->warn('Could not find a gnd for resource '. $resource->resourceable_type .': ' . $model->id);
             }
         }
 

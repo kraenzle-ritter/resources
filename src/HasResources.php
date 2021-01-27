@@ -64,6 +64,7 @@ trait HasResources
      */
     public function saveMoreResources($provider)
     {
+        $this->load('resources');
         $service = new FetchResourcesService($provider);
         $resource = $this->resources->where('provider', $provider)->first();
 

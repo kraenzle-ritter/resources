@@ -39,7 +39,7 @@ class ResourcesFetch extends Command
         foreach ($resources as $resource) {
             sleep(1);
 
-            $this->info('Fetch resources for ' . $resourceable_type  . ' with resourceable_id ' . $resource->resourceable_id);
+            $this->info('Fetch resources for ' . $resource->resourceable_type  . ' with resourceable_id ' . $resource->resourceable_id);
             $model = $resource->resourceable_type::find($resource->resourceable_id);
             $model->saveMoreResources($provider);
 

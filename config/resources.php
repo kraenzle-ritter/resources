@@ -6,8 +6,8 @@ return [
      */
     'table' => 'resources',
     /**
-     * Providers wich can be addionally fetched from wikidata
-    'fetch_providers' => [
+     * Providers wich can be addionally saved from wikidata
+    'providers' => [
         'viaf' => 'P214',
         'gnd' => 'P227',
         'LCNAF' => 'P244' ,

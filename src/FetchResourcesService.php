@@ -65,7 +65,7 @@ class FetchResourcesService
         $resources[] = $data;
 
         foreach ($this->providers as $provider) {
-            // get the property key from the url (like P227 for gnd)
+            // get the property key from the url (like 'P227' for gnd)
             $key = preg_replace('|.*(P\d+).*|', "$1", $provider['provider']);
 
             if (isset($result->properties->toArray()[$key])) {

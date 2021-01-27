@@ -42,26 +42,17 @@ class ResourcesFetch extends Command
 
             $this->info('Fetch resources for resourceable_id ' . $resource->resourceable_id);
             $model = $resource->resourceable_type::find($resource->resourceable_id);
+            $model->saveMoreResources($provider);
 
-            if ($resource->provider === 'gnd') {
-                $needles = [
-                    'http://d-nb.info/gnd/',
-                    'https://d-nb.info/gnd/',
-                    'https://d-nb.info/gnd/'
-                ];
-                $resource->provider_id = str_replace($needles, '', $resource->url);
-                $resource->save();
-            }
-
-            $new_resources = $service->run($resource->provider_id);
-
-            if ($new_resources) {
-                foreach ($new_resources as $new_resource) {
-                    $model->updateOrCreateResource($new_resource);
-                }
-            } else {
-                $this->warning('Could not find a wikidata id for '. $resource->provider_id .': '. $resource->provider_id);
-            }
+            // returns an array of resources for an id (wiki wikidata-id)
+            //$new_resources = $service->run($resource->provider_id);
+            //if ($new_resources) {
+            //    foreach ($new_resources as $new_resource) {
+            //        $model->updateOrCreateResource($new_resource);
+            //    }
+            //} else {
+            //    $this->warning('Could not find a wikidata id for '. $resource->provider_id .': '. $resource->provider_id);
+            //}
         }
 
         return 0;

@@ -30,12 +30,13 @@ class FetchResourcesService
 
     public function __construct($provider)
     {
-        $this->configProviders = config('resources.fetch_providers') ?? $this->defaultProviders;
+        $this->configProviders = config('resources.providers') ?? $this->defaultProviders;
         $this->setUpProviders();
         $this->lang = config('resources.preferred_locale') ?? App::getLocale();
         $this->provider = $provider;
     }
 
+    // id is an id from a provider, like wikidata (eg Q42)
     public function run($id)
     {
         if ($this->provider == 'wikipedia') {
@@ -49,6 +50,10 @@ class FetchResourcesService
             return false;
         }
 
+        // id is now a wikidata id
+
+        $client = new Wiki();
+        $result = $client->get($id, $this->lang);
         $resources = [];
 
         $data = [

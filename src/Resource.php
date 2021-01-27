@@ -39,14 +39,10 @@ class Resource extends Model
     public function updateOrCreateResource(Model $resourceable, array $data)
     {
         $provider = $data['provider'];
-        $provider_id = $data['provider_id'];
-
         unset($data['provider']);
-        unset($data['provider_id']);
 
         return $resourceable->resources()->updateOrCreate(
-            ['provider' => $provider,
-             'provider_id' => $provider_id],
+            ['provider' => $provider],
              $data
         );
     }

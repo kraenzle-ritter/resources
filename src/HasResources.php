@@ -56,5 +56,30 @@ trait HasResources
         return (bool) (new Resource())->removeResource($id);
     }
 
+    /**
+     * Fetch more resources which are fetched from a provider like wikidata
+     *
+     * @param string $provider (wikidata, wikipedia or gnd)
+     * @return void
+     */
+    public function saveMoreResources($provider)
+    {
+        $service = new FetchResourcesService($provider);
+        $resource = $this->resources->where('provider', $provider)->first();
 
+        if (!$resource) {
+            return null;
+        }
+
+        $new_resources = $service->run($resource->provider_id);
+
+        if ($new_resources) {
+            foreach ($new_resources as $new_resource) {
+                (new Resource())->updateOrCreateResource($this, $new_resource);
+            }
+        } else {
+            $this->warning('Could not find a wikidata id for '. $resource->provider_id .': '. $resource->provider_id);
+        }
+        return $resource;
+    }
 }

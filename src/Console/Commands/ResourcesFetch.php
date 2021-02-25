@@ -4,6 +4,7 @@ namespace KraenzleRitter\Resources\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use KraenzleRitter\Resources\Resource;
 use KraenzleRitter\Resources\FetchResourcesService;
 
@@ -189,9 +190,15 @@ class ResourcesFetch extends Command
 
         $count = DB::table('resources')->count();
 
-        $sql = 'CREATE TABLE tmp LIKE resources;
-                ALTER TABLE  tmp ADD UNIQUE (`resourceable_type`, `resourceable_id`, `url`);
-                INSERT IGNORE INTO tmp SELECT * FROM resources;
+        $sql = 'CREATE TABLE tmp LIKE resources;'
+
+        DB::statement(DB::raw($sql));
+
+        Schema::table('tmp', function($table) {
+            $table->unique(['resourceable_type', 'resourceable_id', 'url']);
+        });
+
+        $sql = 'INSERT IGNORE INTO tmp SELECT * FROM resources;
                 TRUNCATE TABLE resources;
                 INSERT INTO resources SELECT * FROM tmp;
                 DROP TABLE tmp;';

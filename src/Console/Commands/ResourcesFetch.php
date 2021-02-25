@@ -188,16 +188,19 @@ class ResourcesFetch extends Command
         $this->info('Remove doublets');
 
         $count = DB::table('resources')->count();
+
         $sql = 'CREATE TABLE tmp LIKE resources;
                 ALTER TABLE  tmp ADD UNIQUE (`resourceable_type`, `resourceable_id`, `url`);
                 INSERT IGNORE INTO tmp SELECT * FROM resources;
                 TRUNCATE TABLE resources;
                 INSERT INTO resources SELECT * FROM tmp;
                 DROP TABLE tmp;';
-        $count2 =  DB::table('resources')->count();
-        $res = $count-$count2;
-        $this->info('Deleted ' . $res . ' resources');
         DB::statement(DB::raw($sql));
+
+        $count = $count - DB::table('resources')->count();
+
+        $this->info('Deleted ' . $count . ' resources');
+
         return 0;
     }
 }

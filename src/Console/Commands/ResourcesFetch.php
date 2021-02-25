@@ -25,7 +25,7 @@ class ResourcesFetch extends Command
         }
 
         if ($this->option('delete')) {
-            return $this->delete();
+            return $this->deleteDublettes();
         }
 
         if (!$this->option('provider')) {

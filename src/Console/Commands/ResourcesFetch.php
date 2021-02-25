@@ -197,11 +197,16 @@ class ResourcesFetch extends Command
             $table->unique(['resourceable_type', 'resourceable_id', 'url']);
         });
 
-        $sql = 'INSERT IGNORE INTO tmp SELECT * FROM resources;
-                TRUNCATE TABLE resources;
-                INSERT INTO resources SELECT * FROM tmp;
-                DROP TABLE tmp;';
+        $sql = 'INSERT IGNORE INTO tmp SELECT * FROM resources;'
+        DB::statement(DB::raw($sql));
 
+        $sql = 'TRUNCATE TABLE resources;';
+        DB::statement(DB::raw($sql));
+
+        $sql = 'INSERT INTO resources SELECT * FROM tmp;';
+        DB::statement(DB::raw($sql));
+
+        $sql = 'DROP TABLE tmp;';
         DB::statement(DB::raw($sql));
 
         $count = $count - DB::table('resources')->count();

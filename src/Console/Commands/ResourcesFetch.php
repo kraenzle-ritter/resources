@@ -191,7 +191,7 @@ class ResourcesFetch extends Command
                 DROP TABLE tmp;';
         $count2 =  DB::table('resources')->count();
         $res = $count-$count2;
-        $this->success('Deleted ' . $res . ' resourceso');
+        $this->info('Deleted ' . $res . ' resourceso');
         DB::statement(DB::raw($sql));
     }
 }

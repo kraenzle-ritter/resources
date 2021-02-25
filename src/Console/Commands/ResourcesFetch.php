@@ -190,8 +190,7 @@ class ResourcesFetch extends Command
 
         $count = DB::table('resources')->count();
 
-        $sql = 'CREATE TABLE tmp LIKE resources;'
-
+        $sql = 'CREATE TABLE tmp LIKE resources;';
         DB::statement(DB::raw($sql));
 
         Schema::table('tmp', function($table) {
@@ -202,6 +201,7 @@ class ResourcesFetch extends Command
                 TRUNCATE TABLE resources;
                 INSERT INTO resources SELECT * FROM tmp;
                 DROP TABLE tmp;';
+
         DB::statement(DB::raw($sql));
 
         $count = $count - DB::table('resources')->count();

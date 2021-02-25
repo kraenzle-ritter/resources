@@ -178,13 +178,18 @@ class ResourcesFetch extends Command
         }
     }
 
+    /**
+     * Delete doublets: same url for same model (resourceable_type, resourceable_id)
+     *
+     * @return void
+     */
     public function deleteDublettes()
     {
         $this->info('Remove doublets');
 
         $count = DB::table('resources')->count();
         $sql = 'CREATE TABLE tmp LIKE resources;
-                ALTER TABLE  tmp ADD UNIQUE (resourceable_id, url);
+                ALTER TABLE  tmp ADD UNIQUE (resourceable_type, resourceable_id, url);
                 INSERT IGNORE INTO  tmp SELECT * FROM resources;
                 TRUNCATE TABLE resources;
                 INSERT INTO resources SELECT * FROM tmp;
@@ -193,5 +198,6 @@ class ResourcesFetch extends Command
         $res = $count-$count2;
         $this->info('Deleted ' . $res . ' resourceso');
         DB::statement(DB::raw($sql));
+        return 0;
     }
 }

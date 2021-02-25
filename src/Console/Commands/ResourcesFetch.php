@@ -25,7 +25,7 @@ class ResourcesFetch extends Command
         }
 
         if ($this->option('delete')) {
-            return $this->deleteDublettes();
+            return $this->deleteDoublets();
         }
 
         if (!$this->option('provider')) {
@@ -183,20 +183,20 @@ class ResourcesFetch extends Command
      *
      * @return void
      */
-    public function deleteDublettes()
+    public function deleteDoublets()
     {
         $this->info('Remove doublets');
 
         $count = DB::table('resources')->count();
         $sql = 'CREATE TABLE tmp LIKE resources;
-                ALTER TABLE  tmp ADD UNIQUE (resourceable_type, resourceable_id, url);
-                INSERT IGNORE INTO  tmp SELECT * FROM resources;
+                ALTER TABLE  tmp ADD UNIQUE (`resourceable_type`, `resourceable_id`, `url`);
+                INSERT IGNORE INTO tmp SELECT * FROM resources;
                 TRUNCATE TABLE resources;
                 INSERT INTO resources SELECT * FROM tmp;
                 DROP TABLE tmp;';
         $count2 =  DB::table('resources')->count();
         $res = $count-$count2;
-        $this->info('Deleted ' . $res . ' resourceso');
+        $this->info('Deleted ' . $res . ' resources');
         DB::statement(DB::raw($sql));
         return 0;
     }

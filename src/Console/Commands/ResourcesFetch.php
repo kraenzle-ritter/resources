@@ -3,6 +3,7 @@
 namespace KraenzleRitter\Resources\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use KraenzleRitter\Resources\Resource;
 use KraenzleRitter\Resources\FetchResourcesService;
 
@@ -10,6 +11,7 @@ class ResourcesFetch extends Command
 {
     protected $signature = 'resources:fetch {--provider= : gnd, wikidata or wikipedia}
                                             {--repair : repair urls and ids of bsg and heveticat}
+                                            {--delete : delete doublets}
                                             {--debug : debug modus; just show the resources array}';
 
     protected $description = 'Fetch resources and show them.';
@@ -20,6 +22,10 @@ class ResourcesFetch extends Command
     {
         if ($this->option('repair')) {
             return $this->repair();
+        }
+
+        if ($this->option('delete')) {
+            return $this->delete();
         }
 
         if (!$this->option('provider')) {
@@ -170,5 +176,21 @@ class ResourcesFetch extends Command
             $resource->provider_id = preg_replace('|https://www.fotostiftung.ch/de/nc/index-der-fotografinnen/fotografin/cumulus/(\d+)/0/show/\d*/?|', "$1", $resource->url);
             $resource->save();
         }
+    }
+
+    public function deleteDublettes()
+    {
+        $this->info('Remove doublets');
+
+        $count = DB::table('resources')->count();
+        $sql = 'CREATE TABLE tmp LIKE resources;
+                ALTER TABLE  tmp ADD UNIQUE (resourceable_id, url);
+                INSERT IGNORE INTO  tmp SELECT * FROM resources;
+                TRUNCATE TABLE resources;
+                INSERT INTO resources SELECT * FROM tmp;
+                DROP TABLE tmp;';
+        $count2 =  DB::table('resources')->count();
+        $this->success('Deleted ' $count-$count . ' resourceso');
+        DB::statement(DB::raw($select));
     }
 }

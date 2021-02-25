@@ -59,7 +59,7 @@ class FetchResourcesService
         $data = [
             'provider' => 'wikidata',
             'provider_id' => $id,
-            'url' => 'https://www.wikidata.orig/wiki/' . $id,
+            'url' => 'https://www.wikidata.org/wiki/' . $id,
             'full_json' => json_encode($result)
         ];
         $resources[] = $data;

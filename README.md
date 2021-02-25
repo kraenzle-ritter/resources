@@ -1,6 +1,9 @@
 # resources
 
-[![Software License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE.md)
+[![Latest Stable Version](https://poser.pugx.org/kraenzle-ritter/resources/v)](//packagist.org/packages/kraenzle-ritter/resources) 
+[![Total Downloads](https://poser.pugx.org/kraenzle-ritter/resources/downloads)](//packagist.org/packages/kraenzle-ritter/resources) 
+[![Latest Unstable Version](https://poser.pugx.org/kraenzle-ritter/resources/v/unstable)](//packagist.org/packages/kraenzle-ritter/resources) 
+[![License](https://poser.pugx.org/kraenzle-ritter/resources/license)](//packagist.org/packages/kraenzle-ritter/resources)
 
 Resource Model and a hasResource trait where resources are basically links to a resources (eg. Wikipedia-Article or GND-Entry).
 

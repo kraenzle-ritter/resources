@@ -190,7 +190,8 @@ class ResourcesFetch extends Command
                 INSERT INTO resources SELECT * FROM tmp;
                 DROP TABLE tmp;';
         $count2 =  DB::table('resources')->count();
-        $this->success('Deleted ' . $count-$count2 . ' resourceso');
+        $res = $count-$count2
+        $this->success('Deleted ' . $res . ' resourceso');
         DB::statement(DB::raw($select));
     }
 }

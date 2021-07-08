@@ -81,6 +81,7 @@ trait HasResources
         } else {
             \Log::warning('Could not find a wikidata id for '. $resource->provider_id .': '. $resource->provider_id);
         }
+        
         return $resource;
     }
 }

@@ -4,7 +4,7 @@
 [![Total Downloads](https://poser.pugx.org/kraenzle-ritter/resources/downloads)](//packagist.org/packages/kraenzle-ritter/resources) 
 [![Latest Unstable Version](https://poser.pugx.org/kraenzle-ritter/resources/v/unstable)](//packagist.org/packages/kraenzle-ritter/resources) 
 [![License](https://poser.pugx.org/kraenzle-ritter/resources/license)](//packagist.org/packages/kraenzle-ritter/resources)
-[![test](https://github.com/kraenzle-ritter/resources/actions/workflows/test.yml/badge.svg)
+[![Tests](https://github.com/kraenzle-ritter/resources/actions/workflows/run-tests.yml/badge.svg)](https://github.com/kraenzle-ritter/resources/actions/workflows/run-tests.yml)
 
 Resource Model and a hasResource trait where resources are basically links to a resources (eg. Wikipedia-Article or GND-Entry).
 

@@ -79,9 +79,9 @@ trait HasResources
                 (new Resource())->updateOrCreateResource($this, $new_resource);
             }
         } else {
-            \Log::warning('Could not find a wikidata id for '. $resource->provider_id .': '. $resource->provider_id);
+            \Log::warning('Could not find a resource at ' . $provider . ' for id '. $resource->provider_id .': '. $resource->provider_id);
         }
-        
+
         return $resource;
     }
 }

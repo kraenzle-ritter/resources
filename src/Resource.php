@@ -36,6 +36,11 @@ class Resource extends Model
         $this->attributes['provider'] = strtolower($value);
     }
 
+    public function setProviderIdAttribute($value)
+    {
+        $this->attributes['provider_id'] = urldecode($value);
+    }
+
     public function updateOrCreateResource(Model $resourceable, array $data)
     {
         $provider = $data['provider'];

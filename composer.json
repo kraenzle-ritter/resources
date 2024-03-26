@@ -16,13 +16,13 @@
   ],
   "require": {
     "freearhey/wikidata": "^3.6",
-    "laravel/framework": ">=9.0",
+    "laravel/framework": ">=9",
     "guzzlehttp/guzzle": "^7.8"
   },
   "require-dev": {
     "phpunit/phpunit": "^11",
     "mockery/mockery": "^1.6",
-    "orchestra/testbench": ">=79.0"
+    "orchestra/testbench": ">=7"
   },
   "autoload": {
     "psr-4": {

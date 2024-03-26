@@ -15,7 +15,7 @@ class FetchResourcesService
         'gnd' => 'P227',
         'LCNAF' => 'P244' ,
         'Perlentaucher' => 'P866',
-        'HLS' => 'P902',
+        'hls-dhs-dss' => 'P902',
         'Munzinger person' => 'P1284',
         'Encyclopaedia Britannica Online' => 'P1417',
         'Geonames' => 'P1566',
@@ -23,7 +23,7 @@ class FetchResourcesService
         'Catholic Encyclopedia' => 'P3241',
         'europeana' => 'P7704',
         'worldCat' => 'P7859',
-        'Deutsch Biographie' => 'P7902',
+        'Deutsche Biographie' => 'P7902',
         'Ökumenisches Heiligenlexikon' => 'P8080',
         'McClintock and Strong Biblical Cyclopedia' => 'P8636'
     ];

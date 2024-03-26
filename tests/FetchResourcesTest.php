@@ -2,7 +2,7 @@
 
 namespace KraenzleRitter\Resources\Tests;
 
-class ResourcesFetchTest extends TestCase
+class FetchResourcesTest extends TestCase
 {
     public function test_fetch_for_gnd()
     {

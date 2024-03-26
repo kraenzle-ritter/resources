@@ -14,7 +14,16 @@
     "Laravel",
     "resources"
   ],
-
+  "require": {
+    "freearhey/wikidata": "dev-master",
+    "laravel/framework": ">=9",
+    "guzzlehttp/guzzle": ">=7"
+  },
+  "require-dev": {
+    "phpunit/phpunit": ">=10",
+    "mockery/mockery": "^1.6",
+    "orchestra/testbench": ">=7"
+  },
   "autoload": {
     "psr-4": {
       "KraenzleRitter\\Resources\\": "src/"

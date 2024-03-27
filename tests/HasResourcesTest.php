@@ -6,7 +6,6 @@ use KraenzleRitter\Resources\Resource;
 
 class HasResourcesTest extends TestCase
 {
-    /** @test */
     public function test_it_adds_resources()
     {
         $model = TestModel::create(['name' => 'this is a test']);
@@ -17,7 +16,6 @@ class HasResourcesTest extends TestCase
         $this->assertEquals(2, count($model->resources));
     }
 
-    /** @test */
     public function test_it_does_not_add_the_same_resource_twice()
     {
         $model = TestModel::create(['name' => 'this is a test']);
@@ -28,7 +26,6 @@ class HasResourcesTest extends TestCase
         $this->assertEquals(1, count($model->resources));
     }
 
-    /** @test */
     public function test_it_updates_resources()
     {
         $model = TestModel::create(['name' => 'this is a test']);
@@ -40,7 +37,6 @@ class HasResourcesTest extends TestCase
         $this->assertEquals(567, Resource::find($resource->id)->provider_id);
     }
 
-    /** @test */
     public function test_it_removes_resources()
     {
         $model = TestModel::create(['name' => 'this is a test']);

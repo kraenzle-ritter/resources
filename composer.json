@@ -15,7 +15,7 @@
     "resources"
   ],
   "require": {
-    "survos/wikidata": "^4",
+    "survos/wikidata": "dev-master",
     "laravel/framework": ">=9",
     "guzzlehttp/guzzle": ">=7"
   },
@@ -44,5 +44,11 @@
         "Resources": "KraenzleRitter\\Resources\\Facades\\Resources"
       }
     }
-  }
+  },
+  "repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/ottosmops/wikidata.git"
+    }
+]
 }

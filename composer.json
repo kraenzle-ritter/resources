@@ -15,7 +15,7 @@
     "resources"
   ],
   "require": {
-    "freearhey/wikidata": "dev-master",
+    "survos/wikidata": "^4",
     "laravel/framework": ">=9",
     "guzzlehttp/guzzle": ">=7"
   },
@@ -44,11 +44,5 @@
         "Resources": "KraenzleRitter\\Resources\\Facades\\Resources"
       }
     }
-  },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/survos/wikidata.git"
-    }
-  ]
+  }
 }

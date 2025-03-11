@@ -16,7 +16,7 @@
   ],
   "require": {
     "survos/wikidata": "dev-master",
-    "laravel/framework": ">=9",
+    "laravel/framework": ">=10",
     "guzzlehttp/guzzle": ">=7"
   },
   "require-dev": {

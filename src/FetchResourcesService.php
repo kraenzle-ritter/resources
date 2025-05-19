@@ -2,10 +2,10 @@
 
 namespace KraenzleRitter\Resources;
 
-use Illuminate\Support\Str;
-use Wikidata\Wikidata as Wiki;
 use GuzzleHttp\Client;
 use Wikidata\SparqlClient;
+use Illuminate\Support\Str;
+use Wikidata\Wikidata as Wiki;
 use Illuminate\Support\Facades\App;
 
 class FetchResourcesService
@@ -13,7 +13,9 @@ class FetchResourcesService
     public $defaultProviders = [
         'viaf' => 'P214',
         'gnd' => 'P227',
-        'LCNAF' => 'P244' ,
+        'LCNAF' => 'P244' , //Library of Congress authority
+        'BNF'  => 'P268', // Bibliothèque nationale de France
+        'SBN' => 'P396', // National Library Service (SBN) of Italy
         'Perlentaucher' => 'P866',
         'hls-dhs-dss' => 'P902',
         'Munzinger person' => 'P1284',
@@ -25,7 +27,9 @@ class FetchResourcesService
         'worldCat' => 'P7859',
         'Deutsche Biographie' => 'P7902',
         'Ökumenisches Heiligenlexikon' => 'P8080',
-        'McClintock and Strong Biblical Cyclopedia' => 'P8636'
+        'McClintock and Strong Biblical Cyclopedia' => 'P8636',
+        'Kalliope-Verbund' => 'P9964',
+        'DDB' => 'P13049',
     ];
 
     public function __construct($provider)

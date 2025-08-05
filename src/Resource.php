@@ -20,9 +20,9 @@ class Resource extends Model
         'full_json' => 'array'
     ];
 
-    protected function asJson($value)
+    protected function asJson($value, $flags = 0)
     {
-        return json_encode($value, JSON_UNESCAPED_UNICODE);
+        return json_encode($value, JSON_UNESCAPED_UNICODE | $flags);
     }
 
     public function __construct(array $attributes = [])

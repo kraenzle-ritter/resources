@@ -2,6 +2,8 @@
 
 namespace KraenzleRitter\Resources\Tests;
 
+use KraenzleRitter\Resources\Tests\TestCase;
+
 class FetchResourcesTest extends TestCase
 {
     public function test_fetch_for_gnd()

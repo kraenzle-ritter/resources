@@ -3,10 +3,11 @@
 namespace KraenzleRitter\Resources;
 
 use GuzzleHttp\Client;
-use Wikidata\SparqlClient;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Message;
 use Illuminate\Support\Str;
-use Wikidata\Wikidata as Wiki;
 use Illuminate\Support\Facades\App;
+use KraenzleRitter\Resources\Helpers\UserAgent;
 
 class FetchResourcesService
 {
@@ -55,46 +56,91 @@ class FetchResourcesService
         }
 
         // id is now a wikidata id
-
-        $client = new Wiki();
-        $result = $client->get($id, $this->lang);
-        $resources = [];
-
-        $data = [
-            'provider' => 'wikidata',
-            'provider_id' => $id,
-            'url' => 'https://www.wikidata.org/wiki/' . $id,
-            'full_json' => json_encode($result)
-        ];
-        $resources[] = $data;
-
-        foreach ($this->providers as $provider) {
-            // get the property key from the url (like 'P227' for gnd)
-            $key = preg_replace('|.*(P\d+).*|', "$1", $provider['provider']);
-
-            if (isset($result->properties->toArray()[$key])) {
-                $id = $result->properties->toArray()[$key]->values->toArray()[0]->id;
-                $label = $provider['providerLabel'];
-                if (isset($label)) {
-                    $resource['provider'] = Str::slug(array_search($key, $this->configProviders));
-                    $resource['provider_id'] = $id;
-                    $resource['url'] = str_replace('$1', $id, $provider['url']);
-                    $resources[] = $resource;
-                    unset($resource);
-                }
-            }
+        $baseUrl = 'https://www.wikidata.org/w/api.php';
+        
+        try {
+            $client = new Client([
+                'base_uri' => $baseUrl,
+                'timeout' => 10,
+                'headers' => UserAgent::get(),
+            ]);
+        } catch (\Exception $e) {
+            print($e->getMessage());
+            return false;
         }
 
-        return $resources;
+        $query = [
+            'action' => 'wbgetentities',
+            'format' => 'json',
+            'ids' => $id,
+            'languages' => $this->lang,
+            'props' => 'labels|descriptions|claims'
+        ];
+
+        try {
+            $response = $client->get('', ['query' => $query]);
+            $body = json_decode($response->getBody(), true);
+            
+            if (!isset($body['entities'][$id])) {
+                return false;
+            }
+            
+            $entity = $body['entities'][$id];
+            $resources = [];
+
+            $data = [
+                'provider' => 'wikidata',
+                'provider_id' => $id,
+                'url' => 'https://www.wikidata.org/wiki/' . $id,
+                'full_json' => json_encode($entity)
+            ];
+            $resources[] = $data;
+
+            // Extract claims for other providers
+            if (isset($entity['claims'])) {
+                foreach ($this->providers as $provider) {
+                    // get the property key from the url (like 'P227' for gnd)
+                    $key = preg_replace('|.*(P\d+).*|', "$1", $provider['provider']);
+
+                    if (isset($entity['claims'][$key])) {
+                        $claims = $entity['claims'][$key];
+                        if (isset($claims[0]['mainsnak']['datavalue']['value'])) {
+                            $providerValue = $claims[0]['mainsnak']['datavalue']['value'];
+                            $label = $provider['providerLabel'];
+                            if (isset($label)) {
+                                $resource = [];
+                                $resource['provider'] = Str::slug(array_search($key, $this->configProviders));
+                                $resource['provider_id'] = $providerValue;
+                                $resource['url'] = str_replace('$1', $providerValue, $provider['url']);
+                                $resources[] = $resource;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return $resources;
+        } catch (RequestException $e) {
+            echo Message::toString($e->getRequest());
+            if ($e->hasResponse()) {
+                echo Message::toString($e->getResponse());
+            }
+            return false;
+        }
     }
 
     public function getWikidataIdForWikipediaId(string $wikipediaPageId)
     {
-        $base_uri = "https://{$this->lang}.wikipedia.org/w/api.php";
+        $baseUrl = "https://{$this->lang}.wikipedia.org/w/api.php";
         try {
-            $client = new Client(['base_uri' => $base_uri]);
-        } catch (Exception $e) {
-            print($e->message);
+            $client = new Client([
+                'base_uri' => $baseUrl,
+                'timeout' => 10,
+                'headers' => UserAgent::get(),
+            ]);
+        } catch (\Exception $e) {
+            print($e->getMessage());
+            return null;
         }
 
         $query = [];
@@ -106,25 +152,56 @@ class FetchResourcesService
         try {
             $response = $client->get('?' . join('&', $query));
             $body = json_decode($response->getBody());
+            return $body->query->pages->{$wikipediaPageId}->pageprops->wikibase_item ?? null;
         } catch (RequestException $e) {
-            echo Psr7\str($e->getRequest());
+            echo Message::toString($e->getRequest());
             if ($e->hasResponse()) {
-                echo Psr7\str($e->getResponse());
+                echo Message::toString($e->getResponse());
             }
+            return null;
         }
-
-        return $body->query->pages->{$wikipediaPageId}->pageprops->wikibase_item;
     }
 
     public function getWikidataIdForGndId(string $gndId)
     {
-        $client = new Wiki();
-        $result = $client->searchBy('P227', $gndId);
+        $baseUrl = 'https://query.wikidata.org/sparql';
+        
+        try {
+            $client = new Client([
+                'base_uri' => $baseUrl,
+                'timeout' => 10,
+                'headers' => UserAgent::get(),
+            ]);
+        } catch (\Exception $e) {
+            print($e->getMessage());
+            return 0;
+        }
 
-        if (isset($result) && count($result) == 1) {
-            $first = $result->toArray();
-            return array_shift($first)->id;
-        } else {
+        $sparqlQuery = 'SELECT ?item WHERE { ?item wdt:P227 "' . $gndId . '" }';
+        
+        $query = [
+            'query' => $sparqlQuery,
+            'format' => 'json'
+        ];
+
+        try {
+            $response = $client->get('', ['query' => $query]);
+            $body = json_decode($response->getBody(), true);
+            
+            if (isset($body['results']['bindings']) && count($body['results']['bindings']) === 1) {
+                $itemUri = $body['results']['bindings'][0]['item']['value'];
+                // Extract Q-ID from URI like https://www.wikidata.org/entity/Q42
+                if (preg_match('/\/entity\/(Q\d+)$/', $itemUri, $matches)) {
+                    return $matches[1];
+                }
+            }
+            
+            return 0;
+        } catch (RequestException $e) {
+            echo Message::toString($e->getRequest());
+            if ($e->hasResponse()) {
+                echo Message::toString($e->getResponse());
+            }
             return 0;
         }
     }
@@ -147,7 +224,20 @@ class FetchResourcesService
     // Get the url pattern for the providers
     protected function setUpProviders()
     {
-        $query = 'SELECT DISTINCT ?provider ?providerLabel ?url
+        $baseUrl = 'https://query.wikidata.org/sparql';
+        
+        try {
+            $client = new Client([
+                'base_uri' => $baseUrl,
+                'timeout' => 10,
+                'headers' => UserAgent::get(),
+            ]);
+        } catch (\Exception $e) {
+            print($e->getMessage());
+            return;
+        }
+
+        $sparqlQuery = 'SELECT DISTINCT ?provider ?providerLabel ?url
                     WHERE {
                         VALUES ?provider { wd:'. join(' wd:', $this->configProviders) . ' } .
                         ?provider wdt:P1630 ?url.
@@ -155,12 +245,36 @@ class FetchResourcesService
                     }
                     LIMIT ' . count($this->configProviders);
 
-        $client = new SparqlClient();
-        $providers = $client->execute($query);
+        $query = [
+            'query' => $sparqlQuery,
+            'format' => 'json'
+        ];
 
-        $providers = array_unique($providers, 3);
-        // we only want one link for a provider
-        // eg Deutsch Biographie offers two links
-        $this->providers = static::unique_multidim_array($providers, 'provider');
+        try {
+            $response = $client->get('', ['query' => $query]);
+            $body = json_decode($response->getBody(), true);
+            
+            $providers = [];
+            if (isset($body['results']['bindings'])) {
+                foreach ($body['results']['bindings'] as $binding) {
+                    $providers[] = [
+                        'provider' => $binding['provider']['value'],
+                        'providerLabel' => $binding['providerLabel']['value'],
+                        'url' => $binding['url']['value']
+                    ];
+                }
+            }
+
+            $providers = array_unique($providers, SORT_REGULAR);
+            // we only want one link for a provider
+            // eg Deutsch Biographie offers two links
+            $this->providers = static::unique_multidim_array($providers, 'provider');
+        } catch (RequestException $e) {
+            echo Message::toString($e->getRequest());
+            if ($e->hasResponse()) {
+                echo Message::toString($e->getResponse());
+            }
+            $this->providers = [];
+        }
     }
 }

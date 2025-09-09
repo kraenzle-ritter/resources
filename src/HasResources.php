@@ -59,23 +59,12 @@ trait HasResources
      * Sync resources from a specific provider
      *
      * @param string $provider The provider to sync from (e.g., 'wikidata', 'gnd', 'wikipedia')
+     * @param array $filter Array of provider names to exclude from sync
      * @return array Array of synced resources
      */
     public function syncFromProvider(string $provider, $filter = []): array
     {
         $syncService = new ResourceSyncService($filter);
         return $syncService->syncFromProvider($this, $provider);
-    }
-
-    /**
-     * Fetch more resources which are fetched from a provider like wikidata
-     *
-     * @deprecated Use syncFromProvider() instead
-     * @param string $provider (wikidata, wikipedia or gnd)
-     * @return mixed
-     */
-    public function saveMoreResources($provider, $filter = [])
-    {
-        return $this->syncFromProvider($provider, $filter);
     }
 }

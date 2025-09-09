@@ -26,11 +26,14 @@ class WikipediaLwComponent extends Component
 
     public $removeMethod = 'removeResource'; // Method name for resource removal
 
+    public array $filter = []; // Filter for providers to exclude from sync
+
     protected $listeners = ['resourcesChanged' => 'render'];
 
-    public function mount($model, string $search = '', string $providerKey = 'wikipedia-de')
+    public function mount($model, string $search = '', string $providerKey = 'wikipedia-de', array $filter = [])
     {
         $this->model = $model;
+        $this->filter = $filter;
 
         // Ensure the providerKey is valid
         if (empty($providerKey) || !is_string($providerKey) || strpos($providerKey, 'wikipedia-') !== 0) {
@@ -85,7 +88,7 @@ class WikipediaLwComponent extends Component
         ];
 
         $resource = $this->model->{$this->saveMethod}($data);
-        $this->model->syncFromProvider($this->queryOptions['providerKey']);
+        $this->model->syncFromProvider($this->queryOptions['providerKey'], $this->filter);
         $this->dispatch('resourcesChanged');
         event(new ResourceSaved($resource, $this->model->id));
     }

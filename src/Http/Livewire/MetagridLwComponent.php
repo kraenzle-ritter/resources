@@ -28,11 +28,14 @@ class MetagridLwComponent extends Component
 
     public $removeMethod = 'removeResource'; // Method name for resource removal
 
+    public array $filter = []; // Filter for providers to exclude from sync
+
     protected $listeners = ['resourcesChanged' => 'render'];
 
-    public function mount ($model, string $search = '', array $params = [])
+    public function mount ($model, string $search = '', array $params = [], array $filter = [])
     {
         $this->model = $model;
+        $this->filter = $filter;
 
         $locale = $params['locale'] ?? 'de';
 
@@ -58,21 +61,9 @@ class MetagridLwComponent extends Component
         ];
         $resource = $this->model->{$this->saveMethod}($data);
 
-        $full_json = json_decode($full_json);
-        $data = null;
-        if (isset($full_json->resources)) {
-            foreach ($full_json->resources as $srcData) {
-                $data = [
-                    'provider' => $srcData->provider->slug,
-                    'url' => $srcData->link->uri,
-                ];
-                if (isset($srcData->identifier)) {
-                    $data['provider_id'] = $srcData->identifier ?? '';
-                }
-
-                $this->model->{$this->saveMethod}($data);
-            }
-        }
+        // Use syncFromProvider instead of manual processing
+        $this->model->syncFromProvider('metagrid', $this->filter);
+        
         $this->dispatch('resourcesChanged');
         event(new ResourceSaved($resource, $this->model->id));
     }
@@ -91,10 +82,8 @@ class MetagridLwComponent extends Component
 
         $resources = $client->search($this->search, $this->queryOptions);
 
-        // Verarbeite die Ergebnisse mit dem ProviderComponentTrait
         if (!empty($resources)) {
             foreach ($resources as $key => $result) {
-                // Formatiere die Provider-Information als Beschreibung
                 if (!empty($result->provider)) {
                     $result->processedDescription = "Quelle: " . $result->provider;
                 } else {

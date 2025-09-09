@@ -3,7 +3,6 @@
 namespace KraenzleRitter\Resources;
 
 use Illuminate\Support\ServiceProvider;
-use KraenzleRitter\Resources\Console\Commands\ResourcesFetch;
 use KraenzleRitter\Resources\Console\Commands\TestResourcesCommand;
 use KraenzleRitter\Resources\Http\Livewire\AntonLwComponent;
 use KraenzleRitter\Resources\Http\Livewire\GeonamesLwComponent;
@@ -61,7 +60,6 @@ class ResourcesServiceProvider extends ServiceProvider
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
             $this->commands([
-                ResourcesFetch::class,
                 TestResourcesCommand::class,
             ]);
             $this->bootForConsole();

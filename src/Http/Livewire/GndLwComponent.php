@@ -27,11 +27,14 @@ class GndLwComponent extends Component
 
     public $removeMethod = 'removeResource'; // Method name for resource removal
 
+    public array $filter = []; // Filter for providers to exclude from sync
+
     protected $listeners = ['resourcesChanged' => 'render'];
 
-    public function mount($model, string $search = '', array $params = [])
+    public function mount($model, string $search = '', array $params = [], array $filter = [])
     {
         $this->model = $model;
+        $this->filter = $filter;
 
         $this->search = trim($search) ?: '';
 
@@ -68,7 +71,7 @@ class GndLwComponent extends Component
             'full_json' => json_decode($full_json)
         ];
         $resource = $this->model->{$this->saveMethod}($data);
-        $this->model->syncFromProvider('gnd');
+        $this->model->syncFromProvider('gnd', $this->filter);
 
         $this->dispatch('resourcesChanged');
         event(new ResourceSaved($resource, $this->model->id));

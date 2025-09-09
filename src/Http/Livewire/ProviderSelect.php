@@ -10,15 +10,17 @@ class ProviderSelect extends Component
     public $providers_all;
     public $providers;
     public $endpoint;
+    public array $filter = [];
     public ?string $providerKey = null;
     public ?string $componentToRender = null;
     public array $componentParams = [];
     protected $listeners = ['resourcesChanged' => 'hydrate'];
 
-    public function mount($model, array $providers, string $endpoint = null)
+    public function mount($model, array $providers, string $endpoint = null, array $filter = [])
     {
         $this->model = $model;
         $this->endpoint = $endpoint;
+        $this->filter = $filter;
 
         $this->providers_all = array_map('strtolower', $providers);
         $this->filterAvailableProviders();
@@ -73,6 +75,7 @@ class ProviderSelect extends Component
                 'model' => $this->model,
                 'search' => $search,
                 'providerKey' => $providerKey,
+                'filter' => $this->filter,
             ];
         } else if ($apiType === 'Anton') {
             // Anton-Komponenten benötigen den zusätzlichen 'endpoint'-Parameter
@@ -81,7 +84,8 @@ class ProviderSelect extends Component
                 'model' => $this->model,
                 'search' => $search,
                 'providerKey' => $providerKey,
-                'endpoint' => $this->endpoint
+                'endpoint' => $this->endpoint,
+                'filter' => $this->filter,
             ];
         } else {
             // Standardparameter für andere Komponenten
@@ -89,7 +93,8 @@ class ProviderSelect extends Component
             $this->componentParams = [
                 'model' => $this->model,
                 'search' => $search,
-                'params' => ['providerKey' => $providerKey]
+                'params' => ['providerKey' => $providerKey],
+                'filter' => $this->filter,
             ];
         }
 

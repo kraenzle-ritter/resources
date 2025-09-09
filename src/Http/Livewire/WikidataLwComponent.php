@@ -22,11 +22,14 @@ class WikidataLwComponent extends Component
 
     public $removeMethod = 'removeResource'; // Method name for resource removal
 
+    public array $filter = []; // Filter for providers to exclude from sync
+
     protected $listeners = ['resourcesChanged' => 'render'];
 
-    public function mount ($model, string $search = '', array $params = [])
+    public function mount ($model, string $search = '', array $params = [], array $filter = [])
     {
         $this->model = $model;
+        $this->filter = $filter;
 
         $this->search = trim($search) ?: '';
 
@@ -50,7 +53,7 @@ class WikidataLwComponent extends Component
             'full_json' => json_encode($full_json, JSON_UNESCAPED_UNICODE)
         ];
         $resource = $this->model->{$this->saveMethod}($data);
-        $this->model->syncFromProvider('wikidata');
+        $this->model->syncFromProvider('wikidata', $this->filter);
 
         $this->dispatch('resourcesChanged');
         event(new ResourceSaved($resource, $this->model->id));

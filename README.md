@@ -8,6 +8,21 @@
 
 Resource Model and a hasResource trait where resources are basically links to a resources (eg. Wikipedia-Article or GND-Entry). Livewire Components (Bootstrap 5) for searching, selecting and listing the links.
 
+## Supported Providers
+
+- [GND](https://lobid.org/gnd) (Gemeinsame Normdatei)
+- [Geonames](http://www.geonames.org/) (Geographical database)
+- [Wikipedia](https://www.wikipedia.org/) (Multiple languages: DE, EN, FR, IT some others)
+- [Wikidata](https://www.wikidata.org/) (Structured data)
+- [Idiotikon](https://www.idiotikon.ch/) (Swiss German dictionary)
+- [Ortsnamen.ch](https://ortsnamen.ch/) (Swiss place names)
+- [Metagrid](https://metagrid.ch/) (Swiss humanities database network)
+- [Anton API](https://anton.ch/) (Archives and collections)
+  - [Archiv der Georg Fischer AG](https://archives.georgfischer.com)
+  - [Gosteli Archiv](https://gosteli.anton.ch)
+  - [Karl Barth-Archiv](https://kba.karl-barth.ch)
+- Manual Input (Custom links)
+
 ## Installation
 
 Via Composer

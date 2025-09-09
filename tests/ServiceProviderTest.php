@@ -5,7 +5,6 @@ namespace KraenzleRitter\Resources\Tests;
 use KraenzleRitter\Resources\Tests\TestCase;
 use KraenzleRitter\Resources\ResourceSyncService;
 use KraenzleRitter\Resources\ResourcesServiceProvider;
-use KraenzleRitter\Resources\Console\Commands\ResourcesFetch;
 
 class ServiceProviderTest extends TestCase
 {
@@ -35,11 +34,11 @@ class ServiceProviderTest extends TestCase
     {
         $kernel = $this->app->make(\Illuminate\Contracts\Console\Kernel::class);
 
-        // Test dass der resources:fetch Command registriert ist
+        // Test dass der test:resources Command registriert ist
         $commands = $kernel->all();
         $commandNames = array_keys($commands);
 
-        $this->assertContains('resources:fetch', $commandNames);
+        $this->assertContains('test:resources', $commandNames);
     }
 
     public function test_migration_is_loadable()

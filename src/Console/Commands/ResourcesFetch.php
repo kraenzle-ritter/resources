@@ -6,11 +6,11 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use KraenzleRitter\Resources\Resource;
-use KraenzleRitter\Resources\FetchResourcesService;
+use KraenzleRitter\Resources\ResourceSyncService;
 
 class ResourcesFetch extends Command
 {
-    protected $signature = 'resources:fetch {--provider= : gnd, wikidata or wikipedia}
+    protected $signature = 'resources:fetch {--provider= : gnd, wikidata, wikipedia or metagrid}
                                             {--repair : repair urls and ids of bsg and heveticat}
                                             {--delete : delete doublets}
                                             {--debug : debug modus; just show the resources array}';
@@ -36,8 +36,8 @@ class ResourcesFetch extends Command
 
         $provider = $this->option('provider');
 
-        if (!in_array($provider, ['gnd', 'wikidata', 'wikipedia'])) {
-            $this->error('provider only gnd, wikidata or wipedia allowed. ' . $provider .' given');
+        if (!in_array($provider, ['gnd', 'wikidata', 'wikipedia', 'metagrid'])) {
+            $this->error('provider only gnd, wikidata, wikipedia or metagrid allowed. ' . $provider .' given');
             return 3;
         }
 

@@ -8,17 +8,10 @@ class UserAgent
 {
     public static function get(): array
     {
-        try {
-            $version = InstalledVersions::getPrettyVersion('kraenzle-ritter/resources');
-        } catch (\OutOfBoundsException $e) {
-            $version = 'dev-main';
-        }
-        
-        return [
-            'User-Agent' => config(
-                'kraenzle-ritter-resources.user_agent',
-                'resources/' . $version . ' (+https://github.com/kraenzle-ritter/resources)'
-            )
-        ];
+        $version = InstalledVersions::getPrettyVersion('kraenzle-ritter/resources');
+        return ['User-Agent' => config(
+                    'resources.user_agent',
+                    env('RESOURCES_USER_AGENT', 'resources/'.$version.' (+https://github.com/kraenzle-ritter/resources)')
+                )];
     }
 }

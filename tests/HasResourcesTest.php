@@ -3,6 +3,7 @@
 namespace KraenzleRitter\Resources\Tests;
 
 use KraenzleRitter\Resources\Resource;
+use KraenzleRitter\Resources\Tests\TestCase;
 
 class HasResourcesTest extends TestCase
 {

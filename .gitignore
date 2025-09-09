@@ -7,3 +7,23 @@ composer.lock
 .phpunit.result.cache
 tests/temp/*
 .phpunit.cache/*
+
+# Environment files with sensitive data
+.env
+.env.local
+.env.testing
+.env.example
+
+# Coverage reports
+coverage/
+*.coverage
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db

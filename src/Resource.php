@@ -33,6 +33,9 @@ class Resource extends Model
 
     public function setProviderAttribute($value)
     {
+        // rename according to config('resources.rename') - fallback to empty array if not configured
+        $mapping = config('resources.rename', []);
+        $value = $mapping[$value] ?? $value;
         $this->attributes['provider'] = strtolower($value);
     }
 
@@ -43,11 +46,12 @@ class Resource extends Model
 
     public function updateOrCreateResource(Model $resourceable, array $data)
     {
-        $provider = $data['provider'];
+        $value = $data['provider'];
         unset($data['provider']);
-
+        $mapping = config('resources.rename', []);
+        $value = $mapping[$value] ?? $value;
         return $resourceable->resources()->updateOrCreate(
-            ['provider' => $provider],
+            ['provider' => $value],
              $data
         );
     }

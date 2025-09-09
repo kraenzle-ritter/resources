@@ -4,6 +4,26 @@ namespace KraenzleRitter\Resources;
 
 use Illuminate\Support\ServiceProvider;
 use KraenzleRitter\Resources\Console\Commands\ResourcesFetch;
+use KraenzleRitter\Resources\Console\Commands\TestResourcesCommand;
+use KraenzleRitter\Resources\Http\Livewire\AntonLwComponent;
+use KraenzleRitter\Resources\Http\Livewire\GeonamesLwComponent;
+use KraenzleRitter\Resources\Http\Livewire\GndLwComponent;
+use KraenzleRitter\Resources\Http\Livewire\IdiotikonLwComponent;
+use KraenzleRitter\Resources\Http\Livewire\ManualInputLwComponent;
+use KraenzleRitter\Resources\Http\Livewire\MetagridLwComponent;
+use KraenzleRitter\Resources\Http\Livewire\OrtsnamenLwComponent;
+use KraenzleRitter\Resources\Http\Livewire\WikidataLwComponent;
+use KraenzleRitter\Resources\Http\Livewire\WikipediaLwComponent;
+use KraenzleRitter\Resources\Http\Livewire\ProviderSelect;
+use KraenzleRitter\Resources\Http\Livewire\ResourcesList;
+use KraenzleRitter\Resources\Wikidata;
+use KraenzleRitter\Resources\Wikipedia;
+use KraenzleRitter\Resources\Gnd;
+use KraenzleRitter\Resources\Geonames;
+use KraenzleRitter\Resources\Metagrid;
+use KraenzleRitter\Resources\Idiotikon;
+use KraenzleRitter\Resources\Ortsnamen;
+use Livewire\Livewire;
 
 class ResourcesServiceProvider extends ServiceProvider
 {
@@ -14,15 +34,35 @@ class ResourcesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'kraenzle-ritter');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'kraenzle-ritter');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+        // Load views
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'resources');
+
+        // Load translation files
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'resources');
+
+        // Load routes
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+
+        // Register Livewire components
+        if (class_exists(\Livewire\Livewire::class)) {
+            Livewire::component('provider-select', ProviderSelect::class);
+            Livewire::component('resources-list', ResourcesList::class);
+            Livewire::component('anton-lw-component', AntonLwComponent::class);
+            Livewire::component('geonames-lw-component', GeonamesLwComponent::class);
+            Livewire::component('gnd-lw-component', GndLwComponent::class);
+            Livewire::component('idiotikon-lw-component', IdiotikonLwComponent::class);
+            Livewire::component('metagrid-lw-component', MetagridLwComponent::class);
+            Livewire::component('ortsnamen-lw-component', OrtsnamenLwComponent::class);
+            Livewire::component('wikidata-lw-component', WikidataLwComponent::class);
+            Livewire::component('wikipedia-lw-component', WikipediaLwComponent::class);
+            Livewire::component('manual-input-lw-component', ManualInputLwComponent::class);
+        }
 
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
             $this->commands([
                 ResourcesFetch::class,
+                TestResourcesCommand::class,
             ]);
             $this->bootForConsole();
         }
@@ -39,8 +79,18 @@ class ResourcesServiceProvider extends ServiceProvider
 
         // Register the service the package provides.
         $this->app->singleton('resources', function ($app) {
-            return new resources;
+            return new ResourceSyncService();
         });
+
+        // Register Provider classes for dependency injection
+        $this->app->bind(Wikidata::class);
+        $this->app->bind(Wikipedia::class);
+        $this->app->bind(Gnd::class);
+        $this->app->bind(Geonames::class);
+        $this->app->bind(Metagrid::class);
+        $this->app->bind(Idiotikon::class);
+        $this->app->bind(Ortsnamen::class);
+        // Anton is handled separately as it requires parameters
     }
 
     /**

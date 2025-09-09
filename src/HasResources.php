@@ -56,39 +56,26 @@ trait HasResources
     }
 
     /**
+     * Sync resources from a specific provider
+     *
+     * @param string $provider The provider to sync from (e.g., 'wikidata', 'gnd', 'wikipedia')
+     * @return array Array of synced resources
+     */
+    public function syncFromProvider(string $provider, $filter = []): array
+    {
+        $syncService = new ResourceSyncService($filter);
+        return $syncService->syncFromProvider($this, $provider);
+    }
+
+    /**
      * Fetch more resources which are fetched from a provider like wikidata
      *
+     * @deprecated Use syncFromProvider() instead
      * @param string $provider (wikidata, wikipedia or gnd)
-     * @return void
+     * @return mixed
      */
-    public function saveMoreResources($provider)
+    public function saveMoreResources($provider, $filter = [])
     {
-        $this->load('resources');
-        $service = new FetchResourcesService($provider);
-        $resource = $this->resources->where('provider', $provider)->first();
-
-        if (!$resource) {
-            return null;
-        }
-
-        $new_resources = $service->run($resource->provider_id);
-
-        if ($new_resources) {
-            foreach ($new_resources as $new_resource) {
-                try {
-                    (new Resource())->updateOrCreateResource($this, $new_resource);
-                } catch (\Exception $e) {
-                    \Log::error('Error updating/creating resource: ' . $e->getMessage(), [
-                        'provider' => $provider,
-                        'resource' => $new_resource,
-                        'exception' => $e
-                    ]);
-                }
-            }
-        } else {
-            \Log::warning('Could not find a resource at ' . $provider . ' for id '. $resource->provider_id .': '. $resource->provider_id);
-        }
-
-        return $resource;
+        return $this->syncFromProvider($provider, $filter);
     }
 }

@@ -74,7 +74,7 @@ class ResourceSyncService
             $syncedResources = [];
 
             foreach ($newResources as $resourceData) {
-                if (in_array($resourceData['provider'] ?? '', $this->filter, true)) {
+                if ($filter && in_array($resourceData['provider'] ?? '', $this->filter, true)) {
                     Log::info("Skipping resource from provider due to filter list", [
                         'provider' => $resourceData['provider'] ?? '',
                         'model_id' => $model->id

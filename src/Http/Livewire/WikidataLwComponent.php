@@ -18,6 +18,8 @@ class WikidataLwComponent extends Component
 
     public $provider = 'wikidata';
 
+    public $showAll = false; // Flag for displaying all results
+
     public $saveMethod = 'updateOrCreateResource'; // Method name for saving resources
 
     public $removeMethod = 'removeResource'; // Method name for resource removal
@@ -34,6 +36,14 @@ class WikidataLwComponent extends Component
         $this->search = trim($search) ?: '';
 
         $this->queryOptions = $params['queryOptions'] ?? ['locale' => 'de', 'limit' => 5];
+    }
+
+    /**
+     * Toggle show all results
+     */
+    public function toggleShowAll()
+    {
+        $this->showAll = !$this->showAll;
     }
 
     public function saveResource($provider_id, $url, $full_json = null)
@@ -89,7 +99,8 @@ class WikidataLwComponent extends Component
 
         return view($view, [
             'results' => $resources ?: null,
-            'base_url' => $base_url
+            'base_url' => $base_url,
+            'showAll' => $this->showAll
         ]);
     }
 

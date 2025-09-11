@@ -23,11 +23,18 @@ class IdiotikonLwComponent extends Component
 
     public $provider = 'idiotikon';
 
+    public $showAll = false; // Flag for displaying all results
+
     public $saveMethod = 'updateOrCreateResource'; // Method name for saving resources
 
     public $removeMethod = 'removeResource'; // Method name for resource removal
 
     protected $listeners = ['resourcesChanged' => 'render'];
+
+    public function toggleShowAll()
+    {
+        $this->showAll = !$this->showAll;
+    }
 
     public function mount($model, string $search = '', array $params = [])
     {
@@ -94,12 +101,14 @@ class IdiotikonLwComponent extends Component
 
         if (!isset($resources) or !count($resources)) {
             return view($view, [
-                'results' => []
+                'results' => [],
+                'showAll' => $this->showAll
             ]);
         }
 
         return view($view, [
-            'results' => $resources
+            'results' => $resources,
+            'showAll' => $this->showAll
         ]);
     }
 }

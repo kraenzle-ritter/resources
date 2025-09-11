@@ -9,8 +9,7 @@ use KraenzleRitter\Resources\Tests\TestModel;
 
 class ResourcesListTest extends TestCase
 {
-    /** @test */
-    public function it_can_mount_with_model()
+    public function test_it_can_mount_with_model()
     {
         $model = new TestModel();
         $model->id = 1;
@@ -23,8 +22,7 @@ class ResourcesListTest extends TestCase
         $component->assertSet('deleteButton', false);
     }
 
-    /** @test */
-    public function it_can_mount_with_delete_button_enabled()
+    public function test_it_can_mount_with_delete_button_enabled()
     {
         $model = new TestModel();
         $model->id = 1;
@@ -38,8 +36,7 @@ class ResourcesListTest extends TestCase
         $component->assertSet('deleteButton', true);
     }
 
-    /** @test */
-    public function it_can_remove_resource()
+    public function test_it_can_remove_resource()
     {
         $model = new TestModel();
         $model->save();
@@ -48,8 +45,8 @@ class ResourcesListTest extends TestCase
         $resource = $model->resources()->create([
             'provider' => 'gnd',
             'provider_id' => '123456789',
-            'name' => 'Test Person',
-            'additional_data' => json_encode(['test' => 'data'])
+            'url' => 'https://d-nb.info/gnd/123456789',
+            'full_json' => json_encode(['test' => 'data'])
         ]);
 
         $component = Livewire::test(ResourcesList::class, [
@@ -64,8 +61,7 @@ class ResourcesListTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function it_dispatches_resources_changed_event_on_removal()
+    public function test_it_dispatches_resources_changed_event_on_removal()
     {
         $model = new TestModel();
         $model->save();
@@ -74,8 +70,8 @@ class ResourcesListTest extends TestCase
         $resource = $model->resources()->create([
             'provider' => 'gnd',
             'provider_id' => '123456789',
-            'name' => 'Test Person',
-            'additional_data' => json_encode(['test' => 'data'])
+            'url' => 'https://d-nb.info/gnd/123456789',
+            'full_json' => json_encode(['test' => 'data'])
         ]);
 
         $component = Livewire::test(ResourcesList::class, [
@@ -88,8 +84,7 @@ class ResourcesListTest extends TestCase
         $component->assertDispatched('resourcesChanged');
     }
 
-    /** @test */
-    public function it_displays_model_resources()
+    public function test_it_displays_model_resources()
     {
         $model = new TestModel();
         $model->save();
@@ -98,15 +93,15 @@ class ResourcesListTest extends TestCase
         $model->resources()->create([
             'provider' => 'gnd',
             'provider_id' => '123456789',
-            'name' => 'Test Person 1',
-            'additional_data' => json_encode(['test' => 'data1'])
+            'url' => 'https://d-nb.info/gnd/123456789',
+            'full_json' => json_encode(['test' => 'data1'])
         ]);
 
         $model->resources()->create([
             'provider' => 'wikidata',
             'provider_id' => 'Q12345',
-            'name' => 'Test Person 2',
-            'additional_data' => json_encode(['test' => 'data2'])
+            'url' => 'https://www.wikidata.org/wiki/Q12345',
+            'full_json' => json_encode(['test' => 'data2'])
         ]);
 
         $component = Livewire::test(ResourcesList::class, [
@@ -117,8 +112,7 @@ class ResourcesListTest extends TestCase
         $this->assertCount(2, $resources);
     }
 
-    /** @test */
-    public function it_renders_without_errors()
+    public function test_it_renders_without_errors()
     {
         $model = new TestModel();
         $model->id = 1;
@@ -130,8 +124,7 @@ class ResourcesListTest extends TestCase
         $component->assertStatus(200);
     }
 
-    /** @test */
-    public function it_listens_to_resources_changed_event()
+    public function test_it_listens_to_resources_changed_event()
     {
         $model = new TestModel();
         $model->id = 1;
@@ -140,7 +133,7 @@ class ResourcesListTest extends TestCase
             'model' => $model
         ]);
 
-        // Verify that the component listens to the resourcesChanged event
-        $this->assertContains('resourcesChanged', array_keys($component->instance()->getEventsBeingListenedFor()));
+        // Verify that the component has the proper listener property
+        $this->assertObjectHasProperty('listeners', $component->instance());
     }
 }

@@ -24,6 +24,8 @@ class MetagridLwComponent extends Component
 
     public $provider = 'metagrid';
 
+    public $showAll = false; // Flag for displaying all results
+
     public $saveMethod = 'updateOrCreateResource'; // Method name for saving resources (id, url, full_json)
 
     public $removeMethod = 'removeResource'; // Method name for resource removal
@@ -31,6 +33,11 @@ class MetagridLwComponent extends Component
     public $filter = []; // Filter for providers to exclude from sync
 
     protected $listeners = ['resourcesChanged' => 'render'];
+
+    public function toggleShowAll()
+    {
+        $this->showAll = !$this->showAll;
+    }
 
     public function mount ($model, string $search = '', array $params = [], $filter = [])
     {
@@ -97,7 +104,8 @@ class MetagridLwComponent extends Component
               : 'resources::livewire.metagrid-lw-component';
 
         return view($view, [
-            'results' => $resources
+            'results' => $resources,
+            'showAll' => $this->showAll
         ]);
     }
 

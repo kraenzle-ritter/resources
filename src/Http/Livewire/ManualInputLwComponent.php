@@ -18,11 +18,18 @@ class ManualInputLwComponent extends Component
 
     public $resourceable_id;
 
+    public $showAll = false; // Flag for displaying all results
+
     public $saveMethod = 'updateOrCreateResource';
 
     public $removeMethod = 'removeResource'; // url
 
     protected $listeners = ['resourcesChanged' => 'render'];
+
+    public function toggleShowAll()
+    {
+        $this->showAll = !$this->showAll;
+    }
 
     protected function rules()
     {
@@ -60,6 +67,8 @@ class ManualInputLwComponent extends Component
               ? 'vendor.kraenzle-ritter.livewire.manual-input-lw-component'
               : 'resources::livewire.manual-input-lw-component';
 
-        return view($view);
+        return view($view, [
+            'showAll' => $this->showAll
+        ]);
     }
 }

@@ -21,6 +21,8 @@ class GeonamesLwComponent extends Component
 
     public $provider = 'geonames';
 
+    public $showAll = false; // Flag for displaying all results
+
     public $saveMethod = 'updateOrCreateResource'; // Method name for saving resources
 
     public $removeMethod = 'removeResource'; // Method name for resource removal
@@ -34,6 +36,14 @@ class GeonamesLwComponent extends Component
         $this->search = trim($search) ?: 'Cassirer';
 
         $this->queryOptions = $params['queryOptions'] ?? ['limit' => 5];
+    }
+
+    /**
+     * Toggle show all results
+     */
+    public function toggleShowAll()
+    {
+        $this->showAll = !$this->showAll;
     }
 
     public function saveResource($provider_id, $url, $full_json = null)
@@ -125,13 +135,15 @@ class GeonamesLwComponent extends Component
         if (!isset($resources) or !count($resources)) {
             return view($view, [
                 'results' => [],
-                'base_url' => $base_url
+                'base_url' => $base_url,
+                'showAll' => $this->showAll
             ]);
         }
 
         return view($view, [
             'results' => $resources,
-            'base_url' => $base_url
+            'base_url' => $base_url,
+            'showAll' => $this->showAll
         ]);
     }
 }

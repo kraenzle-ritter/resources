@@ -22,6 +22,8 @@ class WikipediaLwComponent extends Component
 
     public $base_url;
 
+    public $showAll = false; // Flag for displaying all results
+
     public $saveMethod = 'updateOrCreateResource'; // Method name for saving resources
 
     public $removeMethod = 'removeResource'; // Method name for resource removal
@@ -57,6 +59,14 @@ class WikipediaLwComponent extends Component
         $this->queryOptions = [];
         $this->queryOptions['providerKey'] = $providerKey; // Important: Pass the providerKey instead of locale
         $this->queryOptions['limit'] = 5;
+    }
+
+    /**
+     * Toggle show all results
+     */
+    public function toggleShowAll()
+    {
+        $this->showAll = !$this->showAll;
     }
 
     public function saveResource($provider_id, $url, $title = null)
@@ -146,7 +156,8 @@ class WikipediaLwComponent extends Component
 
         return view($view, [
             'results' => $resources,
-            'base_url' => $this->base_url // Pass the base_url to the view
+            'base_url' => $this->base_url, // Pass the base_url to the view
+            'showAll' => $this->showAll
         ]);
     }
 }

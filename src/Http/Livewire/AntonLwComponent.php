@@ -6,6 +6,8 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use KraenzleRitter\Resources\Resource;
 use KraenzleRitter\Resources\Events\ResourceSaved;
+use KraenzleRitter\Resources\Anton;
+
 class AntonLwComponent extends Component
 {
     public $search;
@@ -14,9 +16,15 @@ class AntonLwComponent extends Component
     public $endpoint;
     public $resourceable_id;
     public string $providerKey; // Provider key: Georgfischer, Gosteli, KBA
+    public $showAll = false; // Flag for displaying all results
     public $saveMethod = 'updateOrCreateResource';
     public $removeMethod = 'removeResource'; // Method name for resource removal
     protected $listeners = ['resourcesChanged' => 'render'];
+
+    public function toggleShowAll()
+    {
+        $this->showAll = !$this->showAll;
+    }
 
     public function mount($model, string $providerKey, string $endpoint, string $search = '',  array $params = [])
     {
@@ -89,12 +97,14 @@ class AntonLwComponent extends Component
 
         if (!isset($resources) or !count($resources)) {
             return view($view, [
-                'results' => []
+                'results' => [],
+                'showAll' => $this->showAll
             ]);
         }
 
         return view($view, [
-            'results' => $resources
+            'results' => $resources,
+            'showAll' => $this->showAll
         ]);
     }
 }

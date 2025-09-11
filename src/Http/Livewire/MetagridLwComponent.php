@@ -28,11 +28,11 @@ class MetagridLwComponent extends Component
 
     public $removeMethod = 'removeResource'; // Method name for resource removal
 
-    public array $filter = []; // Filter for providers to exclude from sync
+    public $filter = []; // Filter for providers to exclude from sync
 
     protected $listeners = ['resourcesChanged' => 'render'];
 
-    public function mount ($model, string $search = '', array $params = [], array $filter = [])
+    public function mount ($model, string $search = '', array $params = [], $filter = [])
     {
         $this->model = $model;
         $this->filter = $filter;
@@ -63,7 +63,7 @@ class MetagridLwComponent extends Component
 
         // Use syncFromProvider instead of manual processing
         $this->model->syncFromProvider('metagrid', $this->filter);
-        
+
         $this->dispatch('resourcesChanged');
         event(new ResourceSaved($resource, $this->model->id));
     }

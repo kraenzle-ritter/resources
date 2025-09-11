@@ -10,13 +10,13 @@ class ProviderSelect extends Component
     public $providers_all;
     public $providers;
     public $endpoint;
-    public array $filter = [];
+    public $filter = [];
     public ?string $providerKey = null;
     public ?string $componentToRender = null;
     public array $componentParams = [];
     protected $listeners = ['resourcesChanged' => 'hydrate'];
 
-    public function mount($model, array $providers, string $endpoint = null, array $filter = [])
+    public function mount($model, array $providers, string $endpoint = null, $filter = [])
     {
         $this->model = $model;
         $this->endpoint = $endpoint;

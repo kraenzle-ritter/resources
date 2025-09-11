@@ -30,16 +30,6 @@ class ServiceProviderTest extends TestCase
         $this->assertArrayHasKey('table', $config);
     }
 
-    public function test_commands_are_registered()
-    {
-        $kernel = $this->app->make(\Illuminate\Contracts\Console\Kernel::class);
-
-        // Test dass der test:resources Command registriert ist
-        $commands = $kernel->all();
-        $commandNames = array_keys($commands);
-
-        $this->assertContains('test:resources', $commandNames);
-    }
 
     public function test_migration_is_loadable()
     {

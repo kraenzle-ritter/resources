@@ -394,5 +394,11 @@ return [
         'sturzenegger-stiftung' => 'sturzenegger',
         'sudoc' => 'idref',
         'wikimedia commons' => 'wikimedia-commons',
+        'wikipedia' => 'wikipedia-de',
+        'wikipedia (en)' => 'wikipedia-en',
+        'wikipedia (fr)' => 'wikipedia-fr',
+        'wikipedia (nl)' => 'wikipedia-nl',
+        'wikipedia (da)' => 'wikipedia-da',
+        'wikipedia (fi)' => 'wikipedia-fi',
     ],
 ];

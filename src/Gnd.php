@@ -72,7 +72,7 @@ class Gnd
         }
     }
 
-    public function buildFilter(array $filters = []) : string
+    public function buildFilter($filters = []) : string
     {
         if (!$filters) {
             return '';

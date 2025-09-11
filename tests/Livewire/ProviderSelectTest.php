@@ -4,6 +4,7 @@ namespace KraenzleRitter\Resources\Tests\Livewire;
 
 use Livewire\Livewire;
 use KraenzleRitter\Resources\Tests\TestCase;
+use KraenzleRitter\Resources\Tests\TestModel;
 use KraenzleRitter\Resources\Http\Livewire\ProviderSelect;
 
 class ProviderSelectTest extends TestCase
@@ -11,7 +12,7 @@ class ProviderSelectTest extends TestCase
     public function test_it_can_mount_with_providers()
     {
         $providers = ['gnd', 'wikidata', 'geonames'];
-        $model = new \stdClass();
+        $model = TestModel::create(['name' => 'Test']);
 
         $component = Livewire::test(ProviderSelect::class, [
             'model' => $model,
@@ -25,7 +26,7 @@ class ProviderSelectTest extends TestCase
     public function test_it_can_set_provider()
     {
         $providers = ['gnd', 'wikidata', 'geonames'];
-        $model = new \stdClass();
+        $model = TestModel::create(['name' => 'Test']);
 
         $component = Livewire::test(ProviderSelect::class, [
             'model' => $model,
@@ -39,7 +40,7 @@ class ProviderSelectTest extends TestCase
     public function test_it_filters_available_providers()
     {
         $providers = ['gnd', 'invalid-provider', 'wikidata'];
-        $model = new \stdClass();
+        $model = TestModel::create(['name' => 'Test']);
 
         $component = Livewire::test(ProviderSelect::class, [
             'model' => $model,
@@ -55,8 +56,7 @@ class ProviderSelectTest extends TestCase
     public function test_it_updates_component_params_when_provider_changes()
     {
         $providers = ['gnd', 'wikidata'];
-        $model = new \stdClass();
-        $model->id = 123;
+        $model = TestModel::create(['name' => 'Test']);
 
         $component = Livewire::test(ProviderSelect::class, [
             'model' => $model,
@@ -67,13 +67,14 @@ class ProviderSelectTest extends TestCase
 
         $params = $component->get('componentParams');
         $this->assertArrayHasKey('model', $params);
-        $this->assertEquals($model, $params['model']);
+        $this->assertEquals($model->id, $params['model']->id);
+        $this->assertEquals($model->name, $params['model']->name);
     }
 
     public function test_it_renders_without_errors()
     {
         $providers = ['gnd', 'wikidata'];
-        $model = new \stdClass();
+        $model = TestModel::create(['name' => 'Test']);
 
         $component = Livewire::test(ProviderSelect::class, [
             'model' => $model,

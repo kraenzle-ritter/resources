@@ -59,7 +59,7 @@ trait HasResources
      * Sync resources from a specific provider
      *
      * @param string $provider The provider to sync from (e.g., 'wikidata', 'gnd', 'wikipedia')
-     * @param array $filter Array of provider names to exclude from sync
+     * @param $filter Array of provider names to exclude from sync
      * @return array Array of synced resources
      */
     public function syncFromProvider(string $provider, $filter = []): array

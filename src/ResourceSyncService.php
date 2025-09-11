@@ -15,7 +15,7 @@ class ResourceSyncService
 {
     protected $providers;
     protected $configProviders;
-    protected array $filter = [];
+    protected $filter = [];
 
 
     public function __construct($filter = [])

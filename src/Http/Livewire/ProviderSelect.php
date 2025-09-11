@@ -23,6 +23,7 @@ class ProviderSelect extends Component
         $this->filter = $filter;
 
         $this->providers_all = array_map('strtolower', $providers);
+        $this->filterValidProviders();
         $this->filterAvailableProviders();
 
         $this->updateActiveProvider($this->providers[0] ?? null);
@@ -103,6 +104,7 @@ class ProviderSelect extends Component
 
     public function hydrate()
     {
+        $this->filterValidProviders();
         $this->filterAvailableProviders();
         // Ensures the provider does not disappear if it was the last one
         if (!in_array($this->providerKey, $this->providers) && !empty($this->providers)) {
@@ -111,6 +113,12 @@ class ProviderSelect extends Component
             // Fallback if the last provider was linked
             $this->updateActiveProvider(null);
         }
+    }
+
+    private function filterValidProviders()
+    {
+        $availableProviders = array_keys(config('resources.providers', []));
+        $this->providers_all = array_intersect($this->providers_all, $availableProviders);
     }
 
     private function filterAvailableProviders()

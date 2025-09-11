@@ -54,6 +54,48 @@ class GndLwComponent extends Component
         // Der render() wird automatisch aufgerufen
     }
 
+    /**
+     * Search provider method for testing
+     */
+    public function searchProvider()
+    {
+        // This method is mainly for testing purposes
+        // The actual search logic is in the render() method
+        if (empty($this->search)) {
+            $this->queryOptions = [];
+        } else {
+            $this->queryOptions = $this->queryOptions ?? ['limit' => 5];
+        }
+    }
+
+    /**
+     * Toggle show all results
+     */
+    public function toggleShowAll()
+    {
+        $this->showAll = !$this->showAll;
+    }
+
+    /**
+     * Create or update resource from array data
+     */
+    public function updateOrCreateResource(array $data)
+    {
+        $resourceData = [
+            'provider' => $this->provider,
+            'provider_id' => $data['provider_id'],
+            'url' => config("resources.providers.gnd.target_url") 
+                ? str_replace('{provider_id}', $data['provider_id'], config("resources.providers.gnd.target_url"))
+                : '',
+            'full_json' => json_encode($data['additional_data'] ?? [])
+        ];
+        
+        $resource = $this->model->{$this->saveMethod}($resourceData);
+        $this->dispatch('resourcesChanged');
+        
+        return $resource;
+    }
+
     public function saveResource($provider_id, $url, $full_json = null)
     {
         // Check if a target_url is defined in the configuration

@@ -371,7 +371,7 @@ return [
             'wikidata_property' => 'P214',
         ],
         'vitrosearch' => [
-            'label' => 'VitroSearch',
+            'label' => 'Vitrosearch',
         ],
         'wikimedia-commons' => [
             'label' => 'Wikimedia Commons',

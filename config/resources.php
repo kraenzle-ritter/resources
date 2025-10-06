@@ -18,6 +18,9 @@ return [
             'target_url' => 'https://d-nb.info/gnd/{provider_id}', // For saved links
             'test_search' => 'Hannah Arendt',
             'wikidata_property' => 'P227', // For syncing from Wikidata
+            // HTTP timeout settings
+            'timeout' => 15, // Request timeout in seconds
+            'connect_timeout' => 5, // Connection timeout in seconds
         ],
         'geonames' => [
             'label' => "GeoNames", // not localized as it is a standard identifier
@@ -30,6 +33,11 @@ return [
             'target_url' => 'https://www.geonames.org/{provider_id}',
             'test_search' => 'Augsburg',
             'wikidata_property' => 'P1566', // For syncing from Wikidata
+            // HTTP timeout settings
+            'timeout' => 15, // Request timeout in seconds
+            'connect_timeout' => 5, // Connection timeout in seconds
+            'retry_attempts' => 2, // Number of retry attempts on failure
+            'retry_delay' => 1000, // Delay between retries in milliseconds
         ],
         'georgfischer' => [
             'label' => [

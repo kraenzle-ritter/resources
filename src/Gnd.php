@@ -4,6 +4,7 @@ namespace KraenzleRitter\Resources;
 
 use GuzzleHttp\Client;
 use KraenzleRitter\Resources\Helpers\UserAgent;
+use KraenzleRitter\Resources\Traits\HttpClientTrait;
 
 /**
  * GND queries
@@ -21,6 +22,8 @@ use KraenzleRitter\Resources\Helpers\UserAgent;
  */
 class Gnd
 {
+    use HttpClientTrait;
+
     public $client;
 
     public $filter_types = [
@@ -40,8 +43,10 @@ class Gnd
 
         $this->client = new Client([
             'base_uri' => $baseUrl,
-            'timeout'  => 10,
-            'headers'  => UserAgent::get()
+            'timeout'  => config('resources.providers.gnd.timeout', 15), // Configurable timeout, default 15 seconds
+            'connect_timeout' => config('resources.providers.gnd.connect_timeout', 5), // Connection timeout
+            'headers'  => UserAgent::get(),
+            'http_errors' => false // Don't throw exceptions on 4xx and 5xx responses
         ]);
     }
 
@@ -51,25 +56,24 @@ class Gnd
         $search = 'search?q=' . urlencode($search);
 
         $filters = $params['filters'] ?? [];
-
         $size = $params['limit'] ?? config('sources-components.gnd.limit') ?? 5;
+        $endpoint = $search . $this->buildFilter($filters) . '&size=' . $size . '&format=json';
 
-        $search = $search . $this->buildFilter($filters) . '&size=' . $size  .'&format=json';
+        $fallbackValue = (object) ['member' => [], 'totalItems' => 0];
 
-        try {
-            $response = $this->client->get($search);
-        } catch (RequestException $e) {
-            if ($e->hasResponse()) {
+        return $this->safeHttpGet($endpoint, 'GND API', $fallbackValue, function($content, $endpoint, $apiName, $fallbackValue) {
+            $result = json_decode($content);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return $fallbackValue;
             }
-            return '';
-        }
 
-        if ($response->getStatusCode() == 200) {
-            $result = json_decode($response->getBody()->getContents());
-            if ($result->totalItems > 0) {
+            if (isset($result->totalItems) && $result->totalItems > 0) {
                 return $result;
             }
-        }
+
+            return $fallbackValue;
+        });
     }
 
     public function buildFilter($filters = []) : string

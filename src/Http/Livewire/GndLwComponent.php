@@ -84,15 +84,15 @@ class GndLwComponent extends Component
         $resourceData = [
             'provider' => $this->provider,
             'provider_id' => $data['provider_id'],
-            'url' => config("resources.providers.gnd.target_url") 
+            'url' => config("resources.providers.gnd.target_url")
                 ? str_replace('{provider_id}', $data['provider_id'], config("resources.providers.gnd.target_url"))
                 : '',
             'full_json' => json_encode($data['additional_data'] ?? [])
         ];
-        
+
         $resource = $this->model->{$this->saveMethod}($resourceData);
         $this->dispatch('resourcesChanged');
-        
+
         return $resource;
     }
 

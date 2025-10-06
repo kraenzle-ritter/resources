@@ -60,7 +60,7 @@ class WikidataLwComponentTest extends TestCase
         ]);
 
         $component->set('search', 'Ernst Cassirer');
-        
+
         $component->assertSet('search', 'Ernst Cassirer');
         $this->assertNotEmpty($component->get('queryOptions'));
     }
@@ -150,7 +150,7 @@ class WikidataLwComponentTest extends TestCase
         ]);
 
         $component->set('search', 'test query');
-        
+
         // Should handle error gracefully
         $component->assertStatus(200);
     }

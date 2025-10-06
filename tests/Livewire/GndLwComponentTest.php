@@ -162,7 +162,7 @@ class GndLwComponentTest extends TestCase
         ]);
 
         $component->set('search', 'nonexistent person');
-        
+
         // Simply verify the component can handle empty results without error
         $component->assertStatus(200);
     }

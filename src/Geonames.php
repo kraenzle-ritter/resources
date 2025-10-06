@@ -2,12 +2,15 @@
 
 namespace KraenzleRitter\Resources;
 
-use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
 use KraenzleRitter\Resources\Helpers\Params;
 use KraenzleRitter\Resources\Helpers\UserAgent;
+use KraenzleRitter\Resources\Traits\HttpClientTrait;
 
 class Geonames
 {
+    use HttpClientTrait;
+
     public $client;
 
     public $base_uri;
@@ -33,6 +36,14 @@ class Geonames
         $this->query_params = array_filter($this->query_params);
 
         $this->base_uri = 'http://api.geonames.org/';
+
+        $this->client = new Client([
+            'base_uri' => $this->base_uri,
+            'timeout'  => config('resources.providers.geonames.timeout', 15), // Configurable timeout, default 15 seconds
+            'connect_timeout' => config('resources.providers.geonames.connect_timeout', 5), // Connection timeout
+            'headers'  => UserAgent::get(),
+            'http_errors' => false // Don't throw exceptions on 4xx and 5xx responses
+        ]);
     }
 
     /**
@@ -60,35 +71,29 @@ class Geonames
         $this->query_params = array_merge(['q' => $string, 'username' => $this->username], $this->query_params);
 
         $query_string = Params::toQueryString($this->query_params);
-        $search = 'searchJSON?' . $query_string;
+        $endpoint = 'searchJSON?' . $query_string;
 
-        $response = HTTP::withHeaders(UserAgent::get())->get($this->base_uri.$search);
+        return $this->safeHttpGet($endpoint, 'Geonames API', [], function($content, $endpoint, $apiName, $fallbackValue) {
+            $result = json_decode($content, true);
 
-        if ($response->serverError()) {
-            return [];
-        }
-
-        if ($response->clientError()) {
-            return [];
-        }
-
-        if ($response->getStatusCode() == 200) {
-            $result = json_decode($response->getBody());
-
-            // Check for errors in the response, even if the status is 200
-            if (isset($result->status) && isset($result->status->value) && $result->status->value > 0) {
-
-                // Falls es ein Limit-Problem mit dem Demo-Account ist, geben wir einen hilfreichen Hinweis
-                if (isset($result->status->message) && strpos($result->status->message, 'limit') !== false) {
-                }
-
-                return [];
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return $fallbackValue;
             }
 
-            return $result->geonames ?? [];
-        }
+            // Check for errors in the response, even if the status is 200
+            if (isset($result['status']) && isset($result['status']['value']) && $result['status']['value'] > 0) {
+                // Falls es ein Limit-Problem mit dem Demo-Account ist, geben wir einen hilfreichen Hinweis
+                if (isset($result['status']['message']) && strpos($result['status']['message'], 'limit') !== false) {
+                    \Illuminate\Support\Facades\Log::warning('Geonames API: Rate limit exceeded', [
+                        'message' => $result['status']['message'],
+                        'username' => $this->username
+                    ]);
+                }
+                return $fallbackValue;
+            }
 
-        return [];
+            return $result['geonames'] ?? $fallbackValue;
+        });
     }
 
     // http://api.geonames.org/get?geonameId=2658434&username=demo

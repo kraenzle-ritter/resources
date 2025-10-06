@@ -93,6 +93,12 @@ class GeonamesLwComponent extends Component
         // Verarbeite die Ergebnisse mit dem ProviderComponentTrait
         if (!empty($resources)) {
             foreach ($resources as $key => $result) {
+                // Konvertiere zu Objekt falls es ein Array ist
+                if (is_array($result)) {
+                    $result = (object) $result;
+                    $resources[$key] = $result;
+                }
+                
                 // Sammle beschreibende Elemente
                 $description = [];
                 if (!empty($result->fclName)) {
@@ -111,7 +117,7 @@ class GeonamesLwComponent extends Component
                 }
 
                 // Speichere die verarbeitete Beschreibung im Ergebnisobjekt
-                $resources[$key]->combinedDescription = $combinedText;
+                $result->combinedDescription = $combinedText;
             }
         }
 

@@ -2,9 +2,7 @@
 
 namespace KraenzleRitter\Resources;
 
-use \GuzzleHttp\Psr7;
 use \GuzzleHttp\Client;
-use \GuzzleHttp\Exception\RequestException;
 use KraenzleRitter\Resources\Helpers\UserAgent;
 
 /**
@@ -33,8 +31,10 @@ class Wikipedia
         $baseUrl = config('resources.providers.' . $providerKey . '.base_url');
         $this->client = new Client([
             'base_uri' => $baseUrl,
-            'timeout' => 10,
+            'timeout' => config('resources.providers.' . $providerKey . '.timeout', 15),
+            'connect_timeout' => config('resources.providers.' . $providerKey . '.connect_timeout', 5),
             'headers' => UserAgent::get(),
+            'http_errors' => false // Don't throw exceptions on 4xx and 5xx responses
         ]);
 
         $searchstring = trim(str_replace(' ', '_', $searchstring), '_');
@@ -48,18 +48,14 @@ class Wikipedia
 
         try {
             $response = $this->client->get('?' . join('&', $query));
-
             $body = json_decode($response->getBody());
 
             if (isset($body->query->searchinfo->totalhits) && $body->query->searchinfo->totalhits > 0) {
                 return $body->query->search;
             }
-        } catch (RequestException $e) {
-            // Log error during API call
-            error_log(Psr7\Message::toString($e->getRequest()));
-            if ($e->hasResponse()) {
-                error_log(Psr7\Message::toString($e->getResponse()));
-            }
+        } catch (\Exception $e) {
+            // Log error but don't crash - return empty array
+            error_log("Wikipedia API search error: " . $e->getMessage());
         }
 
         return [];
@@ -80,8 +76,10 @@ class Wikipedia
         // Set User-Agent and timeout to comply with Wikipedia robot policy
         $this->client = new Client([
             'base_uri' => $apiUrl,
-            'timeout' => 10,
+            'timeout' => config('resources.providers.' . $providerKey . '.timeout', 15),
+            'connect_timeout' => config('resources.providers.' . $providerKey . '.connect_timeout', 5),
             'headers' => UserAgent::get(),
+            'http_errors' => false // Don't throw exceptions on 4xx and 5xx responses
         ]);
 
         $title = trim(str_replace(' ', '_', $title), '_');
@@ -115,12 +113,9 @@ class Wikipedia
                     return $article;
                 }
             }
-        } catch (RequestException $e) {
-            // Log error during API call
-            error_log(Psr7\Message::toString($e->getRequest()));
-            if ($e->hasResponse()) {
-                error_log(Psr7\Message::toString($e->getResponse()));
-            }
+        } catch (\Exception $e) {
+            // Log error but don't crash
+            error_log("Wikipedia API article error: " . $e->getMessage());
         }
 
         // If no article was found or an error occurred

@@ -71,10 +71,6 @@ class GndLwComponent extends Component
     /**
      * Toggle show all results
      */
-    public function toggleShowAll()
-    {
-        $this->showAll = !$this->showAll;
-    }
 
     /**
      * Create or update resource from array data

@@ -21,10 +21,6 @@ class AntonLwComponent extends Component
     public $removeMethod = 'removeResource'; // Method name for resource removal
     protected $listeners = ['resourcesChanged' => 'render'];
 
-    public function toggleShowAll()
-    {
-        $this->showAll = !$this->showAll;
-    }
 
     public function mount($model, string $providerKey, string $endpoint, string $search = '',  array $params = [])
     {

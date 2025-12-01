@@ -26,10 +26,6 @@ class ManualInputLwComponent extends Component
 
     protected $listeners = ['resourcesChanged' => 'render'];
 
-    public function toggleShowAll()
-    {
-        $this->showAll = !$this->showAll;
-    }
 
     protected function rules()
     {

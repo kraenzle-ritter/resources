@@ -10,6 +10,7 @@ use KraenzleRitter\Resources\Traits\ProviderComponentTrait;
 class WikipediaLwComponent extends Component
 {
     use ProviderComponentTrait;
+    
     public $search;
 
     public $queryOptions;
@@ -64,10 +65,6 @@ class WikipediaLwComponent extends Component
     /**
      * Toggle show all results
      */
-    public function toggleShowAll()
-    {
-        $this->showAll = !$this->showAll;
-    }
 
     public function saveResource($provider_id, $url, $title = null)
     {

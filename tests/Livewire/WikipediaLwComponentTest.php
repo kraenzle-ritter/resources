@@ -5,29 +5,26 @@ namespace KraenzleRitter\Resources\Tests\Livewire;
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Http;
 use KraenzleRitter\Resources\Tests\TestCase;
-use KraenzleRitter\Resources\Http\Livewire\GndLwComponent;
+use KraenzleRitter\Resources\Http\Livewire\WikipediaLwComponent;
 use KraenzleRitter\Resources\Tests\TestModel;
 
-class GndLwComponentTest extends TestCase
+class WikipediaLwComponentTest extends TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
 
-        // Mock HTTP responses for GND API
+        // Mock HTTP responses for Wikipedia API
         Http::fake([
-            'lobid.org/*' => Http::response([
-                'member' => [
-                    [
-                        'gndIdentifier' => '123456789',
-                        'preferredName' => 'Test Person',
-                        'variantName' => ['Alternative Name'],
-                        'professionOrOccupation' => [
-                            ['label' => 'Philosopher']
-                        ],
-                        'dateOfBirth' => ['1900'],
-                        'dateOfDeath' => ['1980'],
-                        'biographicalOrHistoricalInformation' => ['Test biography']
+            'wikipedia.org/*' => Http::response([
+                'query' => [
+                    'searchinfo' => ['totalhits' => 1],
+                    'search' => [
+                        [
+                            'title' => 'Test Article',
+                            'snippet' => 'Test snippet',
+                            'pageid' => 12345
+                        ]
                     ]
                 ]
             ], 200)
@@ -39,14 +36,14 @@ class GndLwComponentTest extends TestCase
         $model = new TestModel();
         $model->id = 1;
 
-        $component = Livewire::test(GndLwComponent::class, [
+        $component = Livewire::test(WikipediaLwComponent::class, [
             'model' => $model,
             'resourceable_id' => $model->id
         ]);
 
         $component->assertSet('model', $model);
         $component->assertSet('resourceable_id', 1);
-        $component->assertSet('provider', 'gnd');
+        $component->assertSet('provider', 'Wikipedia');
     }
 
     public function test_it_can_perform_search()
@@ -54,15 +51,14 @@ class GndLwComponentTest extends TestCase
         $model = new TestModel();
         $model->id = 1;
 
-        $component = Livewire::test(GndLwComponent::class, [
+        $component = Livewire::test(WikipediaLwComponent::class, [
             'model' => $model,
             'resourceable_id' => $model->id
         ]);
 
-        $component->set('search', 'Hannah Arendt');
-        $component->call('searchProvider');
+        $component->set('search', 'Albert Einstein');
 
-        $component->assertSet('search', 'Hannah Arendt');
+        $component->assertSet('search', 'Albert Einstein');
         $this->assertNotEmpty($component->get('queryOptions'));
     }
 
@@ -71,7 +67,7 @@ class GndLwComponentTest extends TestCase
         $model = new TestModel();
         $model->id = 1;
 
-        $component = Livewire::test(GndLwComponent::class, [
+        $component = Livewire::test(WikipediaLwComponent::class, [
             'model' => $model,
             'resourceable_id' => $model->id
         ]);
@@ -88,23 +84,23 @@ class GndLwComponentTest extends TestCase
         $model = new TestModel();
         $model->save();
 
-        $component = Livewire::test(GndLwComponent::class, [
+        $component = Livewire::test(WikipediaLwComponent::class, [
             'model' => $model,
             'resourceable_id' => $model->id
         ]);
 
         $resourceData = [
-            'provider_id' => '123456789',
-            'url' => 'https://d-nb.info/gnd/123456789',
-            'full_json' => ['profession' => 'Philosopher']
+            'provider_id' => '12345',
+            'url' => 'https://de.wikipedia.org/?curid=12345',
+            'full_json' => ['title' => 'Test Article']
         ];
 
-        $component->call('updateOrCreateResource', $resourceData);
+        $component->call('saveResource', $resourceData['provider_id'], $resourceData['url']);
 
         $this->assertDatabaseHas('resources', [
-            'provider' => 'gnd',
-            'provider_id' => '123456789',
-            'url' => 'https://d-nb.info/gnd/123456789'
+            'provider' => 'wikipedia-de',
+            'provider_id' => '12345',
+            'url' => 'https://de.wikipedia.org/?curid=12345'
         ]);
     }
 
@@ -115,13 +111,13 @@ class GndLwComponentTest extends TestCase
 
         // Create a resource first
         $resource = $model->resources()->create([
-            'provider' => 'gnd',
-            'provider_id' => '123456789',
-            'url' => 'https://d-nb.info/gnd/123456789',
-            'full_json' => json_encode(['profession' => 'Philosopher'])
+            'provider' => 'wikipedia',
+            'provider_id' => '12345',
+            'url' => 'https://de.wikipedia.org/?curid=12345',
+            'full_json' => json_encode(['title' => 'Test Article'])
         ]);
 
-        $component = Livewire::test(GndLwComponent::class, [
+        $component = Livewire::test(WikipediaLwComponent::class, [
             'model' => $model,
             'resourceable_id' => $model->id
         ]);
@@ -138,7 +134,7 @@ class GndLwComponentTest extends TestCase
         $model = new TestModel();
         $model->id = 1;
 
-        $component = Livewire::test(GndLwComponent::class, [
+        $component = Livewire::test(WikipediaLwComponent::class, [
             'model' => $model,
             'resourceable_id' => $model->id
         ]);
@@ -150,18 +146,23 @@ class GndLwComponentTest extends TestCase
     {
         // Mock empty response
         Http::fake([
-            'lobid.org/*' => Http::response(['member' => []], 200)
+            'wikipedia.org/*' => Http::response([
+                'query' => [
+                    'searchinfo' => ['totalhits' => 0],
+                    'search' => []
+                ]
+            ], 200)
         ]);
 
         $model = new TestModel();
         $model->id = 1;
 
-        $component = Livewire::test(GndLwComponent::class, [
+        $component = Livewire::test(WikipediaLwComponent::class, [
             'model' => $model,
             'resourceable_id' => $model->id
         ]);
 
-        $component->set('search', 'nonexistent person');
+        $component->set('search', 'nonexistent article');
 
         // Simply verify the component can handle empty results without error
         $component->assertStatus(200);

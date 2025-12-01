@@ -11,6 +11,7 @@ use KraenzleRitter\Resources\Traits\ProviderComponentTrait;
 class IdiotikonLwComponent extends Component
 {
     use ProviderComponentTrait;
+    
     public $search;
 
     public $queryOptions;
@@ -31,10 +32,6 @@ class IdiotikonLwComponent extends Component
 
     protected $listeners = ['resourcesChanged' => 'render'];
 
-    public function toggleShowAll()
-    {
-        $this->showAll = !$this->showAll;
-    }
 
     public function mount($model, string $search = '', array $params = [])
     {

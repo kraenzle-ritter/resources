@@ -5,9 +5,12 @@ namespace KraenzleRitter\Resources\Http\Livewire;
 use Livewire\Component;
 use KraenzleRitter\Resources\Wikidata;
 use KraenzleRitter\Resources\Events\ResourceSaved;
+use KraenzleRitter\Resources\Traits\ProviderComponentTrait;
 
 class WikidataLwComponent extends Component
 {
+    use ProviderComponentTrait;
+    
     public $search;
 
     public $queryOptions;
@@ -36,14 +39,6 @@ class WikidataLwComponent extends Component
         $this->search = trim($search) ?: '';
 
         $this->queryOptions = $params['queryOptions'] ?? ['locale' => 'de', 'limit' => 5];
-    }
-
-    /**
-     * Toggle show all results
-     */
-    public function toggleShowAll()
-    {
-        $this->showAll = !$this->showAll;
     }
 
     public function saveResource($provider_id, $url, $full_json = null)

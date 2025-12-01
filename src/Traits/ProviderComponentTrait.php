@@ -40,6 +40,18 @@ trait ProviderComponentTrait
     }
 
     /**
+     * Wird von Livewire aufgerufen, wenn sich die Property $search ändert.
+     * Kann von der Komponente überschrieben werden.
+     *
+     * @param mixed $value
+     * @return void
+     */
+    public function updatedSearch($value)
+    {
+        // Standard: keine Aktion. Kann in der Komponente überschrieben werden.
+    }
+
+    /**
      * Save a resource to the associated model
      *
      * @param mixed $model The model to associate the resource with

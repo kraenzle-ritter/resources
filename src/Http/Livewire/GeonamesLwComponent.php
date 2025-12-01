@@ -38,13 +38,6 @@ class GeonamesLwComponent extends Component
         $this->queryOptions = $params['queryOptions'] ?? ['limit' => 5];
     }
 
-    /**
-     * Toggle show all results
-     */
-    public function toggleShowAll()
-    {
-        $this->showAll = !$this->showAll;
-    }
 
     public function saveResource($provider_id, $url, $full_json = null)
     {

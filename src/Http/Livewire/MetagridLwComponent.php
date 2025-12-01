@@ -34,10 +34,6 @@ class MetagridLwComponent extends Component
 
     protected $listeners = ['resourcesChanged' => 'render'];
 
-    public function toggleShowAll()
-    {
-        $this->showAll = !$this->showAll;
-    }
 
     public function mount ($model, string $search = '', array $params = [], $filter = [])
     {

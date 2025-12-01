@@ -98,7 +98,7 @@ class GeonamesLwComponent extends Component
                     $result = (object) $result;
                     $resources[$key] = $result;
                 }
-                
+
                 // Sammle beschreibende Elemente
                 $description = [];
                 if (!empty($result->fclName)) {

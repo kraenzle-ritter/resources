@@ -48,7 +48,7 @@ class ProvidersTestSearchTest extends TestCase
             'idiotikon' => ['api-type' => 'Idiotikon', 'test_search' => 'Allmend'],
             'manual-input' => ['api-type' => 'ManualInput', 'test_search' => 'Test'] // Wird übersprungen
         ];
-        
+
         $testedProviders = [];
         $failedProviders = [];
 
@@ -141,7 +141,7 @@ class ProvidersTestSearchTest extends TestCase
             'idiotikon' => ['api-type' => 'Idiotikon', 'test_search' => 'Allmend']
             // Geonames kann rate-limited sein, daher nicht in detaillierten Tests
         ];
-        
+
         $totalTests = 0;
         $passedTests = 0;
 
@@ -196,7 +196,7 @@ class ProvidersTestSearchTest extends TestCase
         $this->assertGreaterThanOrEqual($totalTests * 0.75, $passedTests,
             "At least 75% of core providers should work");
     }
-    
+
     /**
      * Neuer Test: Testet alle Provider mit api-type und base_url, aber mit Timeout-Schutz
      * DISABLED: Zu langsam für CI/CD - nur bei Bedarf manuell ausführen
@@ -207,7 +207,7 @@ class ProvidersTestSearchTest extends TestCase
         $testedProviders = [];
         $failedProviders = [];
         $skippedProviders = [];
-        
+
         echo "\nTesting all providers with api-type and base_url...";
 
         foreach ($providers as $providerKey => $config) {
@@ -224,7 +224,7 @@ class ProvidersTestSearchTest extends TestCase
             try {
                 // Setze niedrigere Timeouts für diesen Test
                 $originalTimeout = config('resources.providers.gnd.timeout', 15);
-                
+
                 $results = $this->searchWithProvider($providerKey, $apiType, $searchTerm);
 
                 // Handle different return types
@@ -249,9 +249,9 @@ class ProvidersTestSearchTest extends TestCase
                     $failedProviders[] = $providerKey;
                     echo " FAILED (no results)";
                 }
-                
+
             } catch (\Exception $e) {
-                if (strpos($e->getMessage(), 'timeout') !== false || 
+                if (strpos($e->getMessage(), 'timeout') !== false ||
                     strpos($e->getMessage(), 'cURL error 28') !== false ||
                     strpos($e->getMessage(), 'Connection') !== false) {
                     $skippedProviders[] = $providerKey;
@@ -265,10 +265,10 @@ class ProvidersTestSearchTest extends TestCase
 
         echo "\n\n=== FINAL SUMMARY ===";
         echo "\nPassed: " . count($testedProviders) . " providers";
-        echo "\nFailed: " . count($failedProviders) . " providers"; 
+        echo "\nFailed: " . count($failedProviders) . " providers";
         echo "\nSkipped: " . count($skippedProviders) . " providers";
         echo "\nTotal tested: " . (count($testedProviders) + count($failedProviders) + count($skippedProviders));
-        
+
         // Mindestens 3 Provider sollten funktionieren (weniger strikt als vorher)
         $this->assertGreaterThanOrEqual(3, count($testedProviders),
             'At least 3 API providers should return results. Failed: ' . implode(', ', $failedProviders));

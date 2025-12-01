@@ -21,9 +21,9 @@ class ProviderConfigurationTest extends TestCase
             if (!isset($config['api-type'])) {
                 continue; // Skip sync-only providers
             }
-            
+
             $apiProvidersCount++;
-            
+
             // Überprüfe erforderliche Konfigurationsfelder für suchbare Provider
             $requiredFields = ['label'];
 
@@ -48,7 +48,7 @@ class ProviderConfigurationTest extends TestCase
 
         $this->assertEmpty($incompleteProviders,
             'All searchable providers should have complete configuration. Missing: ' . implode(', ', $incompleteProviders));
-            
+
         // Mindestens 10 API-Provider sollten konfiguriert sein
         $this->assertGreaterThanOrEqual(10, count($apiProviders),
             'At least 10 API providers should be configured with base_url');
@@ -60,34 +60,34 @@ class ProviderConfigurationTest extends TestCase
     public function test_core_providers_configuration()
     {
         $providers = config('resources.providers');
-        
+
         $coreProviders = [
             'gnd' => 'Gnd',
-            'wikidata' => 'Wikidata', 
+            'wikidata' => 'Wikidata',
             'wikipedia-de' => 'Wikipedia',
             'geonames' => 'Geonames',
             'idiotikon' => 'Idiotikon'
         ];
-        
+
         foreach ($coreProviders as $providerKey => $expectedApiType) {
-            $this->assertArrayHasKey($providerKey, $providers, 
+            $this->assertArrayHasKey($providerKey, $providers,
                 "Core provider {$providerKey} should be configured");
-                
+
             $config = $providers[$providerKey];
-            
-            $this->assertEquals($expectedApiType, $config['api-type'], 
+
+            $this->assertEquals($expectedApiType, $config['api-type'],
                 "Provider {$providerKey} should have api-type {$expectedApiType}");
-                
+
             $this->assertArrayHasKey('base_url', $config,
                 "Provider {$providerKey} should have base_url");
-                
+
             $this->assertArrayHasKey('test_search', $config,
                 "Provider {$providerKey} should have test_search term");
-                
+
             echo "\n✓ {$providerKey}: {$config['api-type']} at {$config['base_url']}";
         }
     }
-    
+
     /**
      * Zählt eindeutige API-Typen
      */
@@ -95,7 +95,7 @@ class ProviderConfigurationTest extends TestCase
     {
         $providers = config('resources.providers');
         $apiTypes = [];
-        
+
         foreach ($providers as $providerKey => $config) {
             if (isset($config['api-type'])) {
                 if (!isset($apiTypes[$config['api-type']])) {
@@ -104,12 +104,12 @@ class ProviderConfigurationTest extends TestCase
                 $apiTypes[$config['api-type']][] = $providerKey;
             }
         }
-        
+
         echo "\nAPI-Type Übersicht:";
         foreach ($apiTypes as $apiType => $providerKeys) {
             echo "\n  {$apiType}: " . count($providerKeys) . " Provider (" . implode(', ', $providerKeys) . ")";
         }
-        
+
         // Mindestens 5 verschiedene API-Typen sollten unterstützt werden
         $this->assertGreaterThanOrEqual(5, count($apiTypes),
             'At least 5 different API types should be supported');

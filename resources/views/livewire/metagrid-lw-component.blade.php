@@ -4,7 +4,8 @@
     'model' => $model,
     'results' => $results,
     'saveAction' => function($result) {
-        return "saveResource('{$result->id}', '{$result->uri}', '" . json_encode($result, JSON_UNESCAPED_UNICODE) . "')";
+        $json = addslashes(json_encode($result, JSON_UNESCAPED_UNICODE));
+        return "saveResource('{$result->id}', '{$result->uri}', '{$json}')";
     },
     'result_heading' => function($result) {
         // Name als Hauptüberschrift verwenden

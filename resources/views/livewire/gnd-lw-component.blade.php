@@ -14,7 +14,8 @@
     'results' => $results,
     'showAll' => $showAll,
     'saveAction' => function($result) {
-        return "saveResource('{$result->gndIdentifier}', '{$result->id}', '" . json_encode($result, JSON_UNESCAPED_UNICODE) . "')";
+        $json = addslashes(json_encode($result, JSON_UNESCAPED_UNICODE));
+        return "saveResource('{$result->gndIdentifier}', '{$result->id}', '{$json}')";
     },
     'result_heading' => function($result) {
         $heading = $result->preferredName ?? '';

@@ -13,7 +13,8 @@
     'model' => $model,
     'results' => $results,
     'saveAction' => function($result) use ($base_url) {
-        return "saveResource('{$result->id}', '{$base_url}{$result->id}', '" . json_encode($result, JSON_UNESCAPED_UNICODE) . "')";
+        $json = addslashes(json_encode($result, JSON_UNESCAPED_UNICODE));
+        return "saveResource('{$result->id}', '{$base_url}{$result->id}', '{$json}')";
     },
     'result_heading' => function($result) {
         return $result->label ?? '';

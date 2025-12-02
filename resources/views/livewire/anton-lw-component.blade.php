@@ -15,7 +15,8 @@
         $endpoint = $this->endpoint ?? 'objects'; // Fallback auf 'objects' wenn kein endpoint spezifiziert
         $fullProviderId = $slug . '-' . $endpoint . '-' . $result->id;
 
-        return "saveResource('{$fullProviderId}', '{$result->links[0]->url}', '" . json_encode($result, JSON_UNESCAPED_UNICODE) . "')";
+        $json = addslashes(json_encode($result, JSON_UNESCAPED_UNICODE));
+        return "saveResource('{$fullProviderId}', '{$result->links[0]->url}', '{$json}')";
     },
     'result_heading' => function($result) {
         return $result->fullname ?? '';

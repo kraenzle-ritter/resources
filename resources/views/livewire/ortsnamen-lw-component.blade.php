@@ -4,7 +4,8 @@
     'model' => $model,
     'results' => $results,
     'saveAction' => function($result) {
-        return "saveResource('{$result->id}', '{$result->permalink}', '" . json_encode($result, JSON_UNESCAPED_UNICODE) . "')";
+        $json = addslashes(json_encode($result, JSON_UNESCAPED_UNICODE));
+        return "saveResource('{$result->id}', '{$result->permalink}', '{$json}')";
     },
     'result_heading' => function($result) {
         return ($result->name ?? '') . ' (' . join(', ', $result->types) . ')';

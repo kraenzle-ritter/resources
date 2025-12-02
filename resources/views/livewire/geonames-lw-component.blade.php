@@ -15,7 +15,8 @@
     'results' => $results,
     'apiLimitReached' => $apiLimitReached,
     'saveAction' => function($result) use ($base_url) {
-        return "saveResource('{$result->geonameId}', '{$base_url}{$result->geonameId}', '" . json_encode($result, JSON_UNESCAPED_UNICODE) . "')";
+        $json = addslashes(json_encode($result, JSON_UNESCAPED_UNICODE));
+        return "saveResource('{$result->geonameId}', '{$base_url}{$result->geonameId}', '{$json}')";
     },
     'result_heading' => function($result) {
         return $result->toponymName ?? '';

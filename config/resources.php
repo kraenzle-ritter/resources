@@ -274,6 +274,8 @@ return [
                 'it' => 'Dizionario storico della Svizzera (DSS)',
             ],
             'wikidata_property' => 'P902',
+            'target_url' => 'https://hls-dhs-dss.ch/{locale}/articles/{provider_id}',
+            'locale' => 'de', // Default locale for HLS URLs (de, fr, it)
         ],
         'huygens' => [
             'label' => 'Huygens Instituut',

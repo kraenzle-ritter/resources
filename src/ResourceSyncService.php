@@ -232,10 +232,20 @@ class ResourceSyncService
                             $providerConfig = config("resources.providers.{$providerKey}");
 
                             if ($providerConfig && isset($providerConfig['target_url'])) {
+                                // Build the URL with all possible placeholders
+                                $url = $providerConfig['target_url'];
+                                $url = str_replace('{provider_id}', $providerValue, $url);
+                                
+                                // Handle locale placeholder (e.g., for HLS)
+                                if (strpos($url, '{locale}') !== false) {
+                                    $locale = $providerConfig['locale'] ?? app()->getLocale();
+                                    $url = str_replace('{locale}', $locale, $url);
+                                }
+                                
                                 $resource = [
                                     'provider' => $providerKey,
                                     'provider_id' => $providerValue,
-                                    'url' => str_replace('{provider_id}', $providerValue, $providerConfig['target_url'])
+                                    'url' => $url
                                 ];
                                 $resources[] = $resource;
                             }

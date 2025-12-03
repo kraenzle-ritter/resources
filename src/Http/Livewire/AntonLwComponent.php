@@ -4,9 +4,9 @@ namespace KraenzleRitter\Resources\Http\Livewire;
 
 use Livewire\Component;
 use Illuminate\Support\Str;
+use KraenzleRitter\Resources\Anton;
 use KraenzleRitter\Resources\Resource;
 use KraenzleRitter\Resources\Events\ResourceSaved;
-use KraenzleRitter\Resources\Anton;
 
 class AntonLwComponent extends Component
 {
@@ -37,11 +37,25 @@ class AntonLwComponent extends Component
 
     public function saveResource($provider_id, $url, $full_json = null)
     {
+        // Debug logging
+        \Log::info('AntonLwComponent::saveResource called', [
+            'provider_id' => $provider_id,
+            'url_param' => $url,
+            'full_json' => $full_json,
+            'providerKey' => $this->providerKey,
+            'endpoint' => $this->endpoint,
+        ]);
+
         // Try to get the slug from the configuration
         $slug = config("resources.providers.{$this->providerKey}.slug");
 
         // Try to get a target_url from the configuration
         $targetUrlTemplate = config("resources.providers.{$this->providerKey}.target_url");
+
+        \Log::info('Config values', [
+            'slug' => $slug,
+            'targetUrlTemplate' => $targetUrlTemplate,
+        ]);
 
         // Extrahiere die reine ID aus der provider_id
         // Die provider_id hat das Format "slug-endpoint-id", z.B. "gfa-actors-37"
@@ -60,6 +74,8 @@ class AntonLwComponent extends Component
             $base_url = Str::finish(config("resources.providers.{$this->providerKey}.base_url"), '/');
             $url = $base_url . $this->endpoint . '/' . $shortProviderId;
         }
+
+        \Log::info('Final URL', ['url' => $url]);
 
         $data = [
             'provider' => $this->providerKey,

@@ -1,7 +1,7 @@
 @php
     // $base_url wird jetzt von der Komponente bereitgestellt
     $base_url = $base_url ?? 'https://www.geonames.org/'; // Fallback, falls die Komponente keinen Wert liefert
-    $apiLimitReached = empty($results) && $search && config('components.providers.geonames.user_name') === 'demo';
+    $apiLimitReached = empty($results) && $search && config('resources.providers.geonames.user_name') === 'demo';
 
     // Debug-Ausgabe
     if (class_exists('\Log')) {

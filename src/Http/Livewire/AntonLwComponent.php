@@ -38,10 +38,10 @@ class AntonLwComponent extends Component
     public function saveResource($provider_id, $url, $full_json = null)
     {
         // Try to get the slug from the configuration
-        $slug = config("components.providers.{$this->providerKey}.slug");
+        $slug = config("resources.providers.{$this->providerKey}.slug");
 
         // Try to get a target_url from the configuration
-        $targetUrlTemplate = config("components.providers.{$this->providerKey}.target_url");
+        $targetUrlTemplate = config("resources.providers.{$this->providerKey}.target_url");
 
         // Extrahiere die reine ID aus der provider_id
         // Die provider_id hat das Format "slug-endpoint-id", z.B. "gfa-actors-37"
@@ -57,7 +57,7 @@ class AntonLwComponent extends Component
             );
         } else {
             // Fallback: Verwende die bisherige URL-Generierungsmethode
-            $base_url = Str::finish(config("components.providers.{$this->providerKey}.base_url"), '/');
+            $base_url = Str::finish(config("resources.providers.{$this->providerKey}.base_url"), '/');
             $url = $base_url . $this->endpoint . '/' . $shortProviderId;
         }
 

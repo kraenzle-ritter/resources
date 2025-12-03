@@ -50,7 +50,7 @@ class MetagridLwComponent extends Component
     public function saveResource($provider_id, $url, $full_json = null)
     {
         // Check if a target_url is defined in the configuration
-        $targetUrlTemplate = config("components.providers.metagrid.target_url");
+        $targetUrlTemplate = config("resources.providers.metagrid.target_url");
 
         if ($targetUrlTemplate) {
             // Platzhalter im Template ersetzen

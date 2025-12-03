@@ -10,7 +10,7 @@
                     <h5 class="mb-0">{{ __('resources::messages.List') }}</h5>
 
                     @php
-                        $configLimit = config("components.providers.{$providerKey}.limit") ?? config('components.limit') ?? 5;
+                        $configLimit = config("resources.providers.{$providerKey}.limit") ?? config('resources.limit') ?? 5;
                         $hasMore = count($results) >= $configLimit && empty($showAll);
                     @endphp
 

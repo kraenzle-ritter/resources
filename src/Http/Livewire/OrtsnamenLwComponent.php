@@ -46,7 +46,7 @@ class OrtsnamenLwComponent extends Component
         $full_json = preg_replace('/[\x00-\x1F]/','', $full_json);
 
         // Check if a target_url is defined in the configuration
-        $targetUrlTemplate = config("components.providers.ortsnamen.target_url");
+        $targetUrlTemplate = config("resources.providers.ortsnamen.target_url");
 
         if ($targetUrlTemplate) {
             // Platzhalter im Template ersetzen

@@ -44,7 +44,7 @@ class WikidataLwComponent extends Component
     public function saveResource($provider_id, $url, $full_json = null)
     {
         // Check if a target_url is defined in the configuration
-        $targetUrlTemplate = config("components.providers.wikidata.target_url");
+        $targetUrlTemplate = config("resources.providers.wikidata.target_url");
 
         if ($targetUrlTemplate) {
             // Platzhalter im Template ersetzen

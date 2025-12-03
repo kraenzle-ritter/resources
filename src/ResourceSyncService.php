@@ -219,6 +219,9 @@ class ResourceSyncService
             ];
             $resources[] = $data;
 
+            // Track which providers have been processed (to avoid duplicates from fallback)
+            $processedProviders = [];
+
             // Extract claims for other providers using the local configuration
             if (isset($entity['claims'])) {
                 // Try new implementation first (using local config)
@@ -248,16 +251,25 @@ class ResourceSyncService
                                     'url' => $url
                                 ];
                                 $resources[] = $resource;
+                                
+                                // Mark this provider as processed
+                                $processedProviders[$wikidataProperty] = true;
                             }
                         }
                     }
                 }
 
                 // Fallback: Use dynamic provider setup (old implementation)
+                // Only for providers that were NOT processed above
                 if (!empty($this->providers) && is_array($this->providers)) {
                     foreach ($this->providers as $provider) {
                         if (isset($provider['provider'])) {
                             $key = preg_replace('|.*(P\d+).*|', "$1", $provider['provider']);
+
+                            // Skip if already processed in the first loop
+                            if (isset($processedProviders[$key])) {
+                                continue;
+                            }
 
                             if (isset($entity['claims'][$key])) {
                                 $claims = $entity['claims'][$key];

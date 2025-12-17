@@ -1,6 +1,6 @@
 <?php
 
-namespace KraenzleRitter\Resources\Tests\Feature;
+namespace KraenzleRitter\Resources\Tests\Api;
 
 use KraenzleRitter\Resources\Tests\TestCase;
 

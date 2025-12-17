@@ -285,7 +285,7 @@ return [
             'wikidata_property' => 'P269',
         ],
         'kalliope-verbund' => [
-            'label' => 'Kallipope Verbund',
+            'label' => 'Kalliope Verbund',
             'wikidata_property' => 'P9964',
         ],
         'kartenportal.ch' => [

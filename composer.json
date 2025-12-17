@@ -53,11 +53,5 @@
       "phpunit --configuration phpunit.xml"
     ]
   },
-  "minimum-stability": "dev",
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/ottosmops/wikidata.git"
-    }
-  ]
+  "minimum-stability": "dev"
 }

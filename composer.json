@@ -16,7 +16,7 @@
   ],
   "require": {
     "php": "^8.3",
-    "survos/wikidata": "^5.4",
+    "survos/wikidata": "^5",
     "laravel/framework": ">=11",
     "guzzlehttp/guzzle": ">=7",
     "livewire/livewire": "^3.4"

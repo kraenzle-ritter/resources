@@ -8,7 +8,7 @@ use GuzzleHttp\Psr7\Message;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\GuzzleException;
 use KraenzleRitter\Resources\Helpers\UserAgent;
 
 class ResourceSyncService
@@ -22,9 +22,19 @@ class ResourceSyncService
     {
         $this->providers = config('resources.providers', []);
         $this->configProviders = $this->getWikidataArray($this->providers);
-        $this->setUpProviders();
+        // setUpProviders() catches GuzzleException internally; the extra
+        // safety net here ensures a runaway exception (DNS failure, TLS
+        // error, etc.) never bubbles up and crashes the calling flow —
+        // upstream callers (Excel-Import, WikipediaLwComponent::saveResource)
+        // historically had no try/catch and reported "FATAL ERROR" at the
+        // user level whenever Wikidata SPARQL hiccuped (#184/#186 on Anton).
+        try {
+            $this->setUpProviders();
+        } catch (\Throwable $e) {
+            Log::error('Unexpected error in setUpProviders', ['exception' => $e->getMessage()]);
+            $this->providers = [];
+        }
         $this->filter = $filter;
-
     }
 
     public function getWikidataArray(array $input): array
@@ -296,7 +306,7 @@ class ResourceSyncService
 
             return $resources;
 
-        } catch (RequestException $e) {
+        } catch (GuzzleException $e) {
             Log::error('HTTP error fetching from Wikidata', [
                 'wikidata_id' => $wikidataId,
                 'exception' => $e->getMessage()
@@ -348,7 +358,7 @@ class ResourceSyncService
 
             return $body['query']['pages'][$wikipediaPageId]['pageprops']['wikibase_item'] ?? null;
 
-        } catch (RequestException $e) {
+        } catch (GuzzleException $e) {
             Log::error('HTTP error fetching Wikipedia page info', [
                 'page_id' => $wikipediaPageId,
                 'exception' => $e->getMessage()
@@ -398,7 +408,7 @@ class ResourceSyncService
 
             return null;
 
-        } catch (RequestException $e) {
+        } catch (GuzzleException $e) {
             Log::error('HTTP error fetching GND to Wikidata mapping', [
                 'gnd_id' => $gndId,
                 'exception' => $e->getMessage()
@@ -457,7 +467,7 @@ class ResourceSyncService
             $providers = array_unique($providers, SORT_REGULAR);
             $this->providers = $this->unique_multidim_array($providers, 'provider');
 
-        } catch (RequestException $e) {
+        } catch (GuzzleException $e) {
             Log::error('HTTP error setting up providers', ['exception' => $e->getMessage()]);
             $this->providers = [];
         }
@@ -535,7 +545,7 @@ class ResourceSyncService
 
             return $resources;
 
-        } catch (RequestException $e) {
+        } catch (GuzzleException $e) {
             Log::error('HTTP error fetching from Metagrid', [
                 'url' => $metagridUrl,
                 'exception' => $e->getMessage()

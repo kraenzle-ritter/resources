@@ -278,6 +278,39 @@ class ResourceSyncServiceTest extends TestCase
         $this->assertTrue(true);
     }
 
+    /**
+     * Pre-fix every catch block in this file caught only `RequestException`,
+     * but real-world Wikidata SPARQL timeouts throw `ConnectException` —
+     * a sibling under `TransferException`, NOT a subclass of `RequestException`.
+     * The unhandled exception then crashed every Anton flow that needed
+     * resource sync (Excel-Import GND lookup, edit-actor saveResource on
+     * the Livewire component). Reported via Anton #184 (zbz import) and
+     * #186 (gosteli edit-actor).
+     *
+     * Defence: catches use `GuzzleException` (the parent interface
+     * implemented by both ConnectException and RequestException) plus a
+     * `Throwable` safety net wrapping `setUpProviders()` in the
+     * constructor. This regression test pins both invariants by source
+     * inspection — the alternative (hitting an unroutable host) is
+     * brittle (DNS interception, NAT64) and slow (10s timeout).
+     */
+    public function test_resource_sync_service_catches_guzzle_exception_not_only_request_exception()
+    {
+        $source = file_get_contents(__DIR__ . '/../src/ResourceSyncService.php');
+
+        $this->assertStringContainsString('use GuzzleHttp\\Exception\\GuzzleException;', $source);
+        $this->assertStringNotContainsString(
+            '} catch (RequestException $e) {',
+            $source,
+            'No catch block must restrict to RequestException — ConnectException slipped through and crashed callers (#184/#186).'
+        );
+        $this->assertStringContainsString(
+            '} catch (\\Throwable $e) {',
+            $source,
+            'Constructor must wrap setUpProviders() in a Throwable safety net.'
+        );
+    }
+
     protected function tearDown(): void
     {
         Mockery::close();

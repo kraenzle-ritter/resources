@@ -43,6 +43,33 @@ class ResourceTest extends TestCase
         $this->assertEquals('Test Model', $resource->resourceable->name);
     }
 
+    public function test_remove_resource_deletes_existing_and_returns_true()
+    {
+        $resource = Resource::create([
+            'provider' => 'wikidata',
+            'provider_id' => 'Q1',
+            'url' => 'https://www.wikidata.org/wiki/Q1',
+            'resourceable_type' => TestModel::class,
+            'resourceable_id' => 1,
+        ]);
+
+        $this->assertTrue((new Resource)->removeResource($resource->id));
+        $this->assertNull(Resource::find($resource->id));
+    }
+
+    public function test_remove_resource_returns_false_when_already_deleted()
+    {
+        // Simulates a double-click on the delete button or a race between two
+        // parallel requests: find() returns null, and delete() must not be
+        // called on null (would fatal — see anton#325).
+        $this->assertFalse((new Resource)->removeResource(999999));
+    }
+
+    public function test_update_resource_returns_false_when_missing()
+    {
+        $this->assertFalse((new Resource)->updateResource(999999, ['url' => 'https://example.org']));
+    }
+
     public function test_resource_has_json_attribute()
     {
         $jsonData = ['title' => 'Test Title', 'description' => 'Test Description'];

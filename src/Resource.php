@@ -58,12 +58,16 @@ class Resource extends Model
 
     public function updateResource(int $id, array $data)
     {
-        return (bool) static::find($id)->update($data);
+        $resource = static::find($id);
+
+        return $resource ? (bool) $resource->update($data) : false;
     }
 
     public function removeResource(int $id)
     {
-        return (bool) static::find($id)->delete();
+        $resource = static::find($id);
+
+        return $resource ? (bool) $resource->delete() : false;
     }
 
 }

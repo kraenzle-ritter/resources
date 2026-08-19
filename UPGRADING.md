@@ -1,6 +1,6 @@
 # Upgrading
 
-## Unreleased — security hardening
+## 4.0.0 (2026-08-19) — security hardening and the IdRef provider
 
 Anton and KB both track `dev-main`, so this reaches them on the next
 `composer update`. Read the **Action required** section before updating.

@@ -65,15 +65,13 @@ class GeonamesLwComponent extends Component
 
     public function removeResource($url)
     {
-        Resource::where([
-            'url' => $url
-        ])->delete();
-        $this->dispatch('resourcesChanged');
+        // Scoped to the mounted model - see ProviderComponentTrait.
+        return $this->removeResourceByUrl($url);
     }
 
     public function render()
     {
-        $client = new Geonames();
+        $client = app(Geonames::class);
 
         // Ensure we have proper query options with a default limit
         $queryOptions = is_array($this->queryOptions) ? $this->queryOptions : [];

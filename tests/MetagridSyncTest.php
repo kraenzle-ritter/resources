@@ -18,6 +18,7 @@ class MetagridSyncTest extends TestCase
         $this->assertEquals('Metagrid', $metagridProvider['label']);
     }
 
+    #[\PHPUnit\Framework\Attributes\Group('live-api')]
     public function test_resource_sync_service_can_handle_metagrid()
     {
         // Mock HTTP response für Metagrid

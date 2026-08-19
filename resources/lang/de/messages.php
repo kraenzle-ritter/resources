@@ -18,4 +18,14 @@ return [
     'Register for a free account' => 'Registrieren Sie sich für einen kostenlosen Account',
     'and set the username in your .env file' => 'und setzen Sie den Benutzernamen in Ihrer .env-Datei',
     'Show All' => 'Alle anzeigen',
+    'Also known as' => 'Auch bekannt als',
+    'idref' => [
+        'record_type' => [
+            'person' => 'Person',
+            'corporate' => 'Körperschaft',
+            'place' => 'Ort',
+            'family' => 'Familie',
+            'subject' => 'Schlagwort',
+        ],
+    ],
 ];

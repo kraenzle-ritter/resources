@@ -3,6 +3,8 @@
 namespace KraenzleRitter\Resources;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use GuzzleHttp\Psr7\Message;
 use Illuminate\Support\Facades\App;
@@ -13,28 +15,83 @@ use KraenzleRitter\Resources\Helpers\UserAgent;
 
 class ResourceSyncService
 {
+    public const CACHE_KEY = 'kraenzle-ritter.resources.wikidata-url-patterns';
+
     protected $providers;
     protected $configProviders;
     protected $filter = [];
 
+    /**
+     * Lazily resolved SPARQL result; null means "not looked up yet".
+     */
+    protected ?array $wikidataUrlPatterns = null;
 
-    public function __construct($filter = [])
+    /**
+     * Injectable so the test suite can drive the Wikidata/SPARQL/Metagrid
+     * calls without touching the network.
+     */
+    protected ?ClientInterface $injectedClient;
+
+    public function __construct($filter = [], ?ClientInterface $client = null)
     {
         $this->providers = config('resources.providers', []);
         $this->configProviders = $this->getWikidataArray($this->providers);
-        // setUpProviders() catches GuzzleException internally; the extra
-        // safety net here ensures a runaway exception (DNS failure, TLS
-        // error, etc.) never bubbles up and crashes the calling flow —
-        // upstream callers (Excel-Import, WikipediaLwComponent::saveResource)
-        // historically had no try/catch and reported "FATAL ERROR" at the
-        // user level whenever Wikidata SPARQL hiccuped (#184/#186 on Anton).
-        try {
-            $this->setUpProviders();
-        } catch (\Throwable $e) {
-            Log::error('Unexpected error in setUpProviders', ['exception' => $e->getMessage()]);
-            $this->providers = [];
-        }
         $this->filter = $filter;
+        $this->injectedClient = $client;
+
+        // No network here on purpose. setUpProviders() used to run from the
+        // constructor, so every save in every Livewire component blocked on a
+        // SPARQL query to query.wikidata.org. It is now resolved lazily, and
+        // only by the fallback path that actually needs it.
+    }
+
+    /**
+     * Build an HTTP client for one of the upstream services.
+     */
+    protected function client(string $baseUrl): ClientInterface
+    {
+        return $this->injectedClient ?: new Client([
+            'base_uri' => $baseUrl,
+            'timeout' => 10,
+            'headers' => UserAgent::get(),
+        ]);
+    }
+
+    /**
+     * Wikidata URL-formatter patterns (P1630) for the configured properties.
+     *
+     * Cached: the answer is a set of URL templates that changes on the order of
+     * months, and it used to cost one SPARQL round trip per service instance.
+     * A failed lookup is deliberately not cached, so an outage does not disable
+     * the fallback path for a full TTL.
+     */
+    public function wikidataUrlPatterns(): array
+    {
+        if ($this->wikidataUrlPatterns !== null) {
+            return $this->wikidataUrlPatterns;
+        }
+
+        $cached = Cache::get(self::CACHE_KEY);
+
+        if (is_array($cached) && $cached !== []) {
+            return $this->wikidataUrlPatterns = $cached;
+        }
+
+        try {
+            $patterns = $this->fetchWikidataUrlPatterns();
+        } catch (\Throwable $e) {
+            // A runaway exception here (DNS, TLS) must never reach the caller:
+            // upstream callers historically reported "FATAL ERROR" to the user
+            // whenever Wikidata SPARQL hiccuped (#184/#186 on Anton).
+            Log::error('Unexpected error resolving Wikidata url patterns', ['exception' => $e->getMessage()]);
+            $patterns = [];
+        }
+
+        if ($patterns !== []) {
+            Cache::put(self::CACHE_KEY, $patterns, config('resources.sync.cache_ttl', 86400));
+        }
+
+        return $this->wikidataUrlPatterns = $patterns;
     }
 
     public function getWikidataArray(array $input): array
@@ -187,18 +244,7 @@ class ResourceSyncService
      */
     protected function fetchFromWikidata(string $wikidataId): array
     {
-        $baseUrl = 'https://www.wikidata.org/w/api.php';
-
-        try {
-            $client = new Client([
-                'base_uri' => $baseUrl,
-                'timeout' => 10,
-                'headers' => UserAgent::get(),
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Failed to create HTTP client for Wikidata', ['exception' => $e->getMessage()]);
-            return [];
-        }
+        $client = $this->client('https://www.wikidata.org/w/api.php');
 
         $query = [
             'action' => 'wbgetentities',
@@ -270,9 +316,13 @@ class ResourceSyncService
                 }
 
                 // Fallback: Use dynamic provider setup (old implementation)
-                // Only for providers that were NOT processed above
-                if (!empty($this->providers) && is_array($this->providers)) {
-                    foreach ($this->providers as $provider) {
+                // Only for providers that were NOT processed above. This is the
+                // only path that needs the SPARQL lookup, so it is resolved here
+                // rather than in the constructor.
+                $urlPatterns = $this->wikidataUrlPatterns();
+
+                if (!empty($urlPatterns)) {
+                    foreach ($urlPatterns as $provider) {
                         if (isset($provider['provider'])) {
                             $key = preg_replace('|.*(P\d+).*|', "$1", $provider['provider']);
 
@@ -332,18 +382,7 @@ class ResourceSyncService
             return null;
         }
 
-        $baseUrl = "https://{$lang}.wikipedia.org/w/api.php";
-
-        try {
-            $client = new Client([
-                'base_uri' => $baseUrl,
-                'timeout' => 10,
-                'headers' => UserAgent::get(),
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Failed to create HTTP client for Wikipedia', ['exception' => $e->getMessage()]);
-            return null;
-        }
+        $client = $this->client("https://{$lang}.wikipedia.org/w/api.php");
 
         $query = [
             'action' => 'query',
@@ -375,18 +414,7 @@ class ResourceSyncService
      */
     protected function getWikidataIdForGndId(string $gndId): ?string
     {
-        $baseUrl = 'https://query.wikidata.org/sparql';
-
-        try {
-            $client = new Client([
-                'base_uri' => $baseUrl,
-                'timeout' => 10,
-                'headers' => UserAgent::get(),
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Failed to create HTTP client for SPARQL', ['exception' => $e->getMessage()]);
-            return null;
-        }
+        $client = $this->client('https://query.wikidata.org/sparql');
 
         $sparqlQuery = 'SELECT ?item WHERE { ?item wdt:P227 "' . $gndId . '" }';
 
@@ -418,23 +446,15 @@ class ResourceSyncService
     }
 
     /**
-     * Set up provider information from Wikidata
+     * Fetch provider URL patterns from Wikidata via SPARQL.
      */
-    protected function setUpProviders(): void
+    protected function fetchWikidataUrlPatterns(): array
     {
-        $baseUrl = 'https://query.wikidata.org/sparql';
-
-        try {
-            $client = new Client([
-                'base_uri' => $baseUrl,
-                'timeout' => 10,
-                'headers' => UserAgent::get(),
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Failed to create HTTP client for provider setup', ['exception' => $e->getMessage()]);
-            $this->providers = [];
-            return;
+        if ($this->configProviders === []) {
+            return [];
         }
+
+        $client = $this->client('https://query.wikidata.org/sparql');
 
         $sparqlQuery = 'SELECT DISTINCT ?provider ?providerLabel ?url
                     WHERE {
@@ -465,11 +485,13 @@ class ResourceSyncService
             }
 
             $providers = array_unique($providers, SORT_REGULAR);
-            $this->providers = $this->unique_multidim_array($providers, 'provider');
+
+            return $this->unique_multidim_array($providers, 'provider');
 
         } catch (GuzzleException $e) {
             Log::error('HTTP error setting up providers', ['exception' => $e->getMessage()]);
-            $this->providers = [];
+
+            return [];
         }
     }
 
@@ -503,15 +525,7 @@ class ResourceSyncService
      */
     protected function fetchFromMetagrid(string $metagridUrl): array
     {
-        try {
-            $client = new Client([
-                'timeout' => 10,
-                'headers' => UserAgent::get(),
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Failed to create HTTP client for Metagrid', ['exception' => $e->getMessage()]);
-            return [];
-        }
+        $client = $this->client($metagridUrl);
 
         try {
             $response = $client->get($metagridUrl);

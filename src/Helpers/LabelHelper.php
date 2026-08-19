@@ -14,7 +14,7 @@ class LabelHelper
      * @param string|null $locale The locale to use (defaults to app locale)
      * @return string The resolved label
      */
-    public static function getLocalizedLabel($label, string $locale = null): string
+    public static function getLocalizedLabel($label, ?string $locale = null): string
     {
         if (is_string($label)) {
             return $label;
@@ -42,7 +42,7 @@ class LabelHelper
      * @param string|null $locale The locale to use (defaults to app locale)
      * @return string The resolved label
      */
-    public static function getProviderLabel(string $providerKey, string $locale = null): string
+    public static function getProviderLabel(string $providerKey, ?string $locale = null): string
     {
         $providers = config('resources.providers', []);
 

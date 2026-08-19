@@ -3,7 +3,6 @@
 namespace KraenzleRitter\Resources\Tests\Livewire;
 
 use Livewire\Livewire;
-use Illuminate\Support\Facades\Http;
 use KraenzleRitter\Resources\Tests\TestCase;
 use KraenzleRitter\Resources\Http\Livewire\WikipediaLwComponent;
 use KraenzleRitter\Resources\Tests\TestModel;
@@ -13,22 +12,9 @@ class WikipediaLwComponentTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // Mock HTTP responses for Wikipedia API
-        Http::fake([
-            'wikipedia.org/*' => Http::response([
-                'query' => [
-                    'searchinfo' => ['totalhits' => 1],
-                    'search' => [
-                        [
-                            'title' => 'Test Article',
-                            'snippet' => 'Test snippet',
-                            'pageid' => 12345
-                        ]
-                    ]
-                ]
-            ], 200)
-        ]);
+        // Provider clients are resolved from the container, so binding a
+        // fixture-backed client keeps this test off the network.
+        $this->fakeProvider(\KraenzleRitter\Resources\Wikipedia::class, 'wikipedia');
     }
 
     public function test_it_can_mount_with_model()
@@ -144,15 +130,7 @@ class WikipediaLwComponentTest extends TestCase
 
     public function test_it_handles_empty_search_results()
     {
-        // Mock empty response
-        Http::fake([
-            'wikipedia.org/*' => Http::response([
-                'query' => [
-                    'searchinfo' => ['totalhits' => 0],
-                    'search' => []
-                ]
-            ], 200)
-        ]);
+        $this->fakeProvider(\KraenzleRitter\Resources\Wikipedia::class, 'wikipedia', 'empty');
 
         $model = new TestModel();
         $model->id = 1;

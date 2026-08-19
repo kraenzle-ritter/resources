@@ -3,6 +3,7 @@
 namespace KraenzleRitter\Resources;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use KraenzleRitter\Resources\Helpers\UserAgent;
 use KraenzleRitter\Resources\Traits\HttpClientTrait;
 
@@ -24,6 +25,8 @@ class Gnd
 {
     use HttpClientTrait;
 
+    public const DEFAULT_BASE_URL = 'https://lobid.org/gnd/';
+
     public $client;
 
     public $filter_types = [
@@ -37,12 +40,16 @@ class Gnd
             'Family'
         ];
 
-    public function __construct()
+    public function __construct(?ClientInterface $client = null)
     {
-        $baseUrl = 'https://lobid.org/gnd/';
+        if ($client) {
+            $this->client = $client;
+
+            return;
+        }
 
         $this->client = new Client([
-            'base_uri' => $baseUrl,
+            'base_uri' => config('resources.providers.gnd.base_url', self::DEFAULT_BASE_URL),
             'timeout'  => config('resources.providers.gnd.timeout', 15), // Configurable timeout, default 15 seconds
             'connect_timeout' => config('resources.providers.gnd.connect_timeout', 5), // Connection timeout
             'headers'  => UserAgent::get(),
@@ -56,7 +63,7 @@ class Gnd
         $search = 'search?q=' . urlencode($search);
 
         $filters = $params['filters'] ?? [];
-        $size = $params['limit'] ?? config('sources-components.gnd.limit') ?? 5;
+        $size = $params['limit'] ?? config('resources.providers.gnd.limit') ?? config('resources.limit') ?? 5;
         $endpoint = $search . $this->buildFilter($filters) . '&size=' . $size . '&format=json';
 
         $fallbackValue = (object) ['member' => [], 'totalItems' => 0];
@@ -82,7 +89,7 @@ class Gnd
             return '';
         }
 
-        $filter = str_replace('=', ':', http_build_query($filters, null, ' AND '));
+        $filter = str_replace('=', ':', http_build_query($filters, '', ' AND '));
 
         return '&filter=' . $filter;
     }

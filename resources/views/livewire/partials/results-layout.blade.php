@@ -51,7 +51,7 @@
                 <div class="alert {{ isset($apiLimitReached) && $apiLimitReached ? 'alert-warning' : 'alert-info' }} mt-3">
                     @if(isset($apiLimitReached) && $apiLimitReached)
                         <strong>{{ __('resources::messages.API Limit Reached') }}:</strong> {{ __('resources::messages.API Limit Message') }}
-                        <a href="https://www.geonames.org/login" target="_blank">{{ __('Register for a free account') }}</a>
+                        <a href="https://www.geonames.org/login" target="_blank" rel="noopener noreferrer">{{ __('Register for a free account') }}</a>
                         {{ __('and set the username in your .env file') }}: <code>GEONAMES_USERNAME=your_username</code>
                     @else
                         {{ __('resources::messages.No matches') }}

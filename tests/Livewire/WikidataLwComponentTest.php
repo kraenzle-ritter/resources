@@ -3,7 +3,6 @@
 namespace KraenzleRitter\Resources\Tests\Livewire;
 
 use Livewire\Livewire;
-use Illuminate\Support\Facades\Http;
 use KraenzleRitter\Resources\Tests\TestCase;
 use KraenzleRitter\Resources\Http\Livewire\WikidataLwComponent;
 use KraenzleRitter\Resources\Tests\TestModel;
@@ -13,25 +12,9 @@ class WikidataLwComponentTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // Mock HTTP responses for Wikidata API
-        Http::fake([
-            'wikidata.org/*' => Http::response([
-                'search' => [
-                    [
-                        'id' => 'Q57188',
-                        'title' => 'Q57188',
-                        'label' => 'Ernst Cassirer',
-                        'description' => 'German philosopher',
-                        'match' => [
-                            'type' => 'label',
-                            'language' => 'en',
-                            'text' => 'Ernst Cassirer'
-                        ]
-                    ]
-                ]
-            ], 200)
-        ]);
+        // Provider clients are resolved from the container, so binding a
+        // fixture-backed client keeps this test off the network.
+        $this->fakeProvider(\KraenzleRitter\Resources\Wikidata::class, 'wikidata');
     }
 
     public function test_it_can_mount_with_model()
@@ -88,11 +71,6 @@ class WikidataLwComponentTest extends TestCase
         $model = new TestModel();
         $model->save();
 
-        // Mock additional HTTP calls for sync
-        Http::fake([
-            '*' => Http::response(['entities' => []], 200)
-        ]);
-
         $component = Livewire::test(WikidataLwComponent::class, [
             'model' => $model,
             'resourceable_id' => $model->id
@@ -136,10 +114,13 @@ class WikidataLwComponentTest extends TestCase
 
     public function test_it_handles_wikidata_api_errors()
     {
-        // Mock API error
-        Http::fake([
-            'wikidata.org/*' => Http::response([], 500)
-        ]);
+        // A 500 from the API must not break the component.
+        $this->app->bind(
+            \KraenzleRitter\Resources\Wikidata::class,
+            fn () => new \KraenzleRitter\Resources\Wikidata(
+                \KraenzleRitter\Resources\Tests\Support\MockProviderClient::withStatus(500)->client
+            )
+        );
 
         $model = new TestModel();
         $model->id = 1;

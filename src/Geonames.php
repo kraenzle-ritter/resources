@@ -3,6 +3,7 @@
 namespace KraenzleRitter\Resources;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use KraenzleRitter\Resources\Helpers\Params;
 use KraenzleRitter\Resources\Helpers\UserAgent;
 use KraenzleRitter\Resources\Traits\HttpClientTrait;
@@ -10,6 +11,8 @@ use KraenzleRitter\Resources\Traits\HttpClientTrait;
 class Geonames
 {
     use HttpClientTrait;
+
+    public const DEFAULT_BASE_URL = 'http://api.geonames.org/';
 
     public $client;
 
@@ -25,7 +28,7 @@ class Geonames
         'isNameRequired' => 'true'  // At least one of the search term needs to be part of the place name
     ];
 
-    public function __construct()
+    public function __construct(?ClientInterface $client = null)
     {
         // https://www.geonames.org/export/geonames-search.html
         $this->username = config('resources.providers.geonames.user_name');
@@ -35,7 +38,13 @@ class Geonames
         $this->query_params['countryBias'] = config('resources.providers.geonames.country_bias');
         $this->query_params = array_filter($this->query_params);
 
-        $this->base_uri = 'http://api.geonames.org/';
+        $this->base_uri = config('resources.providers.geonames.base_url', self::DEFAULT_BASE_URL);
+
+        if ($client) {
+            $this->client = $client;
+
+            return;
+        }
 
         $this->client = new Client([
             'base_uri' => $this->base_uri,

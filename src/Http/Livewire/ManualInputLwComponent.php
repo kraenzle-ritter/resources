@@ -5,6 +5,7 @@ namespace KraenzleRitter\Resources\Http\Livewire;
 use Livewire\Component;
 use KraenzleRitter\Resources\Resource;
 use KraenzleRitter\Resources\Events\ResourceSaved;
+use KraenzleRitter\Resources\Helpers\UrlHelper;
 
 class ManualInputLwComponent extends Component
 {
@@ -29,10 +30,12 @@ class ManualInputLwComponent extends Component
 
     protected function rules()
     {
+        // Keys are property names. They used to carry a `$` prefix, which meant
+        // they matched nothing and no rule ever applied.
         return [
-            '$provider' => 'required|string',
-            '$provider_id' => 'nullable|string',
-            '$url' => 'required|url',
+            'provider' => 'required|string',
+            'provider_id' => 'nullable|string',
+            'url' => ['required', 'url:' . implode(',', UrlHelper::allowedSchemes())],
         ];
     }
 
@@ -48,6 +51,10 @@ class ManualInputLwComponent extends Component
 
     public function saveResource()
     {
+        // Manual input is the one place a user supplies the url that later
+        // becomes an href, so it is validated before anything is persisted.
+        $this->validate();
+
         $resource = $this->model->{$this->saveMethod}(
             $this->only(['provider', 'provider_id', 'url'])
         );

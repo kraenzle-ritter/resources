@@ -11,6 +11,7 @@ use KraenzleRitter\Resources\Idiotikon;
 use KraenzleRitter\Resources\Wikipedia;
 use KraenzleRitter\Resources\Tests\TestCase;
 
+#[\PHPUnit\Framework\Attributes\Group('live-api')]
 class ProvidersTestSearchTest extends TestCase
 {
     protected $skipIfNoInternet = true;

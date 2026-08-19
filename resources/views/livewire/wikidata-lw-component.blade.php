@@ -17,13 +17,13 @@
         return "saveResource('{$result->id}', '{$base_url}{$result->id}', '{$json}')";
     },
     'result_heading' => function($result) {
-        return $result->label ?? '';
+        return e($result->label ?? '');
     },
     'result_content' => function($result) use ($base_url) {
-        $output = "<a href=\"{$base_url}{$result->id}\" target=\"_blank\">{$base_url}{$result->id}</a>";
+        $output = \KraenzleRitter\Resources\Helpers\UrlHelper::link($base_url . ($result->id ?? ''));
 
         if (!empty($result->description)) {
-            $output .= "<br>" . $result->description;
+            $output .= "<br>" . e($result->description);
         }
 
         return $output;

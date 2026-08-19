@@ -42,7 +42,7 @@
                         <a class="nav-link" href="{{ route('resources.check.index') }}">Status</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://github.com/kraenzle-ritter/resources" target="_blank">GitHub</a>
+                        <a class="nav-link" href="https://github.com/kraenzle-ritter/resources" target="_blank" rel="noopener noreferrer">GitHub</a>
                     </li>
                 </ul>
             </div>
@@ -61,7 +61,7 @@
                 </div>
                 <div class="col-md-6 text-md-end">
                     <p class="mb-0">
-                        <a href="https://github.com/kraenzle-ritter/resources" class="text-white" target="_blank">
+                        <a href="https://github.com/kraenzle-ritter/resources" class="text-white" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-github me-1"></i> GitHub
                         </a>
                     </p>

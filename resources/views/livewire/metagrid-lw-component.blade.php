@@ -12,14 +12,13 @@
         $name = $result->name;
         $name = preg_replace('/^([^0-9]+)(\d{4}).*(\d{4}?).*$/', '${1} ($2-$3)', $name);
         $name = preg_replace('/^([^0-9]+)(\d{4})-\d{2}-\d{2}$/', '${1} ($2)', $name);
-        return $name;
+        return e($name);
     },
     'result_content' => function($result) {
-        $output = "<a href=\"{$result->uri}\" target=\"_blank\">{$result->uri}</a>";
+        $output = \KraenzleRitter\Resources\Helpers\UrlHelper::link($result->uri ?? null);
 
-        // Verwende die vorbereitete Beschreibung
         if (!empty($result->processedDescription)) {
-            $output .= "<br>" . $result->processedDescription;
+            $output .= "<br>" . e($result->processedDescription);
         }
 
         return $output;

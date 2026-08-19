@@ -27,3 +27,8 @@ coverage/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Claude Code artefacts (openspec/ stays tracked)
+.claude/
+CLAUDE.md
+.claude.json

@@ -10,6 +10,48 @@ return [
      * Default limit for search results
      */
     'limit' => 5,
+
+    /**
+     * User-Agent sent with every provider request. Wikimedia and lobid require
+     * a descriptive one. Resolved here rather than in the helper so it keeps
+     * working under `php artisan config:cache`, where env() returns null.
+     */
+    'user_agent' => env(
+        'RESOURCES_USER_AGENT',
+        'resources/' . (class_exists(\Composer\InstalledVersions::class)
+            ? (\Composer\InstalledVersions::getPrettyVersion('kraenzle-ritter/resources') ?? 'dev')
+            : 'dev') . ' (+https://github.com/kraenzle-ritter/resources)'
+    ),
+    /**
+     * ResourceSyncService behaviour.
+     *
+     * cache_ttl covers the Wikidata SPARQL lookup of provider URL patterns
+     * (P1630). The answer changes on the order of months; caching it removes a
+     * network round trip from every resource save.
+     */
+    'sync' => [
+        'cache_ttl' => 86400,
+    ],
+
+    /**
+     * The /resources-check diagnostics UI.
+     *
+     * Disabled by default: the pages render provider configuration, so they
+     * should not become publicly reachable routes as a side effect of
+     * `composer require`. Enable per environment, and tighten the middleware
+     * if the host application has an admin gate.
+     */
+    'diagnostics' => [
+        'enabled' => env('RESOURCES_DIAGNOSTICS', false),
+        'middleware' => ['web'],
+    ],
+
+    /**
+     * URL schemes a stored resource url may use. Anything else becomes a script
+     * vector once rendered into an href.
+     */
+    'allowed_url_schemes' => ['http', 'https'],
+
     'providers' => [
         'gnd' => [
             'label' => 'GND', // not localized, as it is a standard identifier
@@ -47,6 +89,9 @@ return [
             'api-type' => 'Anton',
             'base_url' => 'https://archives.georgfischer.com/api/',
             'api_token' => env('GEORGFISCHER_API_TOKEN', ''),
+            // 'header' sends Authorization: Bearer <token>; set to 'query'
+            // to fall back to the api_token query parameter.
+            'api_token_transport' => 'header',
             'target_url' => 'https://archives.georgfischer.com/{endpoint}/{short_provider_id}',
             'slug' => 'gfa',
             'test_search' => 'Georg Fischer',
@@ -61,6 +106,9 @@ return [
             'api-type' => 'Anton',
             'base_url' => 'https://gosteli.anton.ch/api/',
             'api_token' => env('GOSTELI_API_TOKEN', ''),
+            // 'header' sends Authorization: Bearer <token>; set to 'query'
+            // to fall back to the api_token query parameter.
+            'api_token_transport' => 'header',
             'target_url' => 'https://gosteli.anton.ch/{endpoint}/{short_provider_id}',
             'slug' => 'gosteli',
             'test_search' => 'Marthe Gosteli',
@@ -68,7 +116,8 @@ return [
         'idiotikon' => [
             'label' => 'Idiotikon',
             'api-type' => 'Idiotikon',
-            'base_url' => 'https://api.idiotikon.ch/',
+            // api.idiotikon.ch does not resolve; the working host is digital.*
+            'base_url' => 'https://digital.idiotikon.ch/api/',
             'target_url' => 'https://digital.idiotikon.ch/p/lem/{provider_id}',
             'test_search' => 'Allmend',
         ],
@@ -82,6 +131,9 @@ return [
             'api-type' => 'Anton',
             'base_url' => 'https://kba.karl-barth.ch/api/',
             'api_token' => env('KBA_API_TOKEN', ''),
+            // 'header' sends Authorization: Bearer <token>; set to 'query'
+            // to fall back to the api_token query parameter.
+            'api_token_transport' => 'header',
             'target_url' => 'https://kba.karl-barth.ch/{endpoint}/{short_provider_id}',
             'slug' => 'kba',
             'test_search' => 'Karl Barth',
@@ -98,14 +150,16 @@ return [
         'metagrid' => [
             'label' => 'Metagrid',
             'api-type' => 'Metagrid',
-            'base_url' => 'https://metagrid.ch/api/',
+            // metagrid.ch/api/ answers 404; the API lives on api.metagrid.ch
+            'base_url' => 'https://api.metagrid.ch/',
             'target_url' => 'https://api.metagrid.ch/concordance/{provider_id}.json', // since metagrid has no Gui for these entries
             'test_search' => 'Anna Tumarkin',
         ],
         'ortsnamen' => [
             'label' => 'ortsnamen.ch',
             'api-type' => 'Ortsnamen',
-            'base_url' => 'https://search.ortsnamen.ch/de/api/',
+            // search.ortsnamen.ch redirects here; use the target directly
+            'base_url' => 'https://ortsnamen.ch/de/api/',
             'target_url' => 'https://search.ortsnamen.ch/de/record/{provider_id}',
             'test_search' => 'Wiedikon',
             'wikidata_property' => 'P6144', // For syncing from Wikidata
@@ -282,7 +336,35 @@ return [
         ],
         'idref' => [
             'label' => 'IdRef',
+            'api-type' => 'IdRef',
+            // The core paths in the older ABES docs (/Sru/Solr/sudoc/select)
+            // answer 404; this is the endpoint that works.
+            'base_url' => 'https://www.idref.fr/Sru/Solr',
+            'target_url' => 'https://www.idref.fr/{provider_id}',
+            'test_search' => 'Karl Barth',
             'wikidata_property' => 'P269',
+            'timeout' => 15,
+            'connect_timeout' => 5,
+            // Exact-phrase boost over the loose clause; see src/IdRef.php.
+            'phrase_boost' => 10,
+            // IdRef record types, with the Solr index that searches each.
+            // `code` is the value of recordtype_z on a result.
+            'record_types' => [
+                'person' => ['code' => 'a', 'index' => 'persname_t'],
+                'corporate' => ['code' => 'b', 'index' => 'corpname_t'],
+                'place' => ['code' => 'c', 'index' => 'geogname_t'],
+                'family' => ['code' => 'e', 'index' => 'famname_t'],
+                'subject' => ['code' => 'j', 'index' => 'subjectheading_t'],
+            ],
+            'default_record_types' => ['person', 'corporate'],
+            // Endpoint names differ per application (Anton: actors/places/
+            // keywords; KB adds songs/bibls), so the mapping lives in config
+            // and an unmapped endpoint falls back to default_record_types.
+            'endpoint_record_types' => [
+                'actors' => ['person', 'corporate', 'family'],
+                'places' => ['place'],
+                'keywords' => ['subject'],
+            ],
         ],
         'kalliope-verbund' => [
             'label' => 'Kalliope Verbund',

@@ -117,15 +117,13 @@ class GndLwComponent extends Component
 
     public function removeResource($url)
     {
-        Resource::where([
-            'url' => $url
-        ])->delete();
-        $this->dispatch('resourcesChanged');
+        // Scoped to the mounted model - see ProviderComponentTrait.
+        return $this->removeResourceByUrl($url);
     }
 
     public function render()
     {
-        $client = new Gnd();
+        $client = app(Gnd::class);
 
         if ($this->search) {
             $resources = $client->search($this->search, $this->queryOptions);

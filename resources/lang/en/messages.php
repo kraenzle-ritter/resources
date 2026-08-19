@@ -18,4 +18,14 @@ return [
     'Register for a free account' => 'Register for a free account',
     'and set the username in your .env file' => 'and set the username in your .env file',
     'Show All' => 'Show All',
+    'Also known as' => 'Also known as',
+    'idref' => [
+        'record_type' => [
+            'person' => 'Person',
+            'corporate' => 'Corporate body',
+            'place' => 'Place',
+            'family' => 'Family',
+            'subject' => 'Subject heading',
+        ],
+    ],
 ];

@@ -36,20 +36,18 @@
         return "saveResource('{$fullProviderId}', '{$result->links[0]->url}', '{$json}')";
     },
     'result_heading' => function($result) {
-        return $result->fullname ?? '';
+        return e($result->fullname ?? '');
     },
     'result_content' => function($result) use ($getTargetUrl) {
-        $targetUrl = $getTargetUrl($result);
-        $output = "<a href=\"{$targetUrl}\" target=\"_blank\">{$targetUrl}</a>";
+        $output = \KraenzleRitter\Resources\Helpers\UrlHelper::link($getTargetUrl($result));
 
-        // Beschreibung, falls vorhanden
         if (!empty($result->description)) {
             // Ersten Satz extrahieren
             $firstSentence = preg_split('/[.!?]/', $result->description, 2);
             if (!empty($firstSentence[0])) {
-                $output .= "<br>" . trim($firstSentence[0]) . ".";
+                $output .= "<br>" . e(trim($firstSentence[0]) . ".");
             } else {
-                $output .= "<br>" . $result->description;
+                $output .= "<br>" . e($result->description);
             }
         }
 

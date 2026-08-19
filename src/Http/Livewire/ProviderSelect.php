@@ -16,7 +16,7 @@ class ProviderSelect extends Component
     public array $componentParams = [];
     protected $listeners = ['resourcesChanged' => 'hydrate'];
 
-    public function mount($model, array $providers, string $endpoint = null, $filter = [])
+    public function mount($model, array $providers, ?string $endpoint = null, $filter = [])
     {
         $this->model = $model;
         $this->endpoint = $endpoint;
@@ -77,6 +77,17 @@ class ProviderSelect extends Component
                 'search' => $search,
                 'providerKey' => $providerKey,
                 'filter' => $this->filter,
+            ];
+        } else if ($apiType === 'IdRef') {
+            // Like Anton, IdRef needs the endpoint: it decides which authority
+            // record types are searched, so a place picker does not return
+            // people. See config('resources.providers.idref.endpoint_record_types').
+            $this->componentParams = [
+                'model' => $this->model,
+                'search' => $search,
+                'params' => ['providerKey' => $providerKey],
+                'filter' => $this->filter,
+                'endpoint' => $this->endpoint,
             ];
         } else if ($apiType === 'Anton') {
             // Anton-Komponenten benötigen den zusätzlichen 'endpoint'-Parameter

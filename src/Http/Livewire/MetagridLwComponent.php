@@ -73,15 +73,13 @@ class MetagridLwComponent extends Component
 
     public function removeResource($url)
     {
-        \KraenzleRitter\Resources\Resource::where([
-            'url' => $url
-        ])->delete();
-        $this->dispatch('resourcesChanged');
+        // Scoped to the mounted model - see ProviderComponentTrait.
+        return $this->removeResourceByUrl($url);
     }
 
     public function render()
     {
-        $client = new Metagrid();
+        $client = app(Metagrid::class);
 
         $resources = $client->search($this->search, $this->queryOptions);
 

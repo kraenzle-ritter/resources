@@ -3,7 +3,6 @@
 namespace KraenzleRitter\Resources\Tests\Livewire;
 
 use Livewire\Livewire;
-use Illuminate\Support\Facades\Http;
 use KraenzleRitter\Resources\Tests\TestCase;
 use KraenzleRitter\Resources\Http\Livewire\GndLwComponent;
 use KraenzleRitter\Resources\Tests\TestModel;
@@ -13,25 +12,9 @@ class GndLwComponentTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        // Mock HTTP responses for GND API
-        Http::fake([
-            'lobid.org/*' => Http::response([
-                'member' => [
-                    [
-                        'gndIdentifier' => '123456789',
-                        'preferredName' => 'Test Person',
-                        'variantName' => ['Alternative Name'],
-                        'professionOrOccupation' => [
-                            ['label' => 'Philosopher']
-                        ],
-                        'dateOfBirth' => ['1900'],
-                        'dateOfDeath' => ['1980'],
-                        'biographicalOrHistoricalInformation' => ['Test biography']
-                    ]
-                ]
-            ], 200)
-        ]);
+        // Provider clients are resolved from the container, so binding a
+        // fixture-backed client keeps this test off the network.
+        $this->fakeProvider(\KraenzleRitter\Resources\Gnd::class, 'gnd');
     }
 
     public function test_it_can_mount_with_model()
@@ -148,10 +131,7 @@ class GndLwComponentTest extends TestCase
 
     public function test_it_handles_empty_search_results()
     {
-        // Mock empty response
-        Http::fake([
-            'lobid.org/*' => Http::response(['member' => []], 200)
-        ]);
+        $this->fakeProvider(\KraenzleRitter\Resources\Gnd::class, 'gnd', 'empty');
 
         $model = new TestModel();
         $model->id = 1;

@@ -2,93 +2,126 @@
 
 namespace KraenzleRitter\Resources\Tests\Api;
 
-use KraenzleRitter\Resources\Wikipedia;
+use KraenzleRitter\Resources\Tests\Support\MockProviderClient;
 use KraenzleRitter\Resources\Tests\TestCase;
+use KraenzleRitter\Resources\Wikipedia;
+use PHPUnit\Framework\Attributes\Group;
 
 class WikipediaApiLocaleTest extends TestCase
 {
-    protected $skipIfNoInternet = true;
-
-    protected function setUp(): void
+    public function test_search_returns_the_search_list()
     {
-        parent::setUp();
+        $mock = MockProviderClient::withFixture('wikipedia', 'search');
 
-        // Skip test if internet connection is not available
-        if ($this->skipIfNoInternet) {
-            try {
-                $connection = @fsockopen("www.wikipedia.org", 80);
-                if (!$connection) {
-                    $this->markTestSkipped('No internet connection available');
-                }
-                fclose($connection);
-            } catch (\Exception $e) {
-                $this->markTestSkipped('No internet connection available');
-            }
-        }
+        $results = (new Wikipedia($mock->client))->search('Bertha von Suttner', [
+            'providerKey' => 'wikipedia-de',
+            'limit' => 5,
+        ]);
+
+        $expected = MockProviderClient::fixtureData('wikipedia', 'search')['query']['search'];
+
+        $this->assertNotEmpty($results);
+        $this->assertCount(count($expected), $results);
+        $this->assertSame($expected[0]['title'], $results[0]->title);
+        $this->assertSame($expected[0]['pageid'], $results[0]->pageid);
+    }
+
+    public function test_search_sends_the_expected_query_parameters()
+    {
+        $mock = MockProviderClient::withFixture('wikipedia', 'search');
+
+        (new Wikipedia($mock->client))->search('Bertha von Suttner', [
+            'providerKey' => 'wikipedia-de',
+            'limit' => 3,
+        ]);
+
+        $query = $mock->lastQuery();
+
+        $this->assertSame('query', $query['action']);
+        $this->assertSame('json', $query['format']);
+        $this->assertSame('search', $query['list']);
+        $this->assertSame('0', $query['srnamespace']);
+        $this->assertSame('3', $query['srlimit']);
+        // Spaces become underscores and the search is title-scoped.
+        $this->assertSame('intitle:Bertha_von_Suttner', $query['srsearch']);
+    }
+
+    public function test_search_returns_empty_array_when_nothing_matches()
+    {
+        $mock = MockProviderClient::withFixture('wikipedia', 'empty');
+
+        $results = (new Wikipedia($mock->client))->search('zzzzzzzz', ['providerKey' => 'wikipedia-de']);
+
+        $this->assertSame([], $results);
+    }
+
+    public function test_get_article_returns_the_extract()
+    {
+        $mock = MockProviderClient::withFixture('wikipedia', 'article');
+
+        $article = (new Wikipedia($mock->client))->getArticle('Bertha von Suttner', [
+            'providerKey' => 'wikipedia-de',
+        ]);
+
+        $this->assertNotNull($article);
+        $this->assertNotSame('', $article->title);
+        $this->assertNotSame('', $article->extract);
+    }
+
+    public function test_get_article_sends_the_expected_query_parameters()
+    {
+        $mock = MockProviderClient::withFixture('wikipedia', 'article');
+
+        (new Wikipedia($mock->client))->getArticle('Bertha von Suttner', [
+            'providerKey' => 'wikipedia-de',
+        ]);
+
+        $query = $mock->lastQuery();
+
+        $this->assertSame('query', $query['action']);
+        $this->assertSame('extracts', $query['prop']);
+        $this->assertSame('Bertha_von_Suttner', $query['titles']);
+        $this->assertSame('1', $query['redirects']);
     }
 
     /**
-     * @test
+     * Each locale must be configured with its own API host. The client picks the
+     * base URL from this config, so a wrong entry silently searches the wrong
+     * Wikipedia — which is what this guards.
      */
-    public function test_search_uses_correct_locale_parameter()
+    public function test_each_locale_is_configured_with_its_own_api_host()
     {
-        // Instanz erstellen und direkt mit verschiedenen Locales testen
-        $wikipedia = new Wikipedia();
+        $seen = [];
 
-        // Suche nach dem gleichen Begriff in verschiedenen Sprachen
-        $searchTerm = 'Einstein';
+        foreach (['de', 'en', 'fr', 'it'] as $locale) {
+            $baseUrl = config("resources.providers.wikipedia-{$locale}.base_url");
 
-        $deResults = $wikipedia->search($searchTerm, ['providerKey' => 'wikipedia-de', 'limit' => 1]);
-        $enResults = $wikipedia->search($searchTerm, ['providerKey' => 'wikipedia-en', 'limit' => 1]);
+            $this->assertSame(
+                "https://{$locale}.wikipedia.org/w/api.php",
+                $baseUrl,
+                "wikipedia-{$locale} must point at the {$locale} API host"
+            );
 
-        // Beide sollten Ergebnisse liefern
-        $this->assertNotEmpty($deResults, 'Deutsche Suche sollte Ergebnisse liefern');
-        $this->assertNotEmpty($enResults, 'Englische Suche sollte Ergebnisse liefern');
-
-        // Die ersten Ergebnisse sollten unterschiedliche Snippets haben
-        if (!empty($deResults) && !empty($enResults)) {
-            $deSnippet = $deResults[0]->snippet ?? '';
-            $enSnippet = $enResults[0]->snippet ?? '';
-
-            // Da die Snippets in unterschiedlichen Sprachen sind, sollten sie sich unterscheiden
-            $this->assertNotEquals($deSnippet, $enSnippet,
-                'Die Snippets der deutschen und englischen Suche sollten unterschiedlich sein');
+            $seen[] = $baseUrl;
         }
+
+        $this->assertSame($seen, array_unique($seen), 'Locales must not share a base URL');
     }
 
     /**
-     * @test
+     * The original intent of this file: the same term really does return
+     * different content per language. Kept as a live check.
      */
-    public function test_get_article_uses_correct_locale_parameter()
+    #[Group('live-api')]
+    public function test_search_returns_different_content_per_locale()
     {
         $wikipedia = new Wikipedia();
-        $title = 'Albert Einstein';
 
-        $deArticle = $wikipedia->getArticle($title, ['providerKey' => 'wikipedia-de']);
+        $de = $wikipedia->search('Einstein', ['providerKey' => 'wikipedia-de', 'limit' => 1]);
+        $en = $wikipedia->search('Einstein', ['providerKey' => 'wikipedia-en', 'limit' => 1]);
 
-        $enArticle = $wikipedia->getArticle($title, ['providerKey' => 'wikipedia-en']);
-
-        $this->assertNotNull($deArticle, 'Deutscher Artikel sollte gefunden werden');
-        $this->assertNotNull($enArticle, 'Englischer Artikel sollte gefunden werden');
-
-        if ($deArticle && $enArticle) {
-            $this->assertNotEquals($deArticle->extract, $enArticle->extract,
-                'Deutsche und englische Artikel-Extracts sollten unterschiedlich sein');
-
-            // Der deutsche Text sollte deutsche Wörter enthalten
-            $this->assertTrue(
-                stripos($deArticle->extract, 'physiker') !== false ||
-                stripos($deArticle->extract, 'deutscher') !== false ||
-                'Der deutsche Artikel sollte deutsche Begriffe enthalten'
-            );
-
-            // Der englische Text sollte englische Wörter enthalten
-            $this->assertTrue(
-                stripos($enArticle->extract, 'physicist') !== false ||
-                stripos($enArticle->extract, 'german') !== false ||
-                stripos($enArticle->extract, 'theory') !== false,
-                'Der englische Artikel sollte englische Begriffe enthalten'
-            );
-        }
+        $this->assertNotEmpty($de, 'German search should return results');
+        $this->assertNotEmpty($en, 'English search should return results');
+        $this->assertNotEquals($de[0]->snippet ?? '', $en[0]->snippet ?? '');
     }
 }

@@ -1,0 +1,1 @@
+{"batchcomplete": "", "query": {"searchinfo": {"totalhits": 1}, "search": [{"ns": 0, "title": "<img src=x onerror=alert(1)>", "pageid": 18971, "size": 45164, "wordcount": 4732, "snippet": "<script>alert(\"pwned\")</script>", "timestamp": "2026-08-16T23:27:49Z"}]}}

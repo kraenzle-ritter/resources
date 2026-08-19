@@ -8,14 +8,15 @@
         return "saveResource('{$result->id}', '{$result->permalink}', '{$json}')";
     },
     'result_heading' => function($result) {
-        return ($result->name ?? '') . ' (' . join(', ', $result->types) . ')';
+        $types = array_map('e', (array) ($result->types ?? []));
+
+        return e($result->name ?? '') . ' (' . join(', ', $types) . ')';
     },
     'result_content' => function($result) {
-        $output = "<a href=\"{$result->permalink}\" target=\"_blank\">{$result->permalink}</a>";
+        $output = \KraenzleRitter\Resources\Helpers\UrlHelper::link($result->permalink ?? null);
 
-        // Verwende die vorbereitete Beschreibung
         if (!empty($result->processedDescription)) {
-            $output .= "<br>" . $result->processedDescription;
+            $output .= "<br>" . e($result->processedDescription);
         }
 
         return $output;

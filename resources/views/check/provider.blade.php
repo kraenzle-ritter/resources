@@ -329,10 +329,13 @@
                                         @endphp
                                         <td>{{ $provider_id }}</td>
                                         <td>{{ $name }}</td>
-                                        <td>{{ \Illuminate\Support\Str::limit($desc, 100) }}</td>
+                                        {{-- Some providers hand back arrays here (GND's
+                                             biographicalOrHistoricalInformation, Anton's description),
+                                             so flatten before truncating. --}}
+                                        <td>{{ \Illuminate\Support\Str::limit(is_array($desc) ? implode(', ', array_filter($desc, 'is_scalar')) : (string) $desc, 100) }}</td>
                                         <td>
                                             @if($url && $url !== '-')
-                                                <a href="{{ $url }}" target="_blank">{{ $url }}</a>
+                                                <a href="{{ $url }}" target="_blank" rel="noopener noreferrer">{{ $url }}</a>
                                             @else
                                                 -
                                             @endif

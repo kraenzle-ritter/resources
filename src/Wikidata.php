@@ -3,6 +3,7 @@
 namespace KraenzleRitter\Resources;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use Illuminate\Support\Facades\Log;
 use KraenzleRitter\Resources\Helpers\UserAgent;
 
@@ -20,8 +21,14 @@ class Wikidata
     /**
      * Initialize the client with the configured base URL
      */
-    public function __construct()
+    public function __construct(?ClientInterface $client = null)
     {
+        if ($client) {
+            $this->client = $client;
+
+            return;
+        }
+
         $baseUrl = config('resources.providers.wikidata.base_url', 'https://www.wikidata.org/w/api.php');
         $this->client = new Client([
             'base_uri' => $baseUrl,

@@ -1,6 +1,13 @@
 name: Tests
 
-on: [push, pull_request]
+on:
+    push:
+    pull_request:
+    schedule:
+        # Weekly, so upstream provider API drift is noticed without making
+        # every push depend on eight third-party services being up.
+        - cron: '17 4 * * 1'
+    workflow_dispatch:
 
 jobs:
     test:
@@ -9,7 +16,7 @@ jobs:
             fail-fast: true
             matrix:
                 os: [ubuntu-latest]
-                php: [8.3]
+                php: ['8.3', '8.4']
                 dependency-version: [prefer-stable]
 
         name: P${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
@@ -34,3 +41,31 @@ jobs:
 
             - name: Execute tests
               run: vendor/bin/phpunit
+
+    live-api:
+        name: Live provider APIs
+        runs-on: ubuntu-latest
+        # Only on the weekly schedule or when triggered by hand: these tests
+        # talk to lobid, GeoNames, Wikipedia, Wikidata, Idiotikon, ortsnamen.ch,
+        # Metagrid and the Anton instances, so they are informative, not gating.
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        continue-on-error: true
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
+                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
+                  coverage: none
+
+            - name: Install dependencies
+              run: composer update --prefer-stable --prefer-dist --no-interaction
+
+            - name: Execute live API tests
+              env:
+                  GEONAMES_USERNAME: ${{ secrets.GEONAMES_USERNAME }}
+              run: vendor/bin/phpunit --group live-api

@@ -6,10 +6,13 @@ use Livewire\Component;
 use Illuminate\Support\Str;
 use KraenzleRitter\Resources\Anton;
 use KraenzleRitter\Resources\Resource;
+use KraenzleRitter\Resources\Traits\ProviderComponentTrait;
 use KraenzleRitter\Resources\Events\ResourceSaved;
 
 class AntonLwComponent extends Component
 {
+    use ProviderComponentTrait;
+
     public $search;
     public $queryOptions;
     public $model;
@@ -75,15 +78,13 @@ class AntonLwComponent extends Component
 
     public function removeResource($url)
     {
-        Resource::where([
-            'url' => $url
-        ])->delete();
-        $this->dispatch('resourcesChanged');
+        // Scoped to the mounted model - see ProviderComponentTrait.
+        return $this->removeResourceByUrl($url);
     }
 
     public function render()
     {
-        $client = new Anton($this->providerKey);
+        $client = app()->makeWith(Anton::class, ['providerKey' => $this->providerKey]);
 
         $resources = $client->search($this->search, $this->queryOptions, $this->endpoint);
 

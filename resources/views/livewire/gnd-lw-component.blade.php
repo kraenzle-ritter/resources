@@ -18,22 +18,22 @@
         return "saveResource('{$result->gndIdentifier}', '{$result->id}', '{$json}')";
     },
     'result_heading' => function($result) {
-        $heading = $result->preferredName ?? '';
-        $birthYear = isset($result->dateOfBirth[0]) ? substr($result->dateOfBirth[0], 0, 4) : '';
-        $deathYear = isset($result->dateOfDeath[0]) ? substr($result->dateOfDeath[0], 0, 4) : '';
+        $heading = e($result->preferredName ?? '');
+        $birthYear = isset($result->dateOfBirth[0]) ? e(substr($result->dateOfBirth[0], 0, 4)) : '';
+        $deathYear = isset($result->dateOfDeath[0]) ? e(substr($result->dateOfDeath[0], 0, 4)) : '';
         $separator = (isset($result->dateOfBirth[0]) || isset($result->dateOfDeath[0])) ? '–' : '';
 
         return "{$heading} {$birthYear} {$separator} {$deathYear}";
     },
     'result_content' => function($result) use ($base_url) {
-        $url = $result->id; // Die GND-URL ist bereits im Ergebnis enthalten
-        $output = "<a href=\"{$url}\" target=\"_blank\">{$url}</a>";
+        // The GND url comes with the result; it is third-party data, so it is
+        // rendered through UrlHelper rather than interpolated into an href.
+        $output = \KraenzleRitter\Resources\Helpers\UrlHelper::link($result->id ?? null);
 
-        // Verwende die vorbereitete Beschreibung oder erste biografische Information
         if(!empty($result->processedDescription)) {
-            $output .= "<br>" . $result->processedDescription;
+            $output .= "<br>" . e($result->processedDescription);
         } elseif(isset($result->biographicalOrHistoricalInformation)) {
-            $output .= "<br>" . $result->biographicalOrHistoricalInformation[0];
+            $output .= "<br>" . e($result->biographicalOrHistoricalInformation[0]);
         }
 
         return $output;

@@ -3,103 +3,91 @@
 namespace KraenzleRitter\Resources\Tests\Api;
 
 use KraenzleRitter\Resources\Anton;
+use KraenzleRitter\Resources\Tests\Support\MockProviderClient;
 use KraenzleRitter\Resources\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 class AntonGeorgfischerApiTest extends TestCase
 {
-    protected $skipIfNoInternet = true;
-
-    protected function setUp(): void
+    public function test_client_takes_its_url_from_the_provider_config()
     {
-        parent::setUp();
-
-        // Skip test if internet connection is not available
-        if ($this->skipIfNoInternet) {
-            try {
-                $connection = @fsockopen("archives.georgfischer.com", 80);
-                if (!$connection) {
-                    $this->markTestSkipped('No internet connection available or Georg Fischer API not reachable');
-                }
-                fclose($connection);
-            } catch (\Exception $e) {
-                $this->markTestSkipped('No internet connection available or Georg Fischer API not reachable');
-            }
-        }
-    }
-
-    public function test_anton_georgfischer_search_returns_expected_structure()
-    {
-        // Arrange
         $anton = new Anton('georgfischer');
-        $searchTerm = 'Fischer';
 
-        $configuredUrl = config('resources.providers.georgfischer.base_url');
-        $this->assertEquals($configuredUrl, $anton->url);
-
-        $results = $anton->search($searchTerm, ['size' => 3], 'actors');
-
-        // Assert
-        $this->assertNotNull($results, 'Anton search for "Fischer" should return results');
-        $this->assertNotEmpty($results, 'Anton search for "Fischer" results should not be empty');
-        $this->assertLessThanOrEqual(3, count($results), 'Anton search should respect the size parameter');
-
-        // Check structure of the first result
-        if (!empty($results)) {
-            $firstResult = $results[0];
-            $this->assertTrue(property_exists($firstResult, 'id'), 'Result should have an id');
-            $this->assertTrue(property_exists($firstResult, 'name'), 'Result should have a name');
-        }
-    }
-
-    public function test_anton_georgfischer_results_can_be_used_as_resources()
-    {
-        // Arrange
-        $anton = new Anton('georgfischer');
-        $searchTerm = 'Fischer'; // Ein allgemeiner Suchbegriff, der wahrscheinlich Ergebnisse liefert
-
-        // Die konfigurierte URL für Georgfischer überprüfen
-        $configuredUrl = config('resources.providers.georgfischer.base_url');
-        $this->assertEquals(
-            'https://archives.georgfischer.com/api/',
-            $configuredUrl,
-            'Die konfigurierte URL für Georgfischer ist nicht korrekt'
+        $this->assertSame(
+            config('resources.providers.georgfischer.base_url'),
+            $anton->url
         );
+        $this->assertSame('https://archives.georgfischer.com/api/', $anton->url);
+    }
 
-        // Act - Verwenden des 'actors' Endpoints, der ohne API-Token funktioniert
-        $results = $anton->search($searchTerm, ['size' => 1], 'actors');        // Skip if no results
-        if (empty($results)) {
-            $this->markTestSkipped('No search results for Anton Georgfischer');
-        }
+    public function test_search_returns_the_data_array()
+    {
+        $mock = MockProviderClient::withFixture('anton', 'search');
 
-        // Assert
-        $firstResult = $results[0];
+        $results = (new Anton('georgfischer', $mock->client))->search('Fischer', ['size' => 3], 'actors');
 
-        // Erstelle eine Resource-Daten-Struktur, wie sie von AntonLwComponent verwendet würde
-        // Dabei die konfigurierte URL verwenden, nicht hartcodieren
-        $configuredUrl = config('resources.providers.georgfischer.base_url');
+        $expected = MockProviderClient::fixtureData('anton', 'search')['data'];
+
+        $this->assertNotEmpty($results);
+        $this->assertCount(count($expected), $results);
+        $this->assertTrue(property_exists($results[0], 'id'));
+        $this->assertTrue(property_exists($results[0], 'name'));
+        $this->assertSame($expected[0]['id'], $results[0]->id);
+    }
+
+    public function test_search_hits_the_requested_endpoint_with_paging_parameters()
+    {
+        $mock = MockProviderClient::withFixture('anton', 'search');
+
+        (new Anton('georgfischer', $mock->client))->search('Fischer', ['size' => 3], 'actors');
+
+        $query = $mock->lastQuery();
+
+        $this->assertStringContainsString('actors', $mock->lastUri());
+        $this->assertSame('Fischer', $query['search']);
+        $this->assertSame('3', $query['perPage']);
+        $this->assertSame('1', $query['page']);
+    }
+
+    public function test_search_returns_empty_array_when_nothing_matches()
+    {
+        $mock = MockProviderClient::withFixture('anton', 'empty');
+
+        $results = (new Anton('georgfischer', $mock->client))->search('zzzzzzzz', ['size' => 3], 'actors');
+
+        $this->assertSame([], $results);
+    }
+
+    /**
+     * A result has to carry everything AntonLwComponent needs to build a
+     * resource row.
+     */
+    public function test_a_result_can_be_turned_into_resource_data()
+    {
+        $mock = MockProviderClient::withFixture('anton', 'search');
+
+        $results = (new Anton('georgfischer', $mock->client))->search('Fischer', ['size' => 1], 'actors');
+
+        $baseUrl = config('resources.providers.georgfischer.base_url');
+
         $resourceData = [
-            'provider' => 'Georgfischer',
-            'provider_id' => $firstResult->id ?? '',
-            'url' => $configuredUrl . 'actors/' . ($firstResult->id ?? ''),
-            'full_json' => json_encode($firstResult)
+            'provider' => 'georgfischer',
+            'provider_id' => $results[0]->id,
+            'url' => $baseUrl . 'actors/' . $results[0]->id,
+            'full_json' => json_encode($results[0]),
         ];
 
-        // Überprüfen, ob die URL tatsächlich mit der konfigurierten URL beginnt
-        $this->assertStringStartsWith(
-            $configuredUrl,
-            $resourceData['url'],
-            'Die Resource-URL verwendet nicht die konfigurierte Base-URL'
-        );
-
-        // Überprüfe, ob alle notwendigen Daten vorhanden sind
-        $this->assertArrayHasKey('provider', $resourceData);
-        $this->assertArrayHasKey('provider_id', $resourceData);
-        $this->assertArrayHasKey('url', $resourceData);
-        $this->assertArrayHasKey('full_json', $resourceData);
-
-        $this->assertEquals('Georgfischer', $resourceData['provider']);
+        $this->assertStringStartsWith($baseUrl, $resourceData['url']);
         $this->assertNotEmpty($resourceData['provider_id']);
-        $this->assertNotEmpty($resourceData['url']);
         $this->assertJson($resourceData['full_json']);
+    }
+
+    #[Group('live-api')]
+    public function test_live_georgfischer_search_still_answers()
+    {
+        $results = (new Anton('georgfischer'))->search('Fischer', ['size' => 3], 'actors');
+
+        $this->assertNotEmpty($results, 'Live Georg Fischer API returned no results');
+        $this->assertLessThanOrEqual(3, count($results));
     }
 }

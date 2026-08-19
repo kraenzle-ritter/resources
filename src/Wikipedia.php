@@ -3,6 +3,7 @@
 namespace KraenzleRitter\Resources;
 
 use \GuzzleHttp\Client;
+use \GuzzleHttp\ClientInterface;
 use KraenzleRitter\Resources\Helpers\UserAgent;
 
 /**
@@ -18,6 +19,17 @@ class Wikipedia
     public $client;
 
     /**
+     * An injected client wins over the per-call client built from the
+     * provider's base_url. Used by the test suite to avoid live requests.
+     */
+    private ?ClientInterface $injectedClient;
+
+    public function __construct(?ClientInterface $client = null)
+    {
+        $this->injectedClient = $client;
+    }
+
+    /**
      * Get a Wikipedia article list
      * @param  string $searchstring
      * @param  array $params possible keys: limit, providerKey
@@ -28,9 +40,8 @@ class Wikipedia
         $limit = $params['limit'] ?? 5;
         $providerKey = $params['providerKey'] ?? 'wikipedia-de';
 
-        $baseUrl = config('resources.providers.' . $providerKey . '.base_url');
-        $this->client = new Client([
-            'base_uri' => $baseUrl,
+        $this->client = $this->injectedClient ?: new Client([
+            'base_uri' => config('resources.providers.' . $providerKey . '.base_url'),
             'timeout' => config('resources.providers.' . $providerKey . '.timeout', 15),
             'connect_timeout' => config('resources.providers.' . $providerKey . '.connect_timeout', 5),
             'headers' => UserAgent::get(),
@@ -71,11 +82,9 @@ class Wikipedia
     {
         $providerKey = $params['providerKey'] ?? 'wikipedia-de';
 
-        $apiUrl = config('resources.providers.' . $providerKey . '.base_url');
-
         // Set User-Agent and timeout to comply with Wikipedia robot policy
-        $this->client = new Client([
-            'base_uri' => $apiUrl,
+        $this->client = $this->injectedClient ?: new Client([
+            'base_uri' => config('resources.providers.' . $providerKey . '.base_url'),
             'timeout' => config('resources.providers.' . $providerKey . '.timeout', 15),
             'connect_timeout' => config('resources.providers.' . $providerKey . '.connect_timeout', 5),
             'headers' => UserAgent::get(),

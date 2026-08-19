@@ -51,40 +51,27 @@ trait ProviderComponentTrait
         // Standard: keine Aktion. Kann in der Komponente überschrieben werden.
     }
 
+
     /**
-     * Save a resource to the associated model
+     * Remove a resource of the mounted model by its url.
      *
-     * @param mixed $model The model to associate the resource with
-     * @param array $resourceData Resource data array
-     * @return Resource The saved resource
+     * Scoped to $this->model on purpose: Livewire method calls are
+     * client-controlled, so an unscoped `Resource::where('url', ...)->delete()`
+     * lets any caller delete the matching rows of every other model.
+     *
+     * @return bool Whether anything was deleted.
      */
-    protected function saveResourceToModel($model, array $resourceData)
+    protected function removeResourceByUrl(string $url): bool
     {
-        // Check if model has required methods
-        if (!method_exists($model, 'updateOrCreateResource')) {
-            throw new \Exception('Model does not implement updateOrCreateResource method');
+        if (! $this->model || ! method_exists($this->model, 'resources')) {
+            return false;
         }
 
-        // Required fields
-        $requiredFields = ['provider', 'url'];
-        foreach ($requiredFields as $field) {
-            if (!isset($resourceData[$field])) {
-                throw new \Exception("Missing required field: {$field}");
-            }
-        }
+        $deleted = (bool) $this->model->resources()->where('url', $url)->delete();
 
-        // Save the resource
-        $resource = $model->updateOrCreateResource(
-            $resourceData['provider'],
-            $resourceData['url'],
-            $resourceData['title'] ?? null,
-            $resourceData['data'] ?? null
-        );
-
-        // Notify other components that resources have changed
         $this->dispatch('resourcesChanged');
 
-        return $resource;
+        return $deleted;
     }
 
     /**

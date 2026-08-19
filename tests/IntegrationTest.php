@@ -81,6 +81,7 @@ class IntegrationTest extends TestCase
         $this->assertContains('wikipedia-de', $providers);
     }
 
+    #[\PHPUnit\Framework\Attributes\Group('live-api')]
     public function test_resource_sync_service_integration()
     {
         // Mock HTTP responses

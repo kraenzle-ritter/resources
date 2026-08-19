@@ -2,8 +2,9 @@
 
 namespace KraenzleRitter\Resources\Tests\Api;
 
-use KraenzleRitter\Resources\Tests\TestCase;
 use KraenzleRitter\Resources\Geonames;
+use KraenzleRitter\Resources\Tests\Support\MockProviderClient;
+use KraenzleRitter\Resources\Tests\TestCase;
 
 class GeonamesTest extends TestCase
 {
@@ -11,52 +12,57 @@ class GeonamesTest extends TestCase
     {
         parent::setUp();
 
-        // Debug: Check what config is actually loaded
-        echo "\nConfig check - resources.providers.geonames.user_name: " . config('resources.providers.geonames.user_name');
-        echo "\nEnvironment check - GEONAMES_USERNAME: " . env('GEONAMES_USERNAME');
-
-        // Direkt setzen für Tests - aber jetzt mit der Environment-Variable
-        $username = env('GEONAMES_USERNAME', 'demo');
-        config(['resources.providers.geonames.user_name' => $username]);
+        config(['resources.providers.geonames.user_name' => 'test-account']);
         config(['resources.limit' => 5]);
-
-        echo "\nSet config to: " . config('resources.providers.geonames.user_name');
     }
 
-    public function test_geonames_search_with_demo_user()
+    public function test_search_returns_the_geonames_array()
     {
-        echo "\nTesting Geonames with demo user...";
+        $mock = MockProviderClient::withFixture('geonames', 'search');
 
-        $geonames = new Geonames();
+        $results = (new Geonames($mock->client))->search('Augsburg', ['limit' => 3]);
 
-        echo "\nGeonames username: " . $geonames->username;
-        echo "\nGeonames base_uri: " . $geonames->base_uri;
+        $expected = MockProviderClient::fixtureData('geonames', 'search')['geonames'];
 
-        $results = $geonames->search('Augsburg', ['limit' => 3]);
-
-        echo "\nResults type: " . gettype($results);
-        echo "\nResults: " . json_encode($results);
-
-        // Demo-Account kann eingeschränkt sein, das ist ok
-        if (empty($results)) {
-            $this->markTestSkipped('Demo account may be rate-limited or have restrictions');
-        } else {
-            $this->assertNotEmpty($results, 'Geonames should return results for Augsburg');
-        }
+        $this->assertIsArray($results);
+        $this->assertCount(count($expected), $results);
+        $this->assertSame('Augsburg', $results[0]['toponymName']);
+        $this->assertSame($expected[0]['geonameId'], $results[0]['geonameId']);
     }
 
-    public function test_geonames_search_with_zurich()
+    public function test_search_sends_the_configured_username_and_limit()
     {
-        $geonames = new Geonames();
-        $results = $geonames->search('Zurich', ['limit' => 3]);
+        $mock = MockProviderClient::withFixture('geonames', 'search');
 
-        echo "\nZurich results: " . json_encode($results);
+        (new Geonames($mock->client))->search('Augsburg', ['limit' => 3]);
 
-        // Demo-Account kann eingeschränkt sein, das ist ok
-        if (empty($results)) {
-            $this->markTestSkipped('Demo account may be rate-limited or have restrictions');
-        } else {
-            $this->assertNotEmpty($results, 'Geonames should return results for Zurich');
-        }
+        $query = $mock->lastQuery();
+
+        $this->assertSame(1, $mock->requestCount());
+        $this->assertSame('Augsburg', $query['q']);
+        $this->assertSame('test-account', $query['username']);
+        $this->assertSame('3', $query['maxRows']);
+    }
+
+    public function test_search_returns_empty_array_when_nothing_matches()
+    {
+        $mock = MockProviderClient::withFixture('geonames', 'empty');
+
+        $results = (new Geonames($mock->client))->search('zzzzzzzz', ['limit' => 3]);
+
+        $this->assertSame([], $results);
+    }
+
+    /**
+     * Geonames answers HTTP 200 with a status object when the account is over
+     * its quota — the client has to treat that as "no results", not as data.
+     */
+    public function test_rate_limited_response_yields_no_results()
+    {
+        $mock = MockProviderClient::withFixture('geonames', 'rate-limited');
+
+        $results = (new Geonames($mock->client))->search('Augsburg', ['limit' => 3]);
+
+        $this->assertSame([], $results);
     }
 }

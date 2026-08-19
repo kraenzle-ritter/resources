@@ -10,9 +10,13 @@
                 @foreach($resources->sortBy('provider') as $resource)
                     <li class="list-group-item {{ $resource->provider}}">
                         <div class="d-flex justify-content-between align-items-center">
-                            <a target="_blank" href="{{ $resource->url }}">
-                                {{ \KraenzleRitter\Resources\Helpers\LabelHelper::getProviderLabel($resource->provider) }}
-                            </a>
+                            {{-- A stored url may predate the scheme rule, so it is
+                                 rendered through UrlHelper: unsafe or missing urls
+                                 degrade to plain text instead of a live link. --}}
+                            {!! \KraenzleRitter\Resources\Helpers\UrlHelper::link(
+                                $resource->url,
+                                \KraenzleRitter\Resources\Helpers\LabelHelper::getProviderLabel($resource->provider)
+                            ) !!}
                             @if($deleteButton)
                                 <button
                                     wire:click="removeResource({{ $resource->id }})"

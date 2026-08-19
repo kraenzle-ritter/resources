@@ -2,11 +2,13 @@
 
 namespace KraenzleRitter\Resources;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use KraenzleRitter\Resources\Console\Commands\TestResourcesCommand;
 use KraenzleRitter\Resources\Http\Livewire\AntonLwComponent;
 use KraenzleRitter\Resources\Http\Livewire\GeonamesLwComponent;
 use KraenzleRitter\Resources\Http\Livewire\GndLwComponent;
+use KraenzleRitter\Resources\Http\Livewire\IdRefLwComponent;
 use KraenzleRitter\Resources\Http\Livewire\IdiotikonLwComponent;
 use KraenzleRitter\Resources\Http\Livewire\ManualInputLwComponent;
 use KraenzleRitter\Resources\Http\Livewire\MetagridLwComponent;
@@ -20,6 +22,7 @@ use KraenzleRitter\Resources\Wikipedia;
 use KraenzleRitter\Resources\Gnd;
 use KraenzleRitter\Resources\Geonames;
 use KraenzleRitter\Resources\Metagrid;
+use KraenzleRitter\Resources\IdRef;
 use KraenzleRitter\Resources\Idiotikon;
 use KraenzleRitter\Resources\Ortsnamen;
 use Livewire\Livewire;
@@ -39,8 +42,8 @@ class ResourcesServiceProvider extends ServiceProvider
         // Load translation files
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'resources');
 
-        // Load routes
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        // Load the diagnostics routes only when the application opts in.
+        $this->registerDiagnosticsRoutes();
 
         // Register Livewire components
         if (class_exists(\Livewire\Livewire::class)) {
@@ -49,6 +52,7 @@ class ResourcesServiceProvider extends ServiceProvider
             Livewire::component('anton-lw-component', AntonLwComponent::class);
             Livewire::component('geonames-lw-component', GeonamesLwComponent::class);
             Livewire::component('gnd-lw-component', GndLwComponent::class);
+            Livewire::component('idref-lw-component', IdRefLwComponent::class);
             Livewire::component('idiotikon-lw-component', IdiotikonLwComponent::class);
             Livewire::component('metagrid-lw-component', MetagridLwComponent::class);
             Livewire::component('ortsnamen-lw-component', OrtsnamenLwComponent::class);
@@ -64,6 +68,24 @@ class ResourcesServiceProvider extends ServiceProvider
             ]);
             $this->bootForConsole();
         }
+    }
+
+    /**
+     * Register the /resources-check diagnostics routes.
+     *
+     * These render provider configuration, so they are opt-in and take their
+     * middleware from config rather than being hardcoded to ['web'].
+     *
+     * @return void
+     */
+    protected function registerDiagnosticsRoutes()
+    {
+        if (! config('resources.diagnostics.enabled', false)) {
+            return;
+        }
+
+        Route::middleware(config('resources.diagnostics.middleware', ['web']))
+            ->group(__DIR__.'/../routes/web.php');
     }
 
     /**
@@ -86,6 +108,7 @@ class ResourcesServiceProvider extends ServiceProvider
         $this->app->bind(Gnd::class);
         $this->app->bind(Geonames::class);
         $this->app->bind(Metagrid::class);
+        $this->app->bind(IdRef::class);
         $this->app->bind(Idiotikon::class);
         $this->app->bind(Ortsnamen::class);
         // Anton is handled separately as it requires parameters

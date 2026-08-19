@@ -52,7 +52,7 @@ trait HasResources
      */
     public function removeResource(string $id): bool
     {
-        return (bool) (new Resource())->removeResource($id);
+        return (new Resource())->removeResourceFor($this, $id);
     }
 
     /**
@@ -64,7 +64,10 @@ trait HasResources
      */
     public function syncFromProvider(string $provider, $filter = []): array
     {
-        $syncService = new ResourceSyncService($filter);
+        // Resolved from the container rather than constructed directly, so an
+        // application - or the test suite - can substitute the service.
+        $syncService = app()->makeWith(ResourceSyncService::class, ['filter' => $filter]);
+
         return $syncService->syncFromProvider($this, $provider);
     }
 }

@@ -8,14 +8,13 @@
         return "saveResource('{$result->lemmaID}', '{$result->url}', '{$json}')";
     },
     'result_heading' => function($result) {
-        return $result->lemmaText ?? '';
+        return e($result->lemmaText ?? '');
     },
     'result_content' => function($result) {
-        $output = "<a href=\"{$result->url}\" target=\"_blank\">{$result->url}</a>";
+        $output = \KraenzleRitter\Resources\Helpers\UrlHelper::link($result->url ?? null);
 
-        // Verwende die vorbereitete Beschreibung
         if (!empty($result->processedDescription)) {
-            $output .= "<br>" . $result->processedDescription;
+            $output .= "<br>" . e($result->processedDescription);
         }
 
         return $output;

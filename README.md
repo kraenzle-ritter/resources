@@ -16,6 +16,7 @@ Resource Model and a hasResource trait where resources are basically links to a 
 - [Wikidata](https://www.wikidata.org/) (Structured data)
 - [Idiotikon](https://www.idiotikon.ch/) (Swiss German dictionary)
 - [Ortsnamen.ch](https://ortsnamen.ch/) (Swiss place names)
+- [IdRef](https://www.idref.fr/) (French authority file, ABES)
 - [Metagrid](https://metagrid.ch/) (Swiss humanities database network)
 - [Anton API](https://anton.ch/) (Archives and collections)
   - [Archiv der Georg Fischer AG](https://archives.georgfischer.com)
@@ -70,10 +71,55 @@ $model->resources;
 ...
 ```
 
-With the artisan-command
+### IdRef record types
+
+IdRef covers persons, corporate bodies, places, families and subject headings in
+one index. Which of them a search returns is driven by the endpoint the
+component is mounted with:
+
+```php
+'idref' => [
+    'default_record_types' => ['person', 'corporate'],
+    'endpoint_record_types' => [
+        'actors'   => ['person', 'corporate', 'family'],
+        'places'   => ['place'],
+        'keywords' => ['subject'],
+    ],
+],
+```
+
+Publish the config to adjust the mapping for your own endpoint names; an
+endpoint with no mapping falls back to `default_record_types`.
+
+Because `idref` declares `wikidata_property: P269` **and** a `target_url`,
+`syncFromProvider()` will also create IdRef links automatically whenever a
+synced Wikidata item carries a P269 claim. Add `idref` to your filter list to
+suppress that.
+
+### Checking provider health
 
 ```bash
-php artisan resources:fetch --provider=gnd // or wikidata or wikipedia
+php artisan resources:test-resources                  # all configured providers
+php artisan resources:test-resources --provider=gnd   # just one
+```
+
+### Diagnostics routes
+
+The package ships a diagnostics UI at `/resources-check`. It is **disabled by
+default** — it renders provider configuration, so it should not be reachable in
+a host application unless you ask for it. Enable it per environment:
+
+```dotenv
+RESOURCES_DIAGNOSTICS=true
+```
+
+and optionally restrict it further in `config/resources.php`:
+
+```php
+'diagnostics' => [
+    'enabled' => env('RESOURCES_DIAGNOSTICS', false),
+    'middleware' => ['web', 'auth'],
+],
 ```
 
 You can add more resources to a model which already has a gnd link. You can configure the list of resources in the config file.

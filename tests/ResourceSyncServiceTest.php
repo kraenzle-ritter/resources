@@ -11,6 +11,7 @@ use KraenzleRitter\Resources\Resource;
 use KraenzleRitter\Resources\Tests\TestCase;
 use KraenzleRitter\Resources\Tests\TestModel;
 use KraenzleRitter\Resources\ResourceSyncService;
+use KraenzleRitter\Resources\Tests\Support\MockProviderClient;
 
 class ResourceSyncServiceTest extends TestCase
 {
@@ -40,7 +41,16 @@ class ResourceSyncServiceTest extends TestCase
             ]
         ]);
 
-        $this->syncService = new ResourceSyncService();
+        // The shared instance gets a mocked client: the tests below exercise
+        // code paths and assert on shapes, they are not integration tests.
+        // The live counterparts live in the live-api group.
+        $this->syncService = new ResourceSyncService(
+            [],
+            (new MockProviderClient(array_map(
+                fn () => new Response(200, ['Content-Type' => 'application/json'], '{}'),
+                range(1, 20)
+            )))->client
+        );
     }
 
     /**
@@ -152,6 +162,7 @@ class ResourceSyncServiceTest extends TestCase
         $this->assertInstanceOf(ResourceSyncService::class, $emptyService);
     }
 
+    #[\PHPUnit\Framework\Attributes\Group('live-api')]
     public function test_sync_from_wikidata_provider()
     {
         $model = TestModel::create(['name' => 'Test sync from wikidata']);
@@ -178,24 +189,26 @@ class ResourceSyncServiceTest extends TestCase
     {
         $model = TestModel::create(['name' => 'Test sync from metagrid']);
 
-        // Create a test metagrid resource
         $model->updateOrCreateResource([
             'provider' => 'metagrid',
             'provider_id' => 'test-id',
-            'url' => 'https://httpbin.org/json' // Mock endpoint that returns JSON
+            'url' => 'https://api.metagrid.ch/concordance/test-id.json',
         ]);
 
         $this->assertEquals(1, count($model->resources));
 
-        $syncService = new ResourceSyncService();
+        // A JSON body that is not in metagrid's shape. This used to point at
+        // httpbin.org, i.e. the suite depended on a third-party service to
+        // supply a non-matching payload.
+        $syncService = new ResourceSyncService(
+            [],
+            MockProviderClient::withBody('{"slideshow": {"title": "Sample"}}')->client
+        );
 
-        // Note: This test may fail in real scenarios since httpbin.org doesn't return
-        // metagrid format, but it tests the code path
         $syncedResources = $syncService->syncFromProvider($model, 'metagrid');
 
         $this->assertIsArray($syncedResources);
-        // We expect empty array since httpbin.org doesn't return metagrid format
-        $this->assertEquals(0, count($syncedResources));
+        $this->assertCount(0, $syncedResources);
     }
 
     /**
@@ -263,19 +276,24 @@ class ResourceSyncServiceTest extends TestCase
     }
 
     /**
-     * Testet setUpProviders Methode
+     * The Wikidata URL-pattern lookup, formerly the private setUpProviders()
+     * that ran from the constructor. It is now public, lazy and cached; see
+     * ResourceSyncCacheTest for the caching and failure behaviour.
      */
-    public function test_setup_providers_method()
+    public function test_wikidata_url_patterns_never_throws()
     {
-        $reflection = new \ReflectionClass($this->syncService);
-        $method = $reflection->getMethod('setUpProviders');
-        $method->setAccessible(true);
+        $service = new ResourceSyncService([], MockProviderClient::withStatus(500)->client);
 
-        // Setup ausführen
-        $method->invoke($this->syncService);
+        $this->assertIsArray($service->wikidataUrlPatterns());
+    }
 
-        // Teste dass keine Exception geworfen wird
-        $this->assertTrue(true);
+    public function test_the_constructor_does_not_hit_the_network()
+    {
+        $mock = new MockProviderClient([]);
+
+        new ResourceSyncService([], $mock->client);
+
+        $this->assertSame(0, $mock->requestCount());
     }
 
     /**

@@ -4,6 +4,7 @@ namespace KraenzleRitter\Resources;
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use KraenzleRitter\Resources\Helpers\Params;
 use KraenzleRitter\Resources\Helpers\UserAgent;
@@ -16,10 +17,12 @@ class Anton
     private $token;
     private $providerKey;
     private $client;
+    private ?ClientInterface $injectedClient = null;
     private $query_params = [];
 
-    public function __construct(string $providerKey)
+    public function __construct(string $providerKey, ?ClientInterface $client = null)
     {
+        $this->injectedClient = $client;
         $this->providerKey = $providerKey;
         $this->url = config("resources.providers.{$providerKey}.base_url");
 
@@ -34,7 +37,7 @@ class Anton
         // Make sure URL ends with a slash
         $baseUrl = rtrim($this->url, '/') . '/';
 
-        $this->client = new Client([
+        $this->client = $this->injectedClient ?: new Client([
             'base_uri' => $baseUrl,
             'timeout'  => 10,
             'headers'  => UserAgent::get(),
@@ -54,9 +57,19 @@ class Anton
         // Build proper query params - no ? in the key name
         $this->query_params = array_merge(['search' => $search], $this->query_params);
 
-        // Add API token only if it exists
+        // The token travels in an Authorization header by default: as a query
+        // parameter it ends up in the upstream access log, in any proxy in
+        // between, and in the Referer of links the response leads to.
+        // `api_token_transport: query` restores the old behaviour per provider.
+        $requestOptions = [];
+        $transport = config("resources.providers.{$this->providerKey}.api_token_transport", 'header');
+
         if ($this->token) {
-            $this->query_params['api_token'] = $this->token;
+            if ($transport === 'query') {
+                $this->query_params['api_token'] = $this->token;
+            } else {
+                $requestOptions['headers'] = ['Authorization' => 'Bearer ' . $this->token];
+            }
         }
 
         // Convert to query string
@@ -66,7 +79,7 @@ class Anton
         $fullUrl = $endpoint . '?' . ltrim($query_string, '?');
 
         try {
-            $response = $this->client->get($fullUrl);
+            $response = $this->client->get($fullUrl, $requestOptions);
 
             if ($response->getStatusCode() == 200) {
                 $result = json_decode($response->getBody());

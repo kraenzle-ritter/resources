@@ -13,4 +13,14 @@ return [
     'Provider ID' => 'ID du fournisseur',
     'URL' => 'URL',
     'Save' => 'Enregistrer',
+    'Also known as' => 'Aussi connu comme',
+    'idref' => [
+        'record_type' => [
+            'person' => 'Personne',
+            'corporate' => 'Collectivité',
+            'place' => 'Lieu',
+            'family' => 'Famille',
+            'subject' => 'Sujet',
+        ],
+    ],
 ];

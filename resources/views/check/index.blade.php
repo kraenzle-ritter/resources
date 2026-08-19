@@ -123,9 +123,9 @@ php artisan migrate</code></pre>
         <div class="card-body">
             <p>Für weitere Informationen über Resources und ihre Konfiguration, siehe:</p>
             <ul>
-                <li><a href="https://github.com/kraenzle-ritter/resources" target="_blank">GitHub Repository</a></li>
-                <li><a href="https://github.com/kraenzle-ritter/resources#readme" target="_blank">README</a></li>
-                <li><a href="https://github.com/kraenzle-ritter/resources/blob/master/config/resources.php" target="_blank">Konfigurations-Datei</a></li>
+                <li><a href="https://github.com/kraenzle-ritter/resources" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
+                <li><a href="https://github.com/kraenzle-ritter/resources#readme" target="_blank" rel="noopener noreferrer">README</a></li>
+                <li><a href="https://github.com/kraenzle-ritter/resources/blob/master/config/resources.php" target="_blank" rel="noopener noreferrer">Konfigurations-Datei</a></li>
             </ul>
         </div>
     </div>

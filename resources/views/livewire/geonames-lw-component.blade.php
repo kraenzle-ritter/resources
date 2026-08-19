@@ -19,14 +19,13 @@
         return "saveResource('{$result->geonameId}', '{$base_url}{$result->geonameId}', '{$json}')";
     },
     'result_heading' => function($result) {
-        return $result->toponymName ?? '';
+        return e($result->toponymName ?? '');
     },
     'result_content' => function($result) use ($base_url) {
-        $output = "<a href=\"{$base_url}{$result->geonameId}\" target=\"_blank\">{$base_url}{$result->geonameId}</a>";
+        $output = \KraenzleRitter\Resources\Helpers\UrlHelper::link($base_url . ($result->geonameId ?? ''));
 
-        // Verwende die vorbereitete kombinierte Beschreibung
         if (!empty($result->combinedDescription)) {
-            $output .= "<br>" . $result->combinedDescription;
+            $output .= "<br>" . e($result->combinedDescription);
         }
 
         return $output;

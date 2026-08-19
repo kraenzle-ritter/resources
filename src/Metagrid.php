@@ -2,94 +2,89 @@
 
 namespace KraenzleRitter\Resources;
 
-use \GuzzleHttp\Client;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use KraenzleRitter\Resources\Helpers\UserAgent;
+use KraenzleRitter\Resources\Traits\HttpClientTrait;
 
 /**
- * Metagrid queries
+ * Metagrid concordance search.
  *
- *  use the Metagrid api
- *  (new Metagrid())->search('Karl Barth');
+ * (new Metagrid())->search('Karl Barth');
  */
 class Metagrid
 {
+    use HttpClientTrait;
+
+    public const DEFAULT_BASE_URL = 'https://api.metagrid.ch/';
+
     public $client;
 
-    public function __construct()
+    public $body;
+
+    public function __construct(?ClientInterface $client = null)
     {
-        $baseUrl = 'https://api.metagrid.ch/';
+        if ($client) {
+            $this->client = $client;
+
+            return;
+        }
 
         $this->client = new Client([
-            'base_uri' => $baseUrl,
-            'timeout' => 10,
+            'base_uri' => config('resources.providers.metagrid.base_url', self::DEFAULT_BASE_URL),
+            'timeout' => config('resources.providers.metagrid.timeout', 15),
+            'connect_timeout' => config('resources.providers.metagrid.connect_timeout', 5),
             'headers' => UserAgent::get(),
+            'http_errors' => false,
         ]);
     }
 
+    /**
+     * @return array Concordance objects, empty on any failure or no match.
+     *               Previously returned null for "no match", which forced every
+     *               caller to handle two empty shapes.
+     */
     public function search($search, $params = [])
     {
-        if (!$search) {
+        if (! trim((string) $search)) {
             return [];
         }
 
-        $search = str_replace(',', ' ', $search);
+        $limit = $params['limit']
+            ?? config('resources.providers.metagrid.limit')
+            ?? config('resources.limit')
+            ?? 5;
 
-        // Determine limit from parameters or configuration
-        $limit = $params['limit'] ?? config('resources.limit') ?? 5;
+        // https://api.metagrid.ch/search?group=1&query=cassirer&skip=0&take=10
+        $endpoint = 'search?query=' . urlencode(str_replace(',', ' ', $search))
+            . '&group=1&take=' . $limit . '&_format=json';
 
-        try {
-            // https://api.metagrid.ch/search?group=1&query=cassirer&skip=0&take=10
-            $response = $this->client->get('/search?query=' . $search . '&group=1&take=' . $limit . '&_format=json');
-        } catch (\Exception $e) {
-            return [];
-        }
+        return $this->safeHttpGet($endpoint, 'Metagrid API', [], function ($content, $endpoint, $apiName, $fallbackValue) {
+            $body = json_decode($content);
 
-        $body = json_decode($response->getBody());
+            if (json_last_error() !== JSON_ERROR_NONE || ! is_object($body)) {
+                return $fallbackValue;
+            }
 
-        if (!$body || $body->meta->total == 0) {
-            return null;
-        }
+            if (! isset($body->concordances) || ! is_array($body->concordances)) {
+                return $fallbackValue;
+            }
 
-        return $body->concordances;
+            if (isset($body->meta->total) && (int) $body->meta->total === 0) {
+                return $fallbackValue;
+            }
+
+            return $body->concordances;
+        });
     }
 
     // https://api.metagrid.ch/concordance/47451.json
     public function getConcordance($id)
     {
-        $response = $this->client->get('/concordance/' . $id . '.json');
-        $this->body = json_decode($response->getBody());
+        $this->body = $this->safeHttpGet('concordance/' . $id . '.json', 'Metagrid API', null, function ($content) {
+            return json_decode($content);
+        });
 
         return $this;
     }
-
-    private function composeName($resource)
-    {
-        if (!isset($resource->metadata)) {
-            return '';
-        }
-
-        if (isset($resource->metadata->first_name) && isset($resource->metadata->last_name)) {
-            $name = $resource->metadata->last_name . ', ' . $resource->metadata->first_name;
-        } else {
-            $name = $resource->metadata->name ?? $resource->metadata->last_name ?? null;
-        }
-
-        return $name;
-    }
-
-    private function composeDates($resource, $full = true)
-    {
-        $date = '';
-        if (isset($resource->metadata->birth_date)) {
-            $date = ' *' . substr($resource->metadata->birth_date, 0, 4);
-        }
-
-        if (isset($resource->metadata->death_date)) {
-            $date .= ' †' . substr($resource->metadata->death_date, 0, 4);
-        }
-        if ($date) {
-            return ' ('. $date .')';
-        }
-    }
-
 }

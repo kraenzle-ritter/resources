@@ -51,23 +51,14 @@
         return "saveResource('{$result->pageid}', '{$encodedUrl}', '{$encodedTitle}')";
     },
     'result_heading' => function($result) {
-        return $result->title ?? ''; // Use title as heading
+        return e($result->title ?? ''); // Use title as heading
     },
     'result_content' => function($result) use ($base_url) {
-        // Prepare title and URL for display
         $title = $result->title ?? '';
-        $url = $base_url . str_replace(' ', '_', $title);
+        $output = \KraenzleRitter\Resources\Helpers\UrlHelper::link($base_url . str_replace(' ', '_', $title));
 
-        // Encode URL correctly for HTML
-        $encodedTitle = htmlspecialchars($title);
-        $encodedUrl = htmlspecialchars($url);
-
-        $output = "<a href=\"{$encodedUrl}\" target=\"_blank\">{$encodedUrl}</a>";
-
-        // Verwende die bereits extrahierte firstSentence und stelle sicher, dass HTML korrekt kodiert ist
         if (!empty($result->firstSentence)) {
-            $cleanSentence = htmlspecialchars($result->firstSentence);
-            $output .= "<br>" . $cleanSentence;
+            $output .= "<br>" . e($result->firstSentence);
         }
 
         return $output;

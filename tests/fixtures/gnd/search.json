@@ -1,0 +1,1610 @@
+{
+  "@context" : "https://lobid.org/gnd/context.jsonld",
+  "id" : "https://lobid.org/gnd/search?q=Hannah%20Arendt&size=5&format=json",
+  "totalItems" : 321,
+  "member" : [ {
+    "dateOfProduction" : [ "1976" ],
+    "describedBy" : {
+      "descriptionLevel" : {
+        "id" : "https://d-nb.info/standards/vocab/gnd/description-level#3",
+        "label" : "Katalogisierungslevel 3"
+      },
+      "dctCreator" : {
+        "id" : "https://ld.zdb-services.de/resource/organisations/DE-Mar1",
+        "label" : "https://ld.zdb-services.de/resource/organisations/DE-Mar1"
+      },
+      "license" : {
+        "id" : "http://creativecommons.org/publicdomain/zero/1.0/",
+        "label" : "http://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "dateModified" : "2025-07-14T15:04:16.000",
+      "id" : "https://d-nb.info/gnd/1371290970/about",
+      "maintainer" : {
+        "id" : "https://ld.zdb-services.de/resource/organisations/DE-576",
+        "label" : "https://ld.zdb-services.de/resource/organisations/DE-576"
+      }
+    },
+    "formOfWorkAndExpression" : [ {
+      "id" : "https://d-nb.info/gnd/4036774-5",
+      "label" : "Lyrik"
+    } ],
+    "gndIdentifier" : "1371290970",
+    "id" : "https://d-nb.info/gnd/1371290970",
+    "preferredName" : "Hannah Arendt",
+    "languageCode" : [ {
+      "id" : "http://id.loc.gov/vocabulary/iso639-2/ger",
+      "label" : "http://id.loc.gov/vocabulary/iso639-2/ger"
+    } ],
+    "type" : [ "AuthorityResource", "Work" ],
+    "@context" : "https://lobid.org/gnd/context.jsonld",
+    "firstAuthor" : [ {
+      "id" : "https://d-nb.info/gnd/119138824",
+      "label" : "Greve, Ludwig"
+    } ]
+  }, {
+    "relatedWork" : [ {
+      "id" : "https://d-nb.info/gnd/1029746702",
+      "label" : "Hannah Arendt (Film)"
+    } ],
+    "describedBy" : {
+      "descriptionLevel" : {
+        "id" : "https://d-nb.info/standards/vocab/gnd/description-level#3",
+        "label" : "Katalogisierungslevel 3"
+      },
+      "dctCreator" : {
+        "id" : "https://ld.zdb-services.de/resource/organisations/DE-Mar1",
+        "label" : "https://ld.zdb-services.de/resource/organisations/DE-Mar1"
+      },
+      "license" : {
+        "id" : "http://creativecommons.org/publicdomain/zero/1.0/",
+        "label" : "http://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "dateModified" : "2021-03-04T17:41:59.000",
+      "id" : "https://d-nb.info/gnd/1130890511/about",
+      "maintainer" : {
+        "id" : "https://ld.zdb-services.de/resource/organisations/DE-576",
+        "label" : "https://ld.zdb-services.de/resource/organisations/DE-576"
+      }
+    },
+    "formOfWorkAndExpression" : [ {
+      "id" : "https://d-nb.info/gnd/4127976-1",
+      "label" : "Drehbuch"
+    } ],
+    "gndIdentifier" : "1130890511",
+    "id" : "https://d-nb.info/gnd/1130890511",
+    "preferredName" : "Hannah Arendt",
+    "languageCode" : [ {
+      "id" : "http://id.loc.gov/vocabulary/iso639-2/ger",
+      "label" : "http://id.loc.gov/vocabulary/iso639-2/ger"
+    } ],
+    "type" : [ "AuthorityResource", "Work" ],
+    "@context" : "https://lobid.org/gnd/context.jsonld",
+    "dateOfPublication" : [ "2012" ],
+    "firstAuthor" : [ {
+      "id" : "https://d-nb.info/gnd/118760998",
+      "label" : "Trotta, Margarethe von"
+    } ],
+    "sameAs" : [ {
+      "id" : "http://viaf.org/viaf/2069149368877985980001",
+      "collection" : {
+        "icon" : "http://viaf.org/viaf/images/viaf.ico",
+        "name" : "Virtual International Authority File (VIAF)",
+        "publisher" : "OCLC",
+        "id" : "http://www.wikidata.org/entity/Q54919",
+        "abbr" : "VIAF"
+      }
+    } ]
+  }, {
+    "dateOfProduction" : [ "1982" ],
+    "describedBy" : {
+      "descriptionLevel" : {
+        "id" : "https://d-nb.info/standards/vocab/gnd/description-level#3",
+        "label" : "Katalogisierungslevel 3"
+      },
+      "dctCreator" : {
+        "id" : "https://ld.zdb-services.de/resource/organisations/DE-Mar1",
+        "label" : "https://ld.zdb-services.de/resource/organisations/DE-Mar1"
+      },
+      "license" : {
+        "id" : "http://creativecommons.org/publicdomain/zero/1.0/",
+        "label" : "http://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "dateModified" : "2025-05-07T12:51:42.000",
+      "id" : "https://d-nb.info/gnd/1121140319/about",
+      "maintainer" : {
+        "id" : "https://ld.zdb-services.de/resource/organisations/DE-576",
+        "label" : "https://ld.zdb-services.de/resource/organisations/DE-576"
+      }
+    },
+    "gndIdentifier" : "1121140319",
+    "id" : "https://d-nb.info/gnd/1121140319",
+    "preferredName" : "Hannah Arendt",
+    "languageCode" : [ {
+      "id" : "http://id.loc.gov/vocabulary/iso639-2/eng",
+      "label" : "http://id.loc.gov/vocabulary/iso639-2/eng"
+    } ],
+    "type" : [ "Work", "AuthorityResource" ],
+    "variantName" : [ "Hannah Arendt - for love of the world" ],
+    "@context" : "https://lobid.org/gnd/context.jsonld",
+    "firstAuthor" : [ {
+      "id" : "https://d-nb.info/gnd/143422103",
+      "label" : "Young-Bruehl, Elisabeth"
+    } ],
+    "sameAs" : [ {
+      "id" : "http://viaf.org/viaf/1812147484277249360000",
+      "collection" : {
+        "icon" : "http://viaf.org/viaf/images/viaf.ico",
+        "name" : "Virtual International Authority File (VIAF)",
+        "publisher" : "OCLC",
+        "id" : "http://www.wikidata.org/entity/Q54919",
+        "abbr" : "VIAF"
+      }
+    } ]
+  }, {
+    "hasGrandParent" : [ {
+      "id" : "https://d-nb.info/gnd/119067159X",
+      "label" : "Arendt, Max"
+    } ],
+    "exactMatch" : [ {
+      "id" : "http://lod.gesis.org/thesoz/concept_10036734",
+      "label" : "http://lod.gesis.org/thesoz/concept_10036734"
+    } ],
+    "earlierNameOfThePerson" : [ {
+      "forename" : [ "Johanna" ],
+      "surname" : [ "Arendt" ],
+      "type" : "EarlierNameOfThePerson"
+    } ],
+    "gender" : [ {
+      "id" : "https://d-nb.info/standards/vocab/gnd/gender#female",
+      "label" : "Weiblich"
+    } ],
+    "relatedWork" : [ {
+      "id" : "https://d-nb.info/gnd/4430639-8",
+      "label" : "Eichmann in Jerusalem"
+    } ],
+    "dateOfDeath" : [ "1975-12-04" ],
+    "placeOfDeath" : [ {
+      "id" : "https://d-nb.info/gnd/4042011-5",
+      "label" : "New York, NY"
+    } ],
+    "familialRelationship" : [ {
+      "id" : "https://d-nb.info/gnd/119378418",
+      "label" : "Blücher, Heinrich"
+    }, {
+      "id" : "https://d-nb.info/gnd/119067159X",
+      "label" : "Arendt, Max"
+    }, {
+      "id" : "https://d-nb.info/gnd/118502751",
+      "label" : "Anders, Günther"
+    }, {
+      "id" : "https://d-nb.info/gnd/1190671301",
+      "label" : "Arendt, Paul"
+    }, {
+      "id" : "https://d-nb.info/gnd/1190671980",
+      "label" : "Beerwald, Martin"
+    }, {
+      "id" : "https://d-nb.info/gnd/1190672170",
+      "label" : "Arendt-Beerwald, Martha"
+    } ],
+    "type" : [ "AuthorityResource", "DifferentiatedPerson", "Person" ],
+    "gndSubjectCategory" : [ {
+      "id" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#4.7p",
+      "label" : "Personen zu Philosophie"
+    }, {
+      "id" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#9.5p",
+      "label" : "Personen zu Soziologie, Gesellschaft, Arbeit, Sozialgeschichte"
+    }, {
+      "id" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#8.1p",
+      "label" : "Personen (Politologen, Staatstheoretiker)"
+    } ],
+    "oldAuthorityNumber" : [ "(DE-588c)4002884-7", "(DE-588a)11850391X" ],
+    "geographicAreaCode" : [ {
+      "id" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-FR",
+      "label" : "Frankreich"
+    }, {
+      "id" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-DE",
+      "label" : "Deutschland"
+    }, {
+      "id" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XD-US",
+      "label" : "USA"
+    } ],
+    "biographicalOrHistoricalInformation" : [ "Emigration 1933 nach Frankreich, 1941 in die USA" ],
+    "pseudonymNameOfThePerson" : [ {
+      "forename" : [ "Peter" ],
+      "surname" : [ "Schlemihl" ],
+      "type" : "PseudonymNameOfThePerson"
+    } ],
+    "affiliation" : [ {
+      "id" : "https://d-nb.info/gnd/1038776023",
+      "label" : "Jewish Cultural Reconstruction"
+    } ],
+    "academicDegree" : [ "Prof. Dr." ],
+    "publication" : [ "Der Liebesbegriff bei Augustin" ],
+    "describedBy" : {
+      "descriptionLevel" : {
+        "id" : "https://d-nb.info/standards/vocab/gnd/description-level#1",
+        "label" : "Katalogisierungslevel 1"
+      },
+      "dctCreator" : {
+        "id" : "https://ld.zdb-services.de/resource/organisations/DE-101",
+        "label" : "https://ld.zdb-services.de/resource/organisations/DE-101"
+      },
+      "license" : {
+        "id" : "http://creativecommons.org/publicdomain/zero/1.0/",
+        "label" : "http://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "dateModified" : "2026-01-23T15:06:17.000",
+      "id" : "https://d-nb.info/gnd/11850391X/about",
+      "maintainer" : {
+        "id" : "https://ld.zdb-services.de/resource/organisations/DE-101",
+        "label" : "https://ld.zdb-services.de/resource/organisations/DE-101"
+      }
+    },
+    "gndIdentifier" : "11850391X",
+    "id" : "https://d-nb.info/gnd/11850391X",
+    "preferredName" : "Arendt, Hannah",
+    "wikipedia" : [ {
+      "id" : "https://de.wikipedia.org/wiki/Hannah_Arendt",
+      "label" : "https://de.wikipedia.org/wiki/Hannah_Arendt"
+    } ],
+    "fieldOfStudy" : [ {
+      "id" : "https://d-nb.info/gnd/4015875-5",
+      "label" : "Evangelische Theologie"
+    }, {
+      "id" : "https://d-nb.info/gnd/4315324-0",
+      "label" : "Gräzistik"
+    }, {
+      "id" : "https://d-nb.info/gnd/4045791-6",
+      "label" : "Philosophie"
+    } ],
+    "preferredNameEntityForThePerson" : {
+      "forename" : [ "Hannah" ],
+      "surname" : [ "Arendt" ]
+    },
+    "depiction" : [ {
+      "copyrighted" : true,
+      "license" : [ {
+        "attributionRequired" : true,
+        "name" : "Creative Commons Attribution-Share Alike 4.0",
+        "id" : "https://creativecommons.org/licenses/by-sa/4.0",
+        "abbr" : "CC BY-SA 4.0"
+      } ],
+      "thumbnail" : "https://commons.wikimedia.org/wiki/Special:FilePath/Hannah%20Arendt%20auf%20dem%201.%20Kulturkritikerkongress%2C%20Barbara%20Niggl%20Radloff%2C%20FM-2019-1-5-9-16%20%28cropped%29.jpg?width=270",
+      "creatorName" : [ "Barbara Niggl Radloff" ],
+      "publisher" : "Wikimedia Commons",
+      "id" : "https://commons.wikimedia.org/wiki/Special:FilePath/Hannah%20Arendt%20auf%20dem%201.%20Kulturkritikerkongress%2C%20Barbara%20Niggl%20Radloff%2C%20FM-2019-1-5-9-16%20%28cropped%29.jpg",
+      "creditText" : [ "sammlungonline.muenchner-stadtmuseum.de" ],
+      "url" : "https://commons.wikimedia.org/wiki/File:Hannah%20Arendt%20auf%20dem%201.%20Kulturkritikerkongress%2C%20Barbara%20Niggl%20Radloff%2C%20FM-2019-1-5-9-16%20%28cropped%29.jpg?uselang=de"
+    } ],
+    "professionOrOccupation" : [ {
+      "id" : "https://d-nb.info/gnd/4393865-6",
+      "label" : "Soziologin"
+    }, {
+      "id" : "https://d-nb.info/gnd/4629643-8",
+      "label" : "Politologin"
+    }, {
+      "id" : "https://d-nb.info/gnd/4174285-0",
+      "label" : "Philosophin"
+    }, {
+      "id" : "https://d-nb.info/gnd/4333423-4",
+      "label" : "Historikerin"
+    }, {
+      "id" : "https://d-nb.info/gnd/4053311-6",
+      "label" : "Schriftstellerin"
+    } ],
+    "placeOfBirth" : [ {
+      "id" : "https://d-nb.info/gnd/4099668-2",
+      "label" : "Linden (Hannover)"
+    } ],
+    "dateOfBirth" : [ "1906-10-14" ],
+    "variantNameEntityForThePerson" : [ {
+      "forename" : [ "Hana" ],
+      "surname" : [ "Arent" ]
+    }, {
+      "forename" : [ "Heinrich" ],
+      "surname" : [ "Arendt" ]
+    }, {
+      "forename" : [ "Chana" ],
+      "surname" : [ "Arend" ]
+    }, {
+      "forename" : [ "Hannah Arendt" ],
+      "surname" : [ "Bluecher" ]
+    }, {
+      "forename" : [ "Peter" ],
+      "surname" : [ "Schlemihl" ]
+    }, {
+      "forename" : [ "Ḥanah" ],
+      "surname" : [ "Arendṭ" ]
+    }, {
+      "forename" : [ "Hanna" ],
+      "surname" : [ "Ārento" ]
+    }, {
+      "forename" : [ "ハナ" ],
+      "surname" : [ "アーレント" ]
+    }, {
+      "personalName" : [ "Ārento" ]
+    }, {
+      "forename" : [ "Hannah" ],
+      "surname" : [ "Stern" ]
+    }, {
+      "forename" : [ "חנה" ],
+      "surname" : [ "ארנדט" ]
+    }, {
+      "forename" : [ "Khanna" ],
+      "surname" : [ "Arendt" ]
+    }, {
+      "forename" : [ "Hanna" ],
+      "surname" : [ "Arento" ]
+    }, {
+      "forename" : [ "汉娜" ],
+      "surname" : [ "阿伦特" ]
+    }, {
+      "forename" : [ "Johanna" ],
+      "surname" : [ "Blücher" ]
+    }, {
+      "forename" : [ "H." ],
+      "surname" : [ "Arendt" ]
+    }, {
+      "forename" : [ "Channa" ],
+      "surname" : [ "Arendt" ]
+    }, {
+      "forename" : [ "Hannah" ],
+      "surname" : [ "Blücher" ]
+    }, {
+      "forename" : [ "Hānā" ],
+      "surname" : [ "Ārint" ]
+    }, {
+      "forename" : [ "Johanna" ],
+      "surname" : [ "Arendt" ]
+    }, {
+      "forename" : [ "Herr" ],
+      "surname" : [ "Arendt" ]
+    }, {
+      "forename" : [ "Channa" ],
+      "surname" : [ "Arent" ]
+    }, {
+      "forename" : [ "Hannah" ],
+      "surname" : [ "Arendt-Blücher" ]
+    }, {
+      "forename" : [ "Hannah" ],
+      "surname" : [ "Arendtová" ]
+    }, {
+      "forename" : [ "Hanna" ],
+      "surname" : [ "Arendt" ]
+    }, {
+      "forename" : [ "Hannah Arendt" ],
+      "surname" : [ "Blücher" ]
+    }, {
+      "forename" : [ "Hannah Arendt-" ],
+      "surname" : [ "Blücher" ]
+    }, {
+      "forename" : [ "Chana" ],
+      "surname" : [ "Arent" ]
+    }, {
+      "forename" : [ "ハンナ" ],
+      "surname" : [ "アーレント" ]
+    } ],
+    "@context" : "https://lobid.org/gnd/context.jsonld",
+    "variantName" : [ "Arent, Chana", "Arendtová, Hannah", "Arend, Chana", "Ārint, Hānā", "Arendt, Hanna", "アーレント, ハナ", "Blücher, Hannah", "Arento, Hanna", "Arent, Hana", "阿伦特, 汉娜", "Ārento, Hanna", "Arendt, Khanna", "Arendṭ, Ḥanah", "Arendt-Blücher, Hannah", "ארנדט, חנה", "Arendt, Channa", "Ārento", "Blücher, Hannah Arendt", "Arendt, Johanna", "Arent, Channa", "Bluecher, Hannah Arendt", "Arendt, Heinrich", "アーレント, ハンナ", "Blücher, Hannah Arendt-", "Blücher, Johanna", "Stern, Hannah", "Arendt, Herr", "Schlemihl, Peter", "Arendt, H." ],
+    "acquaintanceshipOrFriendship" : [ {
+      "id" : "https://d-nb.info/gnd/1071467174",
+      "label" : "Fränkel, Hilde"
+    } ],
+    "hasParent" : [ {
+      "id" : "https://d-nb.info/gnd/1190671301",
+      "label" : "Arendt, Paul"
+    }, {
+      "id" : "https://d-nb.info/gnd/1190672170",
+      "label" : "Arendt-Beerwald, Martha"
+    } ],
+    "sameAs" : [ {
+      "id" : "http://id.loc.gov/rwo/agents/n50023617",
+      "collection" : {
+        "icon" : "http://www.loc.gov/favicon.ico",
+        "name" : "NACO Authority File",
+        "publisher" : "Library of Congress",
+        "id" : "http://www.wikidata.org/entity/Q13219454",
+        "abbr" : "LC"
+      }
+    }, {
+      "collection" : {
+        "name" : "Ostdeutsche Biographie",
+        "publisher" : "Kulturportal West-Ost",
+        "id" : "http://www.wikidata.org/entity/Q52617553",
+        "abbr" : "OSTDEBIB"
+      },
+      "id" : "http://kulturportal-west-ost.eu/persons/arendt-hannah/"
+    }, {
+      "id" : "http://viaf.org/viaf/105151053",
+      "collection" : {
+        "icon" : "http://viaf.org/viaf/images/viaf.ico",
+        "name" : "Virtual International Authority File (VIAF)",
+        "publisher" : "OCLC",
+        "id" : "http://www.wikidata.org/entity/Q54919",
+        "abbr" : "VIAF"
+      }
+    }, {
+      "id" : "http://www.wikidata.org/entity/Q60025",
+      "collection" : {
+        "icon" : "https://www.wikidata.org/static/favicon/wikidata.ico",
+        "name" : "Wikidata",
+        "publisher" : "Wikimedia Foundation Inc.",
+        "id" : "http://www.wikidata.org/entity/Q2013",
+        "abbr" : "WIKIDATA"
+      }
+    }, {
+      "collection" : {
+        "name" : "Gemeinsame Normdatei (GND) im Katalog der Deutschen Nationalbibliothek",
+        "icon" : "https://www.dnb.de/SiteGlobals/Frontend/DNBWeb/Images/favicon.png?__blob=normal&v=4",
+        "publisher" : "Deutsche Nationalbibliothek",
+        "id" : "http://www.wikidata.org/entity/Q36578",
+        "abbr" : "DNB"
+      },
+      "id" : "https://d-nb.info/gnd/11850391X/about"
+    }, {
+      "collection" : {
+        "name" : "JudaicaLink",
+        "icon" : "https://data.judaicalink.org/static/img/favicon.ico",
+        "publisher" : "Stuttgart Media University",
+        "id" : "https://data.judaicalink.org",
+        "abbr" : "JudaicaLink"
+      },
+      "id" : "https://data.judaicalink.org/data/gnd/11850391X"
+    }, {
+      "id" : "https://dbpedia.org/resource/Hannah_Arendt",
+      "collection" : {
+        "id" : "https://dbpedia.org"
+      }
+    }, {
+      "collection" : {
+        "name" : "Wikipedia (Deutsch)",
+        "icon" : "https://de.wikipedia.org/static/favicon/wikipedia.ico",
+        "publisher" : "Wikimedia Foundation Inc.",
+        "id" : "http://www.wikidata.org/entity/Q48183",
+        "abbr" : "dewiki"
+      },
+      "id" : "https://de.wikipedia.org/wiki/Hannah_Arendt"
+    }, {
+      "collection" : {
+        "name" : "Wikipedia (English)",
+        "icon" : "https://en.wikipedia.org/static/favicon/wikipedia.ico",
+        "publisher" : "Wikimedia Foundation Inc.",
+        "id" : "http://www.wikidata.org/entity/Q328",
+        "abbr" : "enwiki"
+      },
+      "id" : "https://en.wikipedia.org/wiki/Hannah_Arendt"
+    }, {
+      "id" : "https://isni.org/isni/0000000121463002",
+      "collection" : {
+        "id" : "https://isni.org"
+      }
+    }, {
+      "collection" : {
+        "name" : "Kalliope Verbundkatalog",
+        "icon" : "https://kalliope-verbund.info/img/favicon.ico",
+        "publisher" : "Staatsbibliothek zu Berlin - Preußischer Kulturbesitz",
+        "id" : "https://kalliope-verbund.info",
+        "abbr" : "DE-611"
+      },
+      "id" : "https://kalliope-verbund.info/gnd/11850391X"
+    }, {
+      "collection" : {
+        "name" : "Archivportal-D",
+        "icon" : "https://www.archivportal-d.de/favicon.ico",
+        "publisher" : "Deutsche Digitale Bibliothek",
+        "id" : "https://www.archivportal-d.de",
+        "abbr" : "ARCHIV-D"
+      },
+      "id" : "https://www.archivportal-d.de/person/gnd/11850391X"
+    }, {
+      "collection" : {
+        "name" : "Deutsche Digitale Bibliothek",
+        "icon" : "https://www.deutsche-digitale-bibliothek.de/favicon.ico",
+        "publisher" : "Deutsche Digitale Bibliothek",
+        "id" : "http://www.wikidata.org/entity/Q621630",
+        "abbr" : "DDB"
+      },
+      "id" : "https://www.deutsche-digitale-bibliothek.de/person/gnd/11850391X"
+    }, {
+      "id" : "https://www.filmportal.de/571677804F714808BBFDEDC23ED854BB",
+      "collection" : {
+        "id" : "https://www.filmportal.de"
+      }
+    }, {
+      "collection" : {
+        "name" : "Hessische Biografie",
+        "icon" : "https://www.lagis-hessen.de/favicon.ico",
+        "publisher" : "Hessisches Landesamt für geschichtliche Landeskunde",
+        "id" : "http://www.wikidata.org/entity/Q14564246",
+        "abbr" : "LAGIS"
+      },
+      "id" : "https://www.lagis-hessen.de/pnd/11850391X"
+    } ]
+  }, {
+    "director" : [ {
+      "id" : "https://d-nb.info/gnd/118760998",
+      "label" : "Trotta, Margarethe von"
+    } ],
+    "literarySource" : [ {
+      "id" : "https://d-nb.info/gnd/1130890511",
+      "label" : "Hannah Arendt"
+    } ],
+    "type" : [ "AuthorityResource", "Work" ],
+    "@context" : "https://lobid.org/gnd/context.jsonld",
+    "dateOfPublication" : [ "2012" ],
+    "gndSubjectCategory" : [ {
+      "id" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#15.3",
+      "label" : "Film"
+    } ],
+    "oldAuthorityNumber" : [ "(DE-588)1052572111" ],
+    "geographicAreaCode" : [ {
+      "id" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#ZZ",
+      "label" : "Land unbekannt"
+    } ],
+    "deprecatedUri" : [ "https://d-nb.info/gnd/1052572111" ],
+    "biographicalOrHistoricalInformation" : [ "Spielfilm, Deutschland, 2012" ],
+    "describedBy" : {
+      "descriptionLevel" : {
+        "id" : "https://d-nb.info/standards/vocab/gnd/description-level#1",
+        "label" : "Katalogisierungslevel 1"
+      },
+      "dctCreator" : {
+        "id" : "https://ld.zdb-services.de/resource/organisations/DE-101",
+        "label" : "https://ld.zdb-services.de/resource/organisations/DE-101"
+      },
+      "license" : {
+        "id" : "http://creativecommons.org/publicdomain/zero/1.0/",
+        "label" : "http://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "dateModified" : "2021-07-14T19:55:14.000",
+      "id" : "https://d-nb.info/gnd/1029746702/about",
+      "maintainer" : {
+        "id" : "https://ld.zdb-services.de/resource/organisations/DE-101",
+        "label" : "https://ld.zdb-services.de/resource/organisations/DE-101"
+      }
+    },
+    "topic" : [ {
+      "id" : "https://d-nb.info/gnd/11850391X",
+      "label" : "Arendt, Hannah"
+    } ],
+    "broaderTermInstantial" : [ {
+      "id" : "https://d-nb.info/gnd/4017102-4",
+      "label" : "Film"
+    } ],
+    "formOfWorkAndExpression" : [ {
+      "id" : "https://d-nb.info/gnd/4017102-4",
+      "label" : "Film"
+    } ],
+    "gndIdentifier" : "1029746702",
+    "id" : "https://d-nb.info/gnd/1029746702",
+    "preferredName" : "Hannah Arendt (Film)",
+    "sameAs" : [ {
+      "id" : "http://viaf.org/viaf/316752418",
+      "collection" : {
+        "icon" : "http://viaf.org/viaf/images/viaf.ico",
+        "name" : "Virtual International Authority File (VIAF)",
+        "publisher" : "OCLC",
+        "id" : "http://www.wikidata.org/entity/Q54919",
+        "abbr" : "VIAF"
+      }
+    }, {
+      "id" : "http://id.loc.gov/rwo/agents/no2013065789",
+      "collection" : {
+        "icon" : "http://www.loc.gov/favicon.ico",
+        "name" : "NACO Authority File",
+        "publisher" : "Library of Congress",
+        "id" : "http://www.wikidata.org/entity/Q13219454",
+        "abbr" : "LC"
+      }
+    }, {
+      "id" : "https://d-nb.info/gnd/1052572111",
+      "collection" : {
+        "icon" : "http://www.dnb.de/SiteGlobals/StyleBundles/Bilder/favicon.png?__blob=normal&v=1",
+        "name" : "Gemeinsame Normdatei (GND) im Katalog der Deutschen Nationalbibliothek",
+        "publisher" : "Deutsche Nationalbibliothek",
+        "id" : "http://www.wikidata.org/entity/Q36578",
+        "abbr" : "DNB"
+      }
+    }, {
+      "id" : "http://www.wikidata.org/entity/Q1575773",
+      "collection" : {
+        "icon" : "https://www.wikidata.org/static/favicon/wikidata.ico",
+        "name" : "Wikidata",
+        "publisher" : "Wikimedia Foundation Inc.",
+        "id" : "http://www.wikidata.org/entity/Q2013",
+        "abbr" : "WIKIDATA"
+      }
+    } ]
+  } ],
+  "aggregation" : {
+    "gndSubjectCategory.id" : [ {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#16.1p",
+      "label" : "Personen der Geschichtswissenschaft (Historiker, Archäologen)",
+      "doc_count" : 22
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#8.1p",
+      "label" : "Personen (Politologen, Staatstheoretiker)",
+      "doc_count" : 17
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#4.7p",
+      "label" : "Personen zu Philosophie",
+      "doc_count" : 16
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#9.5p",
+      "label" : "Personen zu Soziologie, Gesellschaft, Arbeit, Sozialgeschichte",
+      "doc_count" : 9
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#6.3a",
+      "label" : "Schule",
+      "doc_count" : 7
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#12.1p",
+      "label" : "Personen zu Literaturwissenschaft (Literaturwissenschaftler)",
+      "doc_count" : 4
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#2.3p",
+      "label" : "Personen zu Presse",
+      "doc_count" : 3
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#2.2",
+      "label" : "Buchwissenschaft, Buchhandel",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#8.1",
+      "label" : "Politik (Allgemeines), Politische Theorie",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#12.2p",
+      "label" : "Personen zu Literaturgeschichte (Schriftsteller)",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#13.1a",
+      "label" : "Bildende Kunst",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#14.4p",
+      "label" : "Personen zu Musik",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#15.1p",
+      "label" : "Personen zu Theater, Tanz",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#15.3",
+      "label" : "Film",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#15.3p",
+      "label" : "Personen zu Film",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#16.4d",
+      "label" : "Geschichte überregionaler Gebiete: Zeitgeschichte",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#2.2p",
+      "label" : "Personen zu Buchwissenschaft, Buchhandel",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#21.5p",
+      "label" : "Personen zu Physik",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#5.5p",
+      "label" : "Personen zu Psychologie",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#6.1a",
+      "label" : "Kultur, Künste allgemein",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#6.1b",
+      "label" : "Geistes- und Kulturgeschichte",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#6.1p",
+      "label" : "Personen zu Kultur und Künsten, Geistes- und Kulturgeschichte",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#6.6",
+      "label" : "Hochschule",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#6.7p",
+      "label" : "Personen zu Bibliothek, Information und Dokumentation",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#6.8",
+      "label" : "Archiv, Museum",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#7.14p",
+      "label" : "Personen zu Recht",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#7.15p",
+      "label" : "Personen zu öffentlicher Verwaltung",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/gnd-sc#8.4p",
+      "label" : "Personen zu politischer Theorie, Militär",
+      "doc_count" : 1
+    } ],
+    "professionOrOccupation.id" : [ {
+      "key" : "https://d-nb.info/gnd/4025098-2",
+      "label" : "Historiker",
+      "doc_count" : 40
+    }, {
+      "key" : "https://d-nb.info/gnd/4175053-6",
+      "label" : "Politologe",
+      "doc_count" : 20
+    }, {
+      "key" : "https://d-nb.info/gnd/4025243-7",
+      "label" : "Hochschullehrer",
+      "doc_count" : 15
+    }, {
+      "key" : "https://d-nb.info/gnd/4045790-4",
+      "label" : "Philosoph",
+      "doc_count" : 15
+    }, {
+      "key" : "https://d-nb.info/gnd/4174285-0",
+      "label" : "Philosophin",
+      "doc_count" : 15
+    }, {
+      "key" : "https://d-nb.info/gnd/4333423-4",
+      "label" : "Historikerin",
+      "doc_count" : 13
+    }, {
+      "key" : "https://d-nb.info/gnd/4629643-8",
+      "label" : "Politologin",
+      "doc_count" : 8
+    }, {
+      "key" : "https://d-nb.info/gnd/4055930-0",
+      "label" : "Soziologe",
+      "doc_count" : 6
+    }, {
+      "key" : "https://d-nb.info/gnd/4150507-4",
+      "label" : "Dozent",
+      "doc_count" : 6
+    }, {
+      "key" : "https://d-nb.info/gnd/4028781-6",
+      "label" : "Journalist",
+      "doc_count" : 5
+    }, {
+      "key" : "https://d-nb.info/gnd/4156858-8",
+      "label" : "Germanist",
+      "doc_count" : 5
+    }, {
+      "key" : "https://d-nb.info/gnd/4044300-0",
+      "label" : "Pädagoge",
+      "doc_count" : 4
+    }, {
+      "key" : "https://d-nb.info/gnd/4160219-5",
+      "label" : "Hochschullehrerin",
+      "doc_count" : 4
+    }, {
+      "key" : "https://d-nb.info/gnd/4393865-6",
+      "label" : "Soziologin",
+      "doc_count" : 4
+    }, {
+      "key" : "https://d-nb.info/gnd/4061414-1",
+      "label" : "Übersetzer",
+      "doc_count" : 3
+    }, {
+      "key" : "https://d-nb.info/gnd/4128272-3",
+      "label" : "Kaufmann",
+      "doc_count" : 3
+    }, {
+      "key" : "https://d-nb.info/gnd/7547571-6",
+      "label" : "Wissenschaftliche Mitarbeiterin",
+      "doc_count" : 3
+    }, {
+      "key" : "https://d-nb.info/gnd/4026955-3",
+      "label" : "Ingenieur",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/gnd/4045968-8",
+      "label" : "Physiker",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/gnd/4053309-8",
+      "label" : "Schriftsteller",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/gnd/4053311-6",
+      "label" : "Schriftstellerin",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/gnd/4066591-4",
+      "label" : "Wissenschaftlicher Mitarbeiter",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/gnd/4127948-7",
+      "label" : "Schulleiter",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/gnd/4156861-8",
+      "label" : "Germanistin",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/gnd/4158589-6",
+      "label" : "Gymnasiallehrer",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/gnd/4167889-8",
+      "label" : "Literaturwissenschaftler",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/gnd/4372438-3",
+      "label" : "Übersetzerin",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/gnd/4381669-1",
+      "label" : "Publizistin",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/gnd/4423722-4",
+      "label" : "Literaturwissenschaftlerin",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/gnd/4430555-2",
+      "label" : "Herausgeberin",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/gnd/1045033634",
+      "label" : "Weibliche Lehrbeauftragte",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/1047510138",
+      "label" : "Privatdozentin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/1078045232",
+      "label" : "Referentin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/1112571264",
+      "label" : "Philosophielehrer",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/1155548841",
+      "label" : "Kommunikationsberater",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/1359295224",
+      "label" : "Schulbuchautorin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4003982-1",
+      "label" : "Autor",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4017141-3",
+      "label" : "Filmschauspielerin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4020214-8",
+      "label" : "Geograf",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4028786-5",
+      "label" : "Journalistin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4029050-5",
+      "label" : "Jurist",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4032009-1",
+      "label" : "Komponist",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4040841-3",
+      "label" : "Musiker",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4049050-6",
+      "label" : "Regisseur",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4051246-0",
+      "label" : "Sängerin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4054353-5",
+      "label" : "Sekretärin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4066533-1",
+      "label" : "Wirtschaftswissenschaftler",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4076229-4",
+      "label" : "Politische Wissenschaft",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4115614-6",
+      "label" : "PR-Berater",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4130594-2",
+      "label" : "Lehrbeauftragter",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4132131-5",
+      "label" : "Berufsschullehrer",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4135404-7",
+      "label" : "Pädagogin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4136652-9",
+      "label" : "Wissenschaftlerin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4145078-4",
+      "label" : "Betriebswirt",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4147605-0",
+      "label" : "Chefredakteur",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4153179-6",
+      "label" : "Schauspielerin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4165516-3",
+      "label" : "Krankenpfleger",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4168391-2",
+      "label" : "Lyriker",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4176310-5",
+      "label" : "Publizist",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4177294-5",
+      "label" : "Redakteur",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4190114-9",
+      "label" : "Wissenschaftsjournalist",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4199236-2",
+      "label" : "Philologe",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4200345-3",
+      "label" : "Zeichner",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4219058-7",
+      "label" : "Chemikerin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4226289-6",
+      "label" : "Kunsthistorikerin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4232470-1",
+      "label" : "Karikaturist",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4258697-5",
+      "label" : "Autorin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4274137-3",
+      "label" : "Sinologe",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4320749-2",
+      "label" : "Referent",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4343524-5",
+      "label" : "Unternehmensberaterin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4349925-9",
+      "label" : "Bibliograf",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4352068-6",
+      "label" : "Redakteurin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4354027-2",
+      "label" : "Kriminalbeamter",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4361365-2",
+      "label" : "Archäologin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4362366-9",
+      "label" : "Philologin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4365294-3",
+      "label" : "Dozentin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4396366-3",
+      "label" : "Kommunalpolitiker",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4398797-7",
+      "label" : "Studienrat",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4464763-3",
+      "label" : "Essayist",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4569041-8",
+      "label" : "Kulturkritiker",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4614675-1",
+      "label" : "Theaterwissenschaftler",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4642727-2",
+      "label" : "Comiczeichner",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/4793159-0",
+      "label" : "Lateinlehrer",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/7538689-6",
+      "label" : "Kulturwissenschaftlerin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/7539218-5",
+      "label" : "Romanistin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/7540491-6",
+      "label" : "Judaist",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/7636582-7",
+      "label" : "Medienwissenschaftlerin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/7693201-1",
+      "label" : "Comicautor",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/7698916-1",
+      "label" : "Collegelehrerin",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/gnd/7700650-1",
+      "label" : "Wissenschaftsjournalistin",
+      "doc_count" : 1
+    } ],
+    "geographicAreaCode.id" : [ {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-DE",
+      "label" : "Deutschland",
+      "doc_count" : 155
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XD-US",
+      "label" : "USA",
+      "doc_count" : 47
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#ZZ",
+      "label" : "Land unbekannt",
+      "doc_count" : 23
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-FR",
+      "label" : "Frankreich",
+      "doc_count" : 20
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-DE-SN",
+      "label" : "Sachsen",
+      "doc_count" : 12
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-DE-NI",
+      "label" : "Niedersachsen",
+      "doc_count" : 11
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-DXDE",
+      "label" : "Deutschland, Deutsches Reich",
+      "doc_count" : 10
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-DE-RP",
+      "label" : "Rheinland-Pfalz",
+      "doc_count" : 7
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-DE-HB",
+      "label" : "Bremen",
+      "doc_count" : 5
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-AT",
+      "label" : "Österreich",
+      "doc_count" : 4
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-ES",
+      "label" : "Spanien",
+      "doc_count" : 4
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-GB",
+      "label" : "Großbritannien",
+      "doc_count" : 4
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-IT",
+      "label" : "Italien",
+      "doc_count" : 4
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-DDDE",
+      "label" : "Deutschland (DDR)",
+      "doc_count" : 3
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-CH-ZH",
+      "label" : "Kanton Zürich",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-DE-BW",
+      "label" : "Baden-Württemberg",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-PL",
+      "label" : "Polen",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XD-BR",
+      "label" : "Brasilien",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XD-CA",
+      "label" : "Kanada",
+      "doc_count" : 2
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-AT-9",
+      "label" : "Wien",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-BE",
+      "label" : "Belgien",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-BG",
+      "label" : "Bulgarien",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-CH",
+      "label" : "Schweiz",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-CZ",
+      "label" : "Tschechische Republik",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-DE-BY",
+      "label" : "Bayern",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-DE-HE",
+      "label" : "Hessen",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-GR",
+      "label" : "Griechenland",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-HU",
+      "label" : "Ungarn",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-RU",
+      "label" : "Russland",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XA-SI",
+      "label" : "Slowenien",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XB-CN",
+      "label" : "China",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XB-HK",
+      "label" : "Hongkong",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XB-IL",
+      "label" : "Israel",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XB-IR",
+      "label" : "Iran",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XD",
+      "label" : "Amerika",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XD-CL",
+      "label" : "Chile",
+      "doc_count" : 1
+    }, {
+      "key" : "https://d-nb.info/standards/vocab/gnd/geographic-area-code#XD-CU",
+      "label" : "Kuba",
+      "doc_count" : 1
+    } ],
+    "dateOfBirth" : [ {
+      "key" : "1986",
+      "label" : "1986",
+      "doc_count" : 5
+    }, {
+      "key" : "1962",
+      "label" : "1962",
+      "doc_count" : 4
+    }, {
+      "key" : "1976",
+      "label" : "1976",
+      "doc_count" : 4
+    }, {
+      "key" : "1953",
+      "label" : "1953",
+      "doc_count" : 3
+    }, {
+      "key" : "1954",
+      "label" : "1954",
+      "doc_count" : 3
+    }, {
+      "key" : "1968",
+      "label" : "1968",
+      "doc_count" : 3
+    }, {
+      "key" : "1969",
+      "label" : "1969",
+      "doc_count" : 3
+    }, {
+      "key" : "1978",
+      "label" : "1978",
+      "doc_count" : 3
+    }, {
+      "key" : "2004",
+      "label" : "2004",
+      "doc_count" : 3
+    }, {
+      "key" : "1939",
+      "label" : "1939",
+      "doc_count" : 2
+    }, {
+      "key" : "1942",
+      "label" : "1942",
+      "doc_count" : 2
+    }, {
+      "key" : "1948",
+      "label" : "1948",
+      "doc_count" : 2
+    }, {
+      "key" : "1955",
+      "label" : "1955",
+      "doc_count" : 2
+    }, {
+      "key" : "1956",
+      "label" : "1956",
+      "doc_count" : 2
+    }, {
+      "key" : "1961",
+      "label" : "1961",
+      "doc_count" : 2
+    }, {
+      "key" : "1966",
+      "label" : "1966",
+      "doc_count" : 2
+    }, {
+      "key" : "1971",
+      "label" : "1971",
+      "doc_count" : 2
+    }, {
+      "key" : "1973",
+      "label" : "1973",
+      "doc_count" : 2
+    }, {
+      "key" : "1979",
+      "label" : "1979",
+      "doc_count" : 2
+    }, {
+      "key" : "1984",
+      "label" : "1984",
+      "doc_count" : 2
+    }, {
+      "key" : "1987",
+      "label" : "1987",
+      "doc_count" : 2
+    }, {
+      "key" : "1988",
+      "label" : "1988",
+      "doc_count" : 2
+    }, {
+      "key" : "1991",
+      "label" : "1991",
+      "doc_count" : 2
+    }, {
+      "key" : "1843",
+      "label" : "1843",
+      "doc_count" : 1
+    }, {
+      "key" : "1869",
+      "label" : "1869",
+      "doc_count" : 1
+    }, {
+      "key" : "1873",
+      "label" : "1873",
+      "doc_count" : 1
+    }, {
+      "key" : "1897",
+      "label" : "1897",
+      "doc_count" : 1
+    }, {
+      "key" : "1899-01-29",
+      "label" : "1899-01-29",
+      "doc_count" : 1
+    }, {
+      "key" : "1902-07-12",
+      "label" : "1902-07-12",
+      "doc_count" : 1
+    }, {
+      "key" : "1903-11-25",
+      "label" : "1903-11-25",
+      "doc_count" : 1
+    }, {
+      "key" : "1906-10-14",
+      "label" : "1906-10-14",
+      "doc_count" : 1
+    }, {
+      "key" : "1919",
+      "label" : "1919",
+      "doc_count" : 1
+    }, {
+      "key" : "1929-09-25",
+      "label" : "1929-09-25",
+      "doc_count" : 1
+    }, {
+      "key" : "1931",
+      "label" : "1931",
+      "doc_count" : 1
+    }, {
+      "key" : "1932",
+      "label" : "1932",
+      "doc_count" : 1
+    }, {
+      "key" : "1932-01-25",
+      "label" : "1932-01-25",
+      "doc_count" : 1
+    }, {
+      "key" : "1933-01-14",
+      "label" : "1933-01-14",
+      "doc_count" : 1
+    }, {
+      "key" : "1936-09-29",
+      "label" : "1936-09-29",
+      "doc_count" : 1
+    }, {
+      "key" : "1938",
+      "label" : "1938",
+      "doc_count" : 1
+    }, {
+      "key" : "1940",
+      "label" : "1940",
+      "doc_count" : 1
+    }, {
+      "key" : "1941",
+      "label" : "1941",
+      "doc_count" : 1
+    }, {
+      "key" : "1943",
+      "label" : "1943",
+      "doc_count" : 1
+    }, {
+      "key" : "1944",
+      "label" : "1944",
+      "doc_count" : 1
+    }, {
+      "key" : "1944-05-02",
+      "label" : "1944-05-02",
+      "doc_count" : 1
+    }, {
+      "key" : "1945-06-01",
+      "label" : "1945-06-01",
+      "doc_count" : 1
+    }, {
+      "key" : "1947",
+      "label" : "1947",
+      "doc_count" : 1
+    }, {
+      "key" : "1949",
+      "label" : "1949",
+      "doc_count" : 1
+    }, {
+      "key" : "1949-03-27",
+      "label" : "1949-03-27",
+      "doc_count" : 1
+    }, {
+      "key" : "1950",
+      "label" : "1950",
+      "doc_count" : 1
+    }, {
+      "key" : "1950-02-02",
+      "label" : "1950-02-02",
+      "doc_count" : 1
+    }, {
+      "key" : "1950-09-14",
+      "label" : "1950-09-14",
+      "doc_count" : 1
+    }, {
+      "key" : "1951",
+      "label" : "1951",
+      "doc_count" : 1
+    }, {
+      "key" : "1952",
+      "label" : "1952",
+      "doc_count" : 1
+    }, {
+      "key" : "1952-12-11",
+      "label" : "1952-12-11",
+      "doc_count" : 1
+    }, {
+      "key" : "1956-01-26",
+      "label" : "1956-01-26",
+      "doc_count" : 1
+    }, {
+      "key" : "1957",
+      "label" : "1957",
+      "doc_count" : 1
+    }, {
+      "key" : "1958-04-17",
+      "label" : "1958-04-17",
+      "doc_count" : 1
+    }, {
+      "key" : "1958-05-24",
+      "label" : "1958-05-24",
+      "doc_count" : 1
+    }, {
+      "key" : "1960-02-02",
+      "label" : "1960-02-02",
+      "doc_count" : 1
+    }, {
+      "key" : "1965",
+      "label" : "1965",
+      "doc_count" : 1
+    }, {
+      "key" : "1966-01-06",
+      "label" : "1966-01-06",
+      "doc_count" : 1
+    }, {
+      "key" : "1967",
+      "label" : "1967",
+      "doc_count" : 1
+    }, {
+      "key" : "1967-03-23",
+      "label" : "1967-03-23",
+      "doc_count" : 1
+    }, {
+      "key" : "1968-04-24",
+      "label" : "1968-04-24",
+      "doc_count" : 1
+    }, {
+      "key" : "1968-07-29",
+      "label" : "1968-07-29",
+      "doc_count" : 1
+    }, {
+      "key" : "1969-01-21",
+      "label" : "1969-01-21",
+      "doc_count" : 1
+    }, {
+      "key" : "1970",
+      "label" : "1970",
+      "doc_count" : 1
+    }, {
+      "key" : "1974",
+      "label" : "1974",
+      "doc_count" : 1
+    }, {
+      "key" : "1975",
+      "label" : "1975",
+      "doc_count" : 1
+    }, {
+      "key" : "1977",
+      "label" : "1977",
+      "doc_count" : 1
+    }, {
+      "key" : "1978-05-30",
+      "label" : "1978-05-30",
+      "doc_count" : 1
+    }, {
+      "key" : "1981",
+      "label" : "1981",
+      "doc_count" : 1
+    }, {
+      "key" : "1983",
+      "label" : "1983",
+      "doc_count" : 1
+    }, {
+      "key" : "1989",
+      "label" : "1989",
+      "doc_count" : 1
+    }, {
+      "key" : "1990",
+      "label" : "1990",
+      "doc_count" : 1
+    }, {
+      "key" : "1995",
+      "label" : "1995",
+      "doc_count" : 1
+    }, {
+      "key" : "2007",
+      "label" : "2007",
+      "doc_count" : 1
+    }, {
+      "key" : "[198X]",
+      "label" : "[198X]",
+      "doc_count" : 1
+    }, {
+      "key" : "[19XX]",
+      "label" : "[19XX]",
+      "doc_count" : 1
+    } ],
+    "type" : [ {
+      "key" : "DifferentiatedPerson",
+      "label" : "Individualisierte Person",
+      "doc_count" : 171
+    }, {
+      "key" : "Person",
+      "label" : "Person",
+      "doc_count" : 171
+    }, {
+      "key" : "ConferenceOrEvent",
+      "label" : "Konferenz oder Veranstaltung",
+      "doc_count" : 67
+    }, {
+      "key" : "Work",
+      "label" : "Werk",
+      "doc_count" : 46
+    }, {
+      "key" : "CorporateBody",
+      "label" : "Körperschaft",
+      "doc_count" : 35
+    }, {
+      "key" : "SeriesOfConferenceOrEvent",
+      "label" : "Kongressfolge oder Veranstaltungsfolge",
+      "doc_count" : 6
+    }, {
+      "key" : "MusicalWork",
+      "label" : "Werk der Musik",
+      "doc_count" : 2
+    }, {
+      "key" : "SubjectHeading",
+      "label" : "Schlagwort",
+      "doc_count" : 2
+    }, {
+      "key" : "SubjectHeadingSensoStricto",
+      "label" : "Schlagwort sensu stricto",
+      "doc_count" : 2
+    }, {
+      "key" : "Collection",
+      "label" : "Sammlung",
+      "doc_count" : 1
+    }, {
+      "key" : "ProjectOrProgram",
+      "label" : "Projekt oder Programm",
+      "doc_count" : 1
+    }, {
+      "key" : "ProvenanceCharacteristic",
+      "label" : "Provenienzmerkmal",
+      "doc_count" : 1
+    } ]
+  }
+}

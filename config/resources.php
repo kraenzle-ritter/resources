@@ -169,7 +169,7 @@ return [
             'api-type' => 'Wikidata',
             'base_url' => 'https://www.wikidata.org/w/api.php',
             'target_url' => 'https://www.wikidata.org/wiki/{provider_id}',
-            'test_search' => 'Lucretia Marinella',
+            'test_search' => 'Lucrezia Marinella',
         ],
         'wikipedia-de' => [
             'label' => 'Wikipedia (de)',
@@ -183,14 +183,14 @@ return [
             'api-type' => 'Wikipedia',
             'base_url' => 'https://en.wikipedia.org/w/api.php',
             'target_url' => 'https://en.wikipedia.org/wiki/{provider_id}',
-            'test_search' => 'Lucretia Marinella',
+            'test_search' => 'Lucrezia Marinella',
         ],
         'wikipedia-fr' => [
             'label' => 'Wikipedia (fr)',
             'api-type' => 'Wikipedia',
             'base_url' => 'https://fr.wikipedia.org/w/api.php',
             'target_url' => 'https://fr.wikipedia.org/wiki/{provider_id}',
-            'test_search' => 'Lucretia Marinella',
+            'test_search' => 'Lucrezia Marinella',
         ],
         'wikipedia-it' => [
             'label' => 'Wikipedia (it)',

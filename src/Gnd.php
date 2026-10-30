@@ -2,7 +2,7 @@
 
 namespace KraenzleRitter\Resources;
 
-use GuzzleHttp\Client;
+use KraenzleRitter\Resources\Helpers\HttpClient;
 use GuzzleHttp\ClientInterface;
 use KraenzleRitter\Resources\Helpers\UserAgent;
 use KraenzleRitter\Resources\Traits\HttpClientTrait;
@@ -48,7 +48,7 @@ class Gnd
             return;
         }
 
-        $this->client = new Client([
+        $this->client = HttpClient::make([
             'base_uri' => config('resources.providers.gnd.base_url', self::DEFAULT_BASE_URL),
             'timeout'  => config('resources.providers.gnd.timeout', 15), // Configurable timeout, default 15 seconds
             'connect_timeout' => config('resources.providers.gnd.connect_timeout', 5), // Connection timeout

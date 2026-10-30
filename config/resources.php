@@ -67,7 +67,7 @@ return [
         'geonames' => [
             'label' => "GeoNames", // not localized as it is a standard identifier
             'api-type' => 'Geonames',
-            'base_url' => 'http://api.geonames.org/',
+            'base_url' => 'https://secure.geonames.org/',
             'user_name' => env('GEONAMES_USERNAME', 'demo'),
             // Standardized configuration keys with underscores:
             'continent_code' => null, // Restricts the search for toponym of the given continent

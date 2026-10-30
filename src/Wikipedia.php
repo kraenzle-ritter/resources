@@ -2,7 +2,7 @@
 
 namespace KraenzleRitter\Resources;
 
-use \GuzzleHttp\Client;
+use KraenzleRitter\Resources\Helpers\HttpClient;
 use \GuzzleHttp\ClientInterface;
 use KraenzleRitter\Resources\Helpers\UserAgent;
 
@@ -40,7 +40,7 @@ class Wikipedia
         $limit = $params['limit'] ?? 5;
         $providerKey = $params['providerKey'] ?? 'wikipedia-de';
 
-        $this->client = $this->injectedClient ?: new Client([
+        $this->client = $this->injectedClient ?: HttpClient::make([
             'base_uri' => config('resources.providers.' . $providerKey . '.base_url'),
             'timeout' => config('resources.providers.' . $providerKey . '.timeout', 15),
             'connect_timeout' => config('resources.providers.' . $providerKey . '.connect_timeout', 5),
@@ -83,7 +83,7 @@ class Wikipedia
         $providerKey = $params['providerKey'] ?? 'wikipedia-de';
 
         // Set User-Agent and timeout to comply with Wikipedia robot policy
-        $this->client = $this->injectedClient ?: new Client([
+        $this->client = $this->injectedClient ?: HttpClient::make([
             'base_uri' => config('resources.providers.' . $providerKey . '.base_url'),
             'timeout' => config('resources.providers.' . $providerKey . '.timeout', 15),
             'connect_timeout' => config('resources.providers.' . $providerKey . '.connect_timeout', 5),

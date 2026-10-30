@@ -1,5 +1,11 @@
 # Upgrading
 
+## 4.2.0 (2026-10-30) — provider clients follow no redirects
+
+Every provider client is now built through `Helpers\HttpClient::make()`, which sets `allow_redirects => false`. Guzzle's default followed up to five redirects to any host (ASVS V15.3.2). All provider APIs answer directly (measured 2026-10-30), so searches behave as before; a redirect now comes back as the 3xx response instead of being followed.
+
+GeoNames is called over https: the default `base_url` is `https://secure.geonames.org/` instead of `http://api.geonames.org/`. A published `config/resources.php` that still names the old URL keeps calling over http; change it there.
+
 ## 4.0.0 (2026-08-19) — security hardening and the IdRef provider
 
 Anton and KB both track `dev-main`, so this reaches them on the next

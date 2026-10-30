@@ -2,7 +2,7 @@
 
 namespace KraenzleRitter\Resources;
 
-use GuzzleHttp\Client;
+use KraenzleRitter\Resources\Helpers\HttpClient;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Support\Str;
 use KraenzleRitter\Resources\Helpers\UserAgent;
@@ -50,7 +50,7 @@ class IdRef
             return;
         }
 
-        $this->client = new Client([
+        $this->client = HttpClient::make([
             'base_uri' => config('resources.providers.idref.base_url', self::DEFAULT_BASE_URL),
             'timeout' => config('resources.providers.idref.timeout', 15),
             'connect_timeout' => config('resources.providers.idref.connect_timeout', 5),

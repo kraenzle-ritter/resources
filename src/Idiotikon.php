@@ -2,7 +2,7 @@
 
 namespace KraenzleRitter\Resources;
 
-use GuzzleHttp\Client;
+use KraenzleRitter\Resources\Helpers\HttpClient;
 use GuzzleHttp\ClientInterface;
 use KraenzleRitter\Resources\Helpers\UserAgent;
 use KraenzleRitter\Resources\Traits\HttpClientTrait;
@@ -32,7 +32,7 @@ class Idiotikon
             return;
         }
 
-        $this->client = new Client([
+        $this->client = HttpClient::make([
             'base_uri' => config('resources.providers.idiotikon.base_url', self::DEFAULT_BASE_URL),
             'timeout' => config('resources.providers.idiotikon.timeout', 15),
             'connect_timeout' => config('resources.providers.idiotikon.connect_timeout', 5),

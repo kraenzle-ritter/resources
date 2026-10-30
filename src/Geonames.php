@@ -2,7 +2,7 @@
 
 namespace KraenzleRitter\Resources;
 
-use GuzzleHttp\Client;
+use KraenzleRitter\Resources\Helpers\HttpClient;
 use GuzzleHttp\ClientInterface;
 use KraenzleRitter\Resources\Helpers\Params;
 use KraenzleRitter\Resources\Helpers\UserAgent;
@@ -12,7 +12,7 @@ class Geonames
 {
     use HttpClientTrait;
 
-    public const DEFAULT_BASE_URL = 'http://api.geonames.org/';
+    public const DEFAULT_BASE_URL = 'https://secure.geonames.org/';
 
     public $client;
 
@@ -46,7 +46,7 @@ class Geonames
             return;
         }
 
-        $this->client = new Client([
+        $this->client = HttpClient::make([
             'base_uri' => $this->base_uri,
             'timeout'  => config('resources.providers.geonames.timeout', 15), // Configurable timeout, default 15 seconds
             'connect_timeout' => config('resources.providers.geonames.connect_timeout', 5), // Connection timeout

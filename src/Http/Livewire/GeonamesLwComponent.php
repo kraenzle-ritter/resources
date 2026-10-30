@@ -113,7 +113,7 @@ class GeonamesLwComponent extends Component
         }
 
         // Get base_url from config
-        $apiUrl = config('resources.providers.geonames.base_url', 'http://api.geonames.org/');
+        $apiUrl = config('resources.providers.geonames.base_url', 'https://secure.geonames.org/');
 
         // For Geonames, we need to adjust the URL for web links vs API
         $base_url = 'https://www.geonames.org/'; // Default frontend URL

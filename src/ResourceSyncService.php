@@ -2,7 +2,7 @@
 
 namespace KraenzleRitter\Resources;
 
-use GuzzleHttp\Client;
+use KraenzleRitter\Resources\Helpers\HttpClient;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -50,7 +50,7 @@ class ResourceSyncService
      */
     protected function client(string $baseUrl): ClientInterface
     {
-        return $this->injectedClient ?: new Client([
+        return $this->injectedClient ?: HttpClient::make([
             'base_uri' => $baseUrl,
             'timeout' => 10,
             'headers' => UserAgent::get(),

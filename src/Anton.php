@@ -3,7 +3,7 @@
 namespace KraenzleRitter\Resources;
 
 use GuzzleHttp\Psr7;
-use GuzzleHttp\Client;
+use KraenzleRitter\Resources\Helpers\HttpClient;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use KraenzleRitter\Resources\Helpers\Params;
@@ -37,7 +37,7 @@ class Anton
         // Make sure URL ends with a slash
         $baseUrl = rtrim($this->url, '/') . '/';
 
-        $this->client = $this->injectedClient ?: new Client([
+        $this->client = $this->injectedClient ?: HttpClient::make([
             'base_uri' => $baseUrl,
             'timeout'  => 10,
             'headers'  => UserAgent::get(),

@@ -2,7 +2,7 @@
 
 namespace KraenzleRitter\Resources;
 
-use GuzzleHttp\Client;
+use KraenzleRitter\Resources\Helpers\HttpClient;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Support\Facades\Log;
 use KraenzleRitter\Resources\Helpers\UserAgent;
@@ -30,7 +30,7 @@ class Wikidata
         }
 
         $baseUrl = config('resources.providers.wikidata.base_url', 'https://www.wikidata.org/w/api.php');
-        $this->client = new Client([
+        $this->client = HttpClient::make([
             'base_uri' => $baseUrl,
             'timeout' => 10,
             'headers' => UserAgent::get(),

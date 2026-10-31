@@ -1,5 +1,13 @@
 # Upgrading
 
+## 4.3.0 (2026-10-31) — provider requests go through the Laravel HTTP client
+
+`Helpers\HttpClient::make()` returns a `Helpers\LaravelClient` instead of a Guzzle client. It keeps Guzzle's shape — `get()`, `request()`, `send()`, PSR-7 responses, `ConnectException` on a connection failure — and sends through `Illuminate\Support\Facades\Http`. A host application's `Http::fake()`, `Http::preventStrayRequests()` and `Http::globalOptions()` now reach every provider call; before, the package's own Guzzle clients went past them.
+
+Nothing to change for callers: the providers still accept an injected `GuzzleHttp\ClientInterface`, and the URL is resolved against `base_uri` as Guzzle does (RFC 3986). The return type of `HttpClient::make()` is `ClientInterface` instead of `Client`.
+
+In a host application's tests, a provider call that is not faked now meets that application's stray-request guard. Fake the provider host, for example `Http::fake(['https://lobid.org/*' => Http::response([...])])`.
+
 ## 4.2.0 (2026-10-30) — provider clients follow no redirects
 
 Every provider client is now built through `Helpers\HttpClient::make()`, which sets `allow_redirects => false`. Guzzle's default followed up to five redirects to any host (ASVS V15.3.2). All provider APIs answer directly (measured 2026-10-30), so searches behave as before; a redirect now comes back as the 3xx response instead of being followed.

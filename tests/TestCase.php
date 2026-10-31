@@ -17,6 +17,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         // they must not get the fixture-backed clients.
         if (! in_array('live-api', $this->groups(), true)) {
             $this->fakeAllProviders();
+            // Whatever a test does not fake does not go out (anton#791).
+            \Illuminate\Support\Facades\Http::preventStrayRequests();
         }
     }
 
